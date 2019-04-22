@@ -1,5 +1,13 @@
 # Dot Matrix Game Emulator
 
+## [Info Sheet](/info)
+
+## Resources
+
+- [Game Boy CPU Manual](/GameBoyCPUManual.pdf)
+
+- [The Cycle-Accurate Game Boy Docs](/TheCycleAccurateGameBoyDocs.pdf)
+
 ## Optional Goals
 
 - SDL2 output scaling
