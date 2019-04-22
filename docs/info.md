@@ -1,8 +1,10 @@
 # GameBoy
 
-### compendium based on Game Boy CPU Manual by DP
+*compendium based on Game Boy CPU Manual by DP*
 
-## Memory
+## Hardware
+
+### Memory
 
 |||
 |:---:|:---:|
@@ -19,11 +21,11 @@ echo | 0xe000
 16kB switchable ROM bank | 0x4000
 16 kB ROM bank #0 | 0x0000
 
-### echo
+#### echo
 
 ```// todo: find out why this exists```
 
-### reserved memory
+#### reserved memory
 
 `0000` Restart, called by `RST`  
 ...
@@ -53,3 +55,29 @@ echo | 0xe000
 `0149` RAM size
 
 `014a` 0 for Japanese, 1 for non Japanese
+
+`014b` license code
+
+`014d` complement check !!!
+
+`014e` ... `014f` checksum, ignored by gameboy ???
+
+### Cartridge Types
+
+...
+
+### Special Modes
+
+#### Power Up
+
+`0`... `255` are being executed
+
+- showing logo and comparing with trademark
+
+- checking checksums
+
+- internal RAM is random on startup
+
+- cart RAM is also random on startup
+
+#### Stop Mode 
