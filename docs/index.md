@@ -8,6 +8,8 @@
 
 - [The Cycle-Accurate Game Boy Docs](/TheCycleAccurateGameBoyDocs.pdf)
 
+- [AwesomeGBdev Github](https://github.com/gbdev/awesome-gbdev)
+
 ## Optional Goals
 
 - SDL2 output scaling
