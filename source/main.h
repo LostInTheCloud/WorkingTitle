@@ -1,10 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <inttypes.h>
+#include <time.h>       // nanosleep, gettime
+#include <inttypes.h>   // uint8_t, ...
 
 // 4.190MHz 239ns
-#define cycle_duration_ns 239;
-#define cycle_duration_s 0;
+#define cycle_duration 239;
+#define cycle_duration 999999999;
 
 void* reg_ptr[12];
 
@@ -24,7 +25,7 @@ void* reg_ptr[12];
 #define DE *((uint16_t*) reg_ptr + 4/2)
 #define HL *((uint16_t*) reg_ptr + 6/2)
 
-uint8_t instruction_cycles;
+long instruction_cycles;
 
 void print_regs(void)
 {
