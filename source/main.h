@@ -2,6 +2,10 @@
 #include <stdlib.h>
 #include <inttypes.h>
 
+// 4.190MHz 239ns
+#define cycle_duration_ns 239;
+#define cycle_duration_s 0;
+
 void* reg_ptr[12];
 
 #define F *((uint8_t*) reg_ptr + 0)
@@ -20,16 +24,18 @@ void* reg_ptr[12];
 #define DE *((uint16_t*) reg_ptr + 4/2)
 #define HL *((uint16_t*) reg_ptr + 6/2)
 
+uint8_t instruction_cycles;
+
 void print_regs(void)
 {
     // 18 characters per line
 
     printf("##################\n");
-    printf("A: 0x%2"PRIx8"    F: 0x%2"PRIx8"\n", A, F);
-    printf("B: 0x%2"PRIx8"    C: 0x%2"PRIx8"\n", B, C);
-    printf("D: 0x%2"PRIx8"    E: 0x%2"PRIx8"\n", D, E);
-    printf("H: 0x%2"PRIx8"    L: 0x%2"PRIx8"\n", H, L);
-    printf("     SP: 0x%2"PRIx16"\n", SP);
-    printf("     PC: 0x%2"PRIx16"\n", PC);
+    printf("A: 0x%02"PRIx8"    F: 0x%02"PRIx8"\n", A, F);
+    printf("B: 0x%02"PRIx8"    C: 0x%02"PRIx8"\n", B, C);
+    printf("D: 0x%02"PRIx8"    E: 0x%02"PRIx8"\n", D, E);
+    printf("H: 0x%02"PRIx8"    L: 0x%02"PRIx8"\n", H, L);
+    printf("     SP: 0x%02"PRIx16"\n", SP);
+    printf("     PC: 0x%02"PRIx16"\n", PC);
     printf("##################\n");
 }

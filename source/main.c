@@ -1,9 +1,5 @@
 #include "main.h"
 
-// !!!!!!!!!!!!!!!!!!!!!!
-// WHAT ABOUT NOPS vs 4 cycle instructions????
-// !!!!!!!!!!!!!!!!!!!!!!
-
 int main()
 {
     printf("Hello, DMG\n");
@@ -18,7 +14,8 @@ int main()
 
     // get time difference
 
-    // sleep(250ns - t2 + t1 = 250 - delta t);
+    // sleep(250ns*instruction_cycles - delta t);
+
     goto loop;
     
     return EXIT_SUCCESS;
