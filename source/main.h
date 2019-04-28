@@ -40,3 +40,6 @@ void print_regs(void)
     printf("     PC: 0x%02"PRIx16"\n", PC);
     printf("##################\n");
 }
+
+#define unlikely(expr) __builtin_expect(!!(expr), 0)
+#define likely(expr) __builtin_expect(!!(expr), 1)
