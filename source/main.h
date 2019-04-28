@@ -5,7 +5,7 @@
 
 // 4.190MHz 239ns
 #define cycle_duration 239;
-#define cycle_duration 999999999;
+//#define cycle_duration 999999999;
 
 void* reg_ptr[12];
 
