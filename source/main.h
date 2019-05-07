@@ -21,7 +21,7 @@ void* reg_ptr[12];
 #define SP *((uint16_t*) reg_ptr + 8/2)
 #define PC *((uint16_t*) reg_ptr + 10/2)
 
-#define BC *((uint16_t*) reg_ptr + 2/1)
+#define BC *((uint16_t*) reg_ptr + 2/2)
 #define DE *((uint16_t*) reg_ptr + 4/2)
 #define HL *((uint16_t*) reg_ptr + 6/2)
 
