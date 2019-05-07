@@ -22,9 +22,9 @@ int main()
     
     instruction_cycles = 1;
 
-    nanosecs = t0.tv_nsec;
-    nanosecs += instruction_cycles;
+    nanosecs = instruction_cycles;
     nanosecs *= cycle_duration;
+    nanosecs += t0.tv_nsec;
     if(unlikely(nanosecs > 999999999))
     {
         nanosecs -= 1000000000;
