@@ -9,21 +9,21 @@
 
 void* reg_ptr[12];
 
-#define F *((uint8_t*) reg_ptr + 0)
-#define A *((uint8_t*) reg_ptr + 1)
-#define C *((uint8_t*) reg_ptr + 2)
-#define B *((uint8_t*) reg_ptr + 3)
-#define E *((uint8_t*) reg_ptr + 4)
-#define D *((uint8_t*) reg_ptr + 5)
-#define L *((uint8_t*) reg_ptr + 6)
-#define H *((uint8_t*) reg_ptr + 7)
+#define F (*((uint8_t*) reg_ptr + 0))
+#define A (*((uint8_t*) reg_ptr + 1))
+#define C (*((uint8_t*) reg_ptr + 2))
+#define B (*((uint8_t*) reg_ptr + 3))
+#define E (*((uint8_t*) reg_ptr + 4))
+#define D (*((uint8_t*) reg_ptr + 5))
+#define L (*((uint8_t*) reg_ptr + 6))
+#define H (*((uint8_t*) reg_ptr + 7))
 
-#define SP *((uint16_t*) reg_ptr + 8/2)
-#define PC *((uint16_t*) reg_ptr + 10/2)
+#define SP (*((uint16_t*) reg_ptr + 8/2))
+#define PC (*((uint16_t*) reg_ptr + 10/2))
 
-#define BC *((uint16_t*) reg_ptr + 2/2)
-#define DE *((uint16_t*) reg_ptr + 4/2)
-#define HL *((uint16_t*) reg_ptr + 6/2)
+#define BC (*((uint16_t*) reg_ptr + 2/2))
+#define DE (*((uint16_t*) reg_ptr + 4/2))
+#define HL (*((uint16_t*) reg_ptr + 6/2))
 
 long instruction_cycles;
 
