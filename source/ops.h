@@ -1,0 +1,1 @@
+#define OP_NOP PC++;instruction_cycles = 1;
