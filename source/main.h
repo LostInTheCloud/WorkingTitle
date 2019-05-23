@@ -3,6 +3,8 @@
 #include <time.h>       // nanosleep, gettime
 #include <inttypes.h>   // uint8_t, ...
 
+#include "ops.h"
+
 // 4.190MHz 239ns
 #define cycle_duration 239;
 //#define cycle_duration 999999999;
