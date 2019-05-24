@@ -43,5 +43,7 @@ void print_regs(void)
     printf("##################\n");
 }
 
+// flags
+
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
 #define likely(expr) __builtin_expect(!!(expr), 1)
