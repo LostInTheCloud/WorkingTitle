@@ -28,16 +28,16 @@ void* reg_ptr[12];
 #define HL (*((uint16_t*) reg_ptr + 6/2))
 
 // Zero Flag
-#define FLAG_Z (F&0x80)
+#define FLAG_Z ((F&0x80)>>7)
 
 // Add/Sub Flag (BCD)
-#define FLAG_N (F&0x40)
+#define FLAG_N ((F&0x40)>>6)
 
 //Half Carry Flag
-#define FLAG_H (F&0x20)
+#define FLAG_H ((F&0x20)>>5)
 
 // Carry Flag
-#define FLAG_C (F&0x10)
+#define FLAG_C ((F&0x10)>>4)
 
 long instruction_cycles;
 
