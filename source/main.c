@@ -7,12 +7,12 @@ int main()
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
     uint32_t nanosecs;
-
-    long x = 0;
     uint8_t opcode;
 
+    long x = 0;
+
     loop:
-    
+
     opcode = 0;
     // retrieve OPCode
 
@@ -1045,26 +1045,13 @@ int main()
 
     }
 
-	PC += OPCODE_LENGTH[opcode];
+    PC += OPCODE_LENGTH[opcode];
 
     if(++x == 4190000)
     {
-        fprintf(stderr, "4.19 Million clocks passed!\n");
+        fprintf(stderr, "4.19 Million clocks passed!\n\n");
         x=0;
     }
-    
-    instruction_cycles = 1;
-
-    nanosecs = instruction_cycles;
-    nanosecs *= cycle_duration;
-    nanosecs += t0.tv_nsec;
-    if(unlikely(nanosecs > 999999999))
-    {
-        nanosecs -= 1000000000;
-        t0.tv_sec ++;
-    }
-    t0.tv_nsec = nanosecs;
-    clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
 
     goto loop;
     end:

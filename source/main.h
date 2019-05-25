@@ -7,7 +7,6 @@
 
 // 4.190MHz 239ns
 #define cycle_duration 239;
-//#define cycle_duration 999999999;
 
 void* reg_ptr[12];
 
@@ -39,7 +38,7 @@ void* reg_ptr[12];
 // Carry Flag
 #define FLAG_C ((F&0x10)>>4)
 
-int op_lengths[0x100] = 
+int OPCODE_LENGTH[0x100] =
 {
 	1,3,1,1,1,1,2,1,3,1,1,1,1,1,2,1,
 	0,3,1,1,1,1,2,1,2,1,1,1,1,1,2,1,
@@ -59,7 +58,15 @@ int op_lengths[0x100] =
 	2,1,1,1,0,1,2,1,2,1,3,1,0,0,2,1
 };
 
-long instruction_cycles;
+#define WAIT 	nanosecs = cycle_duration; \
+							nanosecs += t0.tv_nsec; \
+							if(unlikely(nanosecs > 999999999)) \
+							{ \
+									nanosecs -= 1000000000; \
+									t0.tv_sec ++; \
+							} \
+							t0.tv_nsec = nanosecs; \
+							clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
 
 void print_regs(void)
 {
