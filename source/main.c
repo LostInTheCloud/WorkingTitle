@@ -16,6 +16,9 @@ int main()
     uint32_t nanosecs;
     uint8_t opcode;
 
+    uint8_t   t8 [8];
+    uint16_t  t16[8];
+
     long x = 0;
 
     loop:
