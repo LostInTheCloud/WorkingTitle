@@ -1045,6 +1045,8 @@ int main()
 
     }
 
+	PC += OPCODE_LENGTH[opcode];
+
     if(++x == 4190000)
     {
         fprintf(stderr, "4.19 Million clocks passed!\n");
