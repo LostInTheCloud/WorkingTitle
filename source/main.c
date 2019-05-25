@@ -1061,7 +1061,7 @@ int main()
         nanosecs -= 1000000000;
         t0.tv_sec ++;
     }
-    t0.tv_nsec += nanosecs;
+    t0.tv_nsec = nanosecs;
     clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
 
     goto loop;
