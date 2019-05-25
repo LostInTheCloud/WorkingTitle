@@ -52,7 +52,7 @@
 #define OP_LD_D_D8 D = MEM[PC+1]; WAIT; WAIT;
 
 // 0x17
-#define OP_RLA t8[0] = FLAG_C;
+#define OP_RLA t8[0] = FLAG_C; \
                if(CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                A<<1; if(t8[0]){A=A|1;}else{A=A&254;} \
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
@@ -66,7 +66,7 @@
 #define OP_LD_A_PDE A=MEM[DE]; WAIT; WAIT;
 
 // 0x1F
-#define OP_RRA t8[0] = FLAG_C;
+#define OP_RRA t8[0] = FLAG_C; \
                if(CHECK_BIT(A,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                A<<1; if(t8[0]){A=A|128;}else{A=A&127;} \
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
