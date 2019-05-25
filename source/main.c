@@ -4,6 +4,13 @@ int main()
 {
     printf("Hello, DMG\n");
 
+    uint8_t* MEM = malloc(sizeof(uint8_t) * 65536);
+    if(!MEM)
+    {
+      fprintf(stderr, "ERROR: could not allocate memory!\n");
+      return EXIT_FAILURE;
+    }
+
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
     uint32_t nanosecs;
