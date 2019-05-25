@@ -28,15 +28,19 @@ void* reg_ptr[12];
 
 // Zero Flag
 #define FLAG_Z ((F&0x80)>>7)
+#define SET_FLAG_Z(X) F&=0x7F; F|=X<<7;
 
 // Add/Sub Flag (BCD)
 #define FLAG_N ((F&0x40)>>6)
+#define SET_FLAG_N(X) F&=0xBF; F|=X<<6;
 
 //Half Carry Flag
 #define FLAG_H ((F&0x20)>>5)
+#define SET_FLAG_H(X) F&=0xDF; F|=X<<5;
 
 // Carry Flag
 #define FLAG_C ((F&0x10)>>4)
+#define SET_FLAG_C(X) F&=0xEF; F|=X<<4;
 
 int OPCODE_LENGTH[0x100] =
 {
