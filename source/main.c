@@ -1062,5 +1062,8 @@ int main()
 
     goto loop;
     end:
+
+    free(MEM);
+
     return EXIT_SUCCESS;
 }
