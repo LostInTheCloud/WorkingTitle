@@ -2,7 +2,7 @@
 #define OP_NOP WAIT;
 
 // 0x01
-#define OP_LD_BC_D16 WAIT; WAIT; WAIT; /* TODO */
+#define OP_LD_BC_D16 BC = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT; /* TODO */
 
 // 0x02 ld (BC) A
 #define OP_LD_PBC_A WAIT; WAIT; /* TODO */
