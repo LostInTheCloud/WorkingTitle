@@ -62,7 +62,7 @@
 // 0x11
 #define OP_LD_DE_D16 DE = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
 
-// 0x12 
+// 0x12
 #define OP_LD_PDE_A MEM[DE]=A; WAIT; WAIT;
 
 // 0x13
@@ -117,12 +117,12 @@
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
 
 // 0x20
-#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1];} WAIT; WAIT; /* TODO 8 or 12 cycles? */
+#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1]; WAIT;} WAIT; WAIT;
 
 // 0x21
-#define OP_LD_DE_D16 HL = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
+#define OP_LD_HL_D16 HL = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
 
-// 0x22 
+// 0x22
 #define OP_LD_PHL_A MEM[HL]=A; WAIT; WAIT;
 
 // 0x23
@@ -139,8 +139,11 @@
 // 0x26
 #define OP_LD_H_D8 H = MEM[PC+1]; WAIT; WAIT;
 
+// 0x27 decial adjust register
+#define OP_DAA
+
 // 0x28
-#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1];} WAIT; WAIT; /* TODO 8 or 12 cycles? */
+#define OP_JR_Z_R8 if(FLAG_Z){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
 
 // 0x29
 #define OP_ADD_HL_HL if(CHECK_BIT(HL,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
@@ -168,9 +171,9 @@
 #define OP_CPL A=A^255 SET_FLAG_H(1); SET_FLAG_N(1); WAIT;
 
 // 0x31
-#define OP_LD_DE_D16 SP = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
+#define OP_LD_SP_D16 SP = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
 
-// 0x32 
+// 0x32
 #define OP_LD_PSP_A MEM[SP]=A; WAIT; WAIT;
 
 // 0x33
@@ -439,7 +442,7 @@
                      A=A+MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x87
-#define OP_ADD_A_L if(CHECK_BIT(A,3)&&CHECK_BIT(A,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+#define OP_ADD_A_A if(CHECK_BIT(A,3)&&CHECK_BIT(A,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
                    if(CHECK_BIT(A,3)&&CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                    A=A+A; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
