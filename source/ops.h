@@ -139,8 +139,9 @@
 // 0x26
 #define OP_LD_H_D8 H = MEM[PC+1]; WAIT; WAIT;
 
-// 0x27 decial adjust register
-#define OP_DAA
+// 0x27 decial adjust register A
+#define OP_DAA if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_H(0); /* TODO */
+// https://www.tutorialspoint.com/daa-instruction-in-8085-microprocessor
 
 // 0x28
 #define OP_JR_Z_R8 if(FLAG_Z){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
@@ -170,6 +171,9 @@
 // 0x2F flip all bits in A
 #define OP_CPL A=A^255 SET_FLAG_H(1); SET_FLAG_N(1); WAIT;
 
+// 0x30
+#define OP_JR_NC_R8 if(!FLAG_C){PC=PC+MEM[PC+1]; WAIT;} WAIT; WAIT;
+
 // 0x31
 #define OP_LD_SP_D16 SP = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
 
@@ -189,6 +193,12 @@
 
 // 0x36
 #define OP_LD_PHL_D8 MEM[HL] = MEM[PC+1]; WAIT; WAIT;
+
+// 0x37
+#define OP_SCF SET_FLAG_C(1); SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
+
+//0x38
+#define OP_JR_C_R8 if(FLAG_C){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
 
 // 0x39
 #define OP_ADD_HL_SP if(CHECK_BIT(HL,11)&&CHECK_BIT(SP,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
@@ -406,57 +416,308 @@
 // 0x7F
 #define OP_LD_A_A A=A; WAIT;
 
-// 0x80
-#define OP_ADD_A_B if(CHECK_BIT(A,3)&&CHECK_BIT(B,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(B,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// 0x80 if first 4 bits add to more than 1111 then set H
+#define OP_ADD_A_B if((A&15)+(B&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+B>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+B; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x81
-#define OP_ADD_A_C if(CHECK_BIT(A,3)&&CHECK_BIT(C,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(C,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_C if((A&15)+(C&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x82
-#define OP_ADD_A_D if(CHECK_BIT(A,3)&&CHECK_BIT(D,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(D,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_D if((A&15)+(D&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+D>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+D; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x83
-#define OP_ADD_A_E if(CHECK_BIT(A,3)&&CHECK_BIT(E,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(E,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_E iif((A&15)+(E&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+E>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+E; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x84
-#define OP_ADD_A_H if(CHECK_BIT(A,3)&&CHECK_BIT(H,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(H,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_H if((A&15)+(H&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+H>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+H; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x85
-#define OP_ADD_A_L if(CHECK_BIT(A,3)&&CHECK_BIT(L,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(L,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_L if((A&15)+(L&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+L>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+L; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x86
-#define OP_ADD_A_PHL if(CHECK_BIT(A,3)&&CHECK_BIT(MEM[HL],3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                     if(CHECK_BIT(A,3)&&CHECK_BIT(MEM[HL],7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     A=A+MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+#define OP_ADD_A_PHL if((A&15)+(MEM[HL]&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                     if(A+MEM[HL]>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                     A=A+MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
 // 0x87
-#define OP_ADD_A_A if(CHECK_BIT(A,3)&&CHECK_BIT(A,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_A_A if((A&15)+(A&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+A>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+A; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
-
-
 // 0x88
-#define OP_ADC_A_B if(CHECK_BIT(A,3)&&CHECK_BIT(B,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(B,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADC_A_B if((A&15)+(B&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+B+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+B+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
 
 // 0x89
-#define OP_ADC_A_C if(CHECK_BIT(A,3)&&CHECK_BIT(C,3)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                   if(CHECK_BIT(A,3)&&CHECK_BIT(C,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADC_A_C if((A&15)+(C&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+C+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A+C+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x8A
+#define OP_ADC_A_D if((A&15)+(D&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+D+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A+D+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x8B
+#define OP_ADC_A_E if((A&15)+(E&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+E+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A+E+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x8C
+#define OP_ADC_A_H if((A&15)+(H&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+H+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A+H+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x8D
+#define OP_ADC_A_L if((A&15)+(L&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+L+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A+L+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x8E
+#define OP_ADC_A_PHL if((A&15)+(MEM[HL]&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                     if(A+MEM[HL]+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                     A=A+MEM[HL]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
+
+// 0x8F
+#define OP_ADC_A_A if((A&15)+(A&15)+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A+A+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A+A+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x90
+#define OP_SUB_A_B if((A&15)<(B&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<B){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-B; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x91
+#define OP_SUB_A_C if((A&15)<(C&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x92
+#define OP_SUB_A_D if((A&15)<(D&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<D){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-D; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x93
+#define OP_SUB_A_E if((A&15)<(E&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<E){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-E; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x94
+#define OP_SUB_A_H if((A&15)<(H&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<H){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-H; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x95
+#define OP_SUB_A_L if((A&15)<(L&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<L){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-L; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT;
+
+// 0x96
+#define OP_SUB_A_PHL if((A&15)<(MEM[HL]&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                     if(A<MEM[HL]){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                     A=A-MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT; WAIT;
+
+// 0x97
+#define OP_SUB_A_A SET_FLAG_H(0);SET_FLAG_C(0);A=0;SET_FLAG_Z(1);SET_FLAG_N(1);WAIT;
+
+// 0x98
+#define OP_SBC_A_B if((A&15)<(B&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<B+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-B+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+// 0x99
+#define OP_SBC_A_C if((A&15)<(C&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<C+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-C+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x9A
+#define OP_SBC_A_D if((A&15)<(D&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<D+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-D+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x9B
+#define OP_SBC_A_E if((A&15)<(&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<E+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-E+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x9C
+#define OP_SBC_A_H if((A&15)<(H&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<H+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-H+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x9D
+#define OP_SBC_A_L if((A&15)<(L&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<L+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-L+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0x9E
+#define OP_SBC_A_PHL if((A&15)<(MEM[HL]&15)+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                     if(A<MEM[HL]+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                     A=A-MEM[HL]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
+
+// 0x9F
+#define OP_SBC_A_A if(FLAG_C){SET_FLAG_H(1); SET_FLAG_C(1);}else{SET_FLAG_H(0); SET_FLAG_C(0);} \
+                   A=FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT;
+
+// 0xA0
+#define OP_AND_B A=A&B; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA1
+#define OP_AND_C A=A&C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA2
+#define OP_AND_D A=A&D; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA3
+#define OP_AND_E A=A&E; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA4
+#define OP_AND_H A=A&H; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA5
+#define OP_AND_L A=A&L; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA6
+#define OP_AND_PHL A=A&MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                   SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;
+
+// 0xA7
+#define OP_AND_A if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT;
+
+// 0xA8
+#define OP_XOR_B A=A^B; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xA9
+#define OP_XOR_C A=A^C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xAA
+#define OP_XOR_D A=A^D; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xAB
+#define OP_XOR_E A=A^E; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xAC
+#define OP_XOR_H A=A^H; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xAD
+#define OP_XOR_L A=A^L; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xAE
+#define OP_XOR_PHL A=A^MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                   SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
+
+// 0xA8
+#define OP_XOR_A A=0; SET_FLAG_Z(1); SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB0
+#define OP_OR_B A=A|B; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB1
+#define OP_OR_C A=A|C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB2
+#define OP_OR_D A=A|D; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB3
+#define OP_OR_E A=A|E; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB4
+#define OP_OR_H A=A|H; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB5
+#define OP_OR_L A=A|L; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB6
+#define OP_OR_PHL A=A|MEM[HL]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                  SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
+
+// 0xB7
+#define OP_OR_A if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT;
+
+// 0xB8
+#define OP_CP_B if(!(A-B)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<B){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<B&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xB9
+#define OP_CP_C if(!(A-C)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<C){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<C&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xBA
+#define OP_CP_D if(!(A-D)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<D){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<D&15){SET_FLAG_H(0);}else{SET_FLAG_H(1;} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xBB
+#define OP_CP_E if(!(A-E)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<E){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<E&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xBC
+#define OP_CP_H if(!(A-H)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<H){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<H&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xBD
+#define OP_CP_L if(!(A-L)){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                if(A<L){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                if(A&15<L&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                SET_FLAG_N(1); WAIT;
+
+// 0xBE
+#define OP_CP_PHL if(!(A-MEM[HL])){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                  if(A<MEM[HL]){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                  if(A&15<MEM[HL]&15){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                  SET_FLAG_N(1); WAIT; WAIT;
+
+// 0xBF
+#define OP_CP_A SET_FLAG_Z(1); SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(1); WAIT;
+
+// 0xC0
+#define OP_RET_NZ WAIT; WAIT; /* TODO stack */
+
+
+
+
 
 //check if bit n (counting from 0 to 7) is set in X
 #define CHECK_BIT(X,n) ((X) & (1<<(n)))
