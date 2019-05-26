@@ -38,15 +38,43 @@
 #define OP_LD_A_PBC A=MEM[BC]; WAIT; WAIT;
 
 // 0x0B
-#define OP_INC_C
+#define OP_DEC_BC BC--; WAIT; WAIT;
 
-// 0x0F shift right CarryBit=Bit0 Bit7=Bit0
+// 0x0C
+#define OP_INC_C if(C&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 C++; if(!C){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x0D
+#define OP_DEC_C C--; if(C&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!C){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
+
+// 0x0E
+#define OP_LD_C_D8 C = MEM[PC+1]; WAIT; WAIT;
+
+// 0x0F shift right, CarryBit=Bit0 Bit7=Bit0
 #define OP_RRCA if(CHECK_BIT(A,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                 A<<1; if(FLAG_C){A=A|128;}else{A=A&127;} \
                 if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
 
+// 0x10
+#define OP_STOP WAIT; /* TODO */
+
 // 0x11
 #define OP_LD_DE_D16 DE = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
+
+// 0x12 
+#define OP_LD_PDE_A MEM[DE]=A; WAIT; WAIT;
+
+// 0x13
+#define OP_INC_DE DE++; WAIT; WAIT;
+
+// 0x14
+#define OP_INC_D if(D&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 D++; if(!D){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x15
+#define OP_DEC_D D--; if(D&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!D){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
 
 // 0x16
 #define OP_LD_D_D8 D = MEM[PC+1]; WAIT; WAIT;
@@ -57,6 +85,9 @@
                A<<1; if(t8[0]){A=A|1;}else{A=A&254;} \
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
 
+// 0x18
+#define OP_JR_R8 PC=PC+MEM[PC+1]; WAIT; WAIT; WAIT;
+
 // 0x19
 #define OP_ADD_HL_DE if(CHECK_BIT(HL,11)&&CHECK_BIT(DE,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
                      if(CHECK_BIT(HL,15)&&CHECK_BIT(DE,15)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
@@ -65,16 +96,51 @@
 // 0x1A
 #define OP_LD_A_PDE A=MEM[DE]; WAIT; WAIT;
 
+// 0x1B
+#define OP_DEC_DE DE--; WAIT; WAIT;
+
+// 0x1C
+#define OP_INC_E if(E&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 E++; if(!E){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x1D
+#define OP_DEC_E E--; if(E&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!E){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
+
+// 0x1E
+#define OP_LD_E_D8 E = MEM[PC+1]; WAIT; WAIT;
+
 // 0x1F
 #define OP_RRA t8[0] = FLAG_C; \
                if(CHECK_BIT(A,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                A<<1; if(t8[0]){A=A|128;}else{A=A&127;} \
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
+
+// 0x20
+#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1];} WAIT; WAIT; /* TODO 8 or 12 cycles? */
+
 // 0x21
 #define OP_LD_DE_D16 HL = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
 
+// 0x22 
+#define OP_LD_PHL_A MEM[HL]=A; WAIT; WAIT;
+
+// 0x23
+#define OP_INC_HL HL++; WAIT; WAIT;
+
+// 0x24
+#define OP_INC_H if(H&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 H++; if(!H){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x25
+#define OP_DEC_H H--; if(H&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!H){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
+
 // 0x26
 #define OP_LD_H_D8 H = MEM[PC+1]; WAIT; WAIT;
+
+// 0x28
+#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1];} WAIT; WAIT; /* TODO 8 or 12 cycles? */
 
 // 0x29
 #define OP_ADD_HL_HL if(CHECK_BIT(HL,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
@@ -84,8 +150,39 @@
 // 0x2A
 #define OP_LD_A_PHL_INC A=MEM[HL++]; WAIT; WAIT;
 
+// 0x2B
+#define OP_DEC_HL HL--; WAIT; WAIT;
+
+// 0x2C
+#define OP_INC_L if(L&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 L++; if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x2D
+#define OP_DEC_L L--; if(L&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!L){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
+
+// 0x2E
+#define OP_LD_L_D8 L = MEM[PC+1]; WAIT; WAIT;
+
+// 0x2F flip all bits in A
+#define OP_CPL A=A^255 SET_FLAG_H(1); SET_FLAG_N(1); WAIT;
+
 // 0x31
 #define OP_LD_DE_D16 SP = *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;
+
+// 0x32 
+#define OP_LD_PSP_A MEM[SP]=A; WAIT; WAIT;
+
+// 0x33
+#define OP_INC_SP SP++; WAIT; WAIT;
+
+// 0x34
+#define OP_INC_PHL if(MEM[HL]&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 MEM[HL]++; if(!MEM[HL]){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x35
+#define OP_DEC_PHL MEM[HL]--; if(MEM[HL]&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!MEM[HL]){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
 
 // 0x36
 #define OP_LD_PHL_D8 MEM[HL] = MEM[PC+1]; WAIT; WAIT;
@@ -96,6 +193,23 @@
                      HL=HL+SP; SET_FLAG_N(0); WAIT; WAIT;
 // 0x3A
 #define OP_LD_A_PHL_DEC A=MEM[HL--]; WAIT; WAIT;
+
+// 0x3B
+#define OP_DEC_SP SP--; WAIT; WAIT;
+
+// 0x3C
+#define OP_INC_A if(A&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 A++; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0); WAIT;
+
+// 0x3D
+#define OP_DEC_A A--; if(A&0xF==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                 if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1); WAIT;
+
+// 0x3E
+#define OP_LD_A_D8 A = MEM[PC+1]; WAIT; WAIT;
+
+// 0x3F complement carry flag
+#define OP_CCF SET_FLAG_H(0); SET_FLAG_N(0); SET_FLAG_C(!FLAG_C); WAIT;
 
 // 0x40
 #define OP_LD_B_B B=B; WAIT;
