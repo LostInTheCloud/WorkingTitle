@@ -87,14 +87,14 @@ int OPCODE_LENGTH[0x100] =
 };
 
 #define WAIT 	nanosecs = cycle_duration; \
-							nanosecs += t0.tv_nsec; \
-							if(unlikely(nanosecs > 999999999)) \
-							{ \
-									nanosecs -= 1000000000; \
-									t0.tv_sec ++; \
-							} \
-							t0.tv_nsec = nanosecs; \
-							clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
+				nanosecs += t0.tv_nsec; \
+				if(unlikely(nanosecs > 999999999)) \
+				{ \
+						nanosecs -= 1000000000; \
+						t0.tv_sec ++; \
+				} \
+				t0.tv_nsec = nanosecs; \
+				clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
 
 void print_regs(void)
 {
