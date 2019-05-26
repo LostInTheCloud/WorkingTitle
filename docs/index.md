@@ -2,11 +2,15 @@
 
 ## [Info Sheet](/info)
 
+## [TODO](/todo)
+
 ## Resources
 
 - [Game Boy CPU Manual](/GameBoyCPUManual.pdf)
 
 - [The Cycle-Accurate Game Boy Docs](/TheCycleAccurateGameBoyDocs.pdf)
+
+- [Official Programmer Manual](/GameBoyProgManVer1.1.pdf)
 
 - [AwesomeGBdev Github](https://github.com/gbdev/awesome-gbdev)
 
