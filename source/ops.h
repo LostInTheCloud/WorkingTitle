@@ -29,9 +29,9 @@
 // 0x08
 #define OP_A16_SP MEM[*((uint16_t*) (MEM+PC+1))]= SP; WAIT; WAIT; WAIT; WAIT; WAIT;
 
-// 0x09
-#define OP_ADD_HL_BC if(CHECK_BIT(HL,11)&&CHECK_BIT(BC,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                     if(CHECK_BIT(HL,15)&&CHECK_BIT(BC,15)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// 0x09 TODO overflow at 32767 ?
+#define OP_ADD_HL_BC if(HL&2047+BC&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(HL+BC<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+BC; SET_FLAG_N(0); WAIT; WAIT;
 
 // 0x0A
@@ -88,9 +88,9 @@
 // 0x18
 #define OP_JR_R8 PC=PC+MEM[PC+1]; WAIT; WAIT; WAIT;
 
-// 0x19
-#define OP_ADD_HL_DE if(CHECK_BIT(HL,11)&&CHECK_BIT(DE,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                     if(CHECK_BIT(HL,15)&&CHECK_BIT(DE,15)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// 0x19 TODO overflow at 32767 ?
+#define OP_ADD_HL_DE if(HL&2047+DE&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(HL+DE<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+DE; SET_FLAG_N(0); WAIT; WAIT;
 
 // 0x1A
@@ -146,9 +146,9 @@
 // 0x28
 #define OP_JR_Z_R8 if(FLAG_Z){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
 
-// 0x29
-#define OP_ADD_HL_HL if(CHECK_BIT(HL,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                     if(CHECK_BIT(HL,15)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// 0x29 TODO overflow at 32767 ?
+#define OP_ADD_HL_HL if(HL&2047+HL&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(HL+HL<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+HL; SET_FLAG_N(0); WAIT; WAIT;
 
 // 0x2A
@@ -200,9 +200,9 @@
 //0x38
 #define OP_JR_C_R8 if(FLAG_C){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
 
-// 0x39
-#define OP_ADD_HL_SP if(CHECK_BIT(HL,11)&&CHECK_BIT(SP,11)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                     if(CHECK_BIT(HL,15)&&CHECK_BIT(SP,15)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// 0x39 TODO overflow at 32767 ?
+#define OP_ADD_HL_SP if(HL&2047+SP&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(HL+SP<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+SP; SET_FLAG_N(0); WAIT; WAIT;
 // 0x3A
 #define OP_LD_A_PHL_DEC A=MEM[HL--]; WAIT; WAIT;
@@ -715,7 +715,64 @@
 // 0xC0
 #define OP_RET_NZ WAIT; WAIT; /* TODO stack */
 
+// 0xC1
+#define OP_POP_BC C=MEM[SP+1];B=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
 
+// 0xC5
+#define OP_PUSH_BC MEM[SP-1]=B; MEM[SP-2]=C; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
+
+// 0xC6
+#define OP_ADD_A_D8 if((A&15)+(MEM[PC+1]&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                    if(A+MEM[PC+1]>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                    A=A+MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
+
+// 0xD1
+#define OP_POP_DE E=MEM[SP+1];D=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
+
+// 0xD5
+#define OP_PUSH_DE MEM[SP-1]=D; MEM[SP-2]=E; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
+
+// 0xD6
+#define OP_SUB_A_D8 if((A&15)<(MEM[PC+1]&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<MEM[PC+1]){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT; WAIT;
+
+
+// 0xE0 load A into FF00+n
+#define OP_LDH_A8_A MEM[65280+MEM[PC+1]]=A; WAIT; WAIT; WAIT;
+
+// 0xE1
+#define OP_POP_HL L=MEM[SP+1];H=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
+
+// 0xE2 load A into FF00+C (Offset)
+#define OP_LD_OC_A MEM[65280+C]=A; WAIT; WAIT;
+
+// 0xE5
+#define OP_PUSH_HL MEM[SP-1]=H; MEM[SP-2]=L; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
+
+// 0xE6
+#define OP_AND_D8 A=A&MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;DE&2047
+
+// 0xE8 TODO overflow at 32767 ?
+#define OP_ADD_SP_R8 if(HL&2047+(int8_t)MEM[PC+1]<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(HL+(int8_t)MEM[PC+1]<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                     HL=HL+(int8_t)MEM[PC+1]; SET_FLAG_N(0); WAIT; WAIT;
+// 0xF0
+#define OP_LDH_A_A8 A=MEM[65280+MEM[PC+1]]; WAIT; WAIT; WAIT;
+
+// 0xF1
+#define OP_POP_AF F=MEM[SP+1];A=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
+
+// 0xF5
+#define OP_PUSH_AF MEM[SP-1]=A; MEM[SP-2]=F; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
+
+// 0xF6
+#define OP_OR_D8 A=A|MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
+
+// 0xF3 disable interrupts TODO
+#define OP_DI WAIT;
 
 
 
