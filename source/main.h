@@ -26,6 +26,12 @@ void* reg_ptr[12];
 #define DE (*((uint16_t*) reg_ptr + 4/2))
 #define HL (*((uint16_t*) reg_ptr + 6/2))
 
+uint8_t interrupt_master_enable;
+
+#define IME 							(interrupt_master_enable&0x01)
+#define ENABLE_IME				interrupt_master_enable|=0x01;
+#define DISABLE_IME				interrupt_master_enable&=0xFE;
+
 // Zero Flag
 #define FLAG_Z ((F&0x80)>>7)
 #define SET_FLAG_Z(X) F&=0x7F; F|=X<<7;
@@ -55,7 +61,7 @@ void* reg_ptr[12];
 #define INTERRUPT_JOYPAD			(INTERRUPT_FLAGS&0x10)
 #define SET_INTERRUPT_JOYPAD(X)		INTERRUPT_FLAGS&=0x10; INTERRUPT_FLAGS|=X<<4;
 
-#define ENABLE_VBLANK				INTERRUPT_ENABLE|=0x01;	
+#define ENABLE_VBLANK				INTERRUPT_ENABLE|=0x01;
 #define DISABLE_VBLANK				INTERRUPT_ENABLE&=0xFE;
 #define ENABLE_LCD					INTERRUPT_ENABLE|=0x02;
 #define DISABLE_LCD					INTERRUPT_ENABLE&=0xFD;
