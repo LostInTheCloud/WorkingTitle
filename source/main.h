@@ -4,7 +4,6 @@
 #include <inttypes.h>   // uint8_t, ...
 
 #include "ops.h"
-
 // 4.190MHz 239ns
 #define cycle_duration 239;
 
@@ -28,9 +27,9 @@ void* reg_ptr[12];
 
 uint8_t interrupt_master_enable;
 
-#define IME 							(interrupt_master_enable&0x01)
-#define ENABLE_IME				interrupt_master_enable|=0x01;
-#define DISABLE_IME				interrupt_master_enable&=0xFE;
+#define IME 			(interrupt_master_enable&0x01)
+#define ENABLE_IME		interrupt_master_enable|=0x01;
+#define DISABLE_IME		interrupt_master_enable&=0xFE;
 
 // Zero Flag
 #define FLAG_Z ((F&0x80)>>7)
@@ -72,11 +71,11 @@ uint8_t interrupt_master_enable;
 #define ENABLE_JOYPAD				INTERRUPT_ENABLE|=0x10;
 #define DISABLE_JOYPAD				INTERRUPT_ENABLE&=0xEF;
 
+#define TIMER_DIV 	MEM[0xFF04]
 // Timer Flags
 #define TIMER_TIMA	MEM[0xFF05]
 #define TIMER_TMA 	MEM[0xFF06]
 #define TIMER_TAC 	MEM[0xFF07]
-#define TIMER_DIV 	MEM[0xFF04]
 
 int OPCODE_LENGTH[0x100] =
 {

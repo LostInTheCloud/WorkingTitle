@@ -815,5 +815,68 @@
 
 
 
+// prefix CB
+
+// 0x00
+#define OP_RLC_B if(CHECKBIT(B,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} SET_FLAG_N(0); SET_FLAG_H(0); \
+                 B<<1; if(!B){SET_FLAG_Z(0);}else{SET_FLAG_Z(1);} WAIT; WAIT;
+
+// 0x01
+#define OP_RLC_C /* TODO ...*/ 
+
+// 0x08
+#define OP_RRC_B if(CHECKBIT(B,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} SET_FLAG_N(0); SET_FLAG_H(0); \
+                 B>>1; if(!B){SET_FLAG_Z(0);}else{SET_FLAG_Z(1);} WAIT; WAIT;
+
+// 0x09
+#define OP_RRC_C /* TODO ...*/
+
+// 0x10
+#define OP_RL_B t8[0] = FLAG_C; \
+                if(CHECK_BIT(B,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                B<<1; if(t8[0]){A=A|1;}else{B=B&254;} \
+                if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT; WAIT;
+
+// 0x11
+#define OP_RL_C /* TODO ...*/
+
+// 0x18
+#define OP_RR_B t8[0] = FLAG_C; \
+                if(CHECK_BIT(B,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                B<<1; if(t8[0]){B=B|128;}else{B=B&127;} \
+                if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT; WAIT;
+
+// 0x19
+#define OP_RR_C /* TODO ... */
+
+// 0x20
+#define OP_SLA_B if(CHECKBIT(B,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} SET_FLAG_N(0); SET_FLAG_H(0); \
+                 B<<1; B=B&254; if(!B){SET_FLAG_Z(0);}else{SET_FLAG_Z(1);} WAIT; WAIT;
+
+// 0x21
+#define OP_SLA_C /* TODO ... */
+
+// 0x28
+#define OP_SRA_B if(CHECKBIT(B,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} SET_FLAG_N(0); SET_FLAG_H(0); \
+                 B>>1; if(!B){SET_FLAG_Z(0);}else{SET_FLAG_Z(1);} WAIT; WAIT;
+
+// 0x29
+#define OP_SRA_C /* TODO ... */
+
+// 0x30
+#define OP_SWAP_B t8[0]=B; B>>4; t8[0]<<4; B=B+t[0]; SET_FLAG_H(0); SET_FLAG_N(0); SET_FLAG_C(0); \
+                  if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} WAIT; WAIT;
+
+// 0x31
+#define OP_SWAP_C /* TODO ... */
+
+// 0x38
+#define OP_SRL_B if(CHECKBIT(B,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} SET_FLAG_N(0); SET_FLAG_H(0); \
+                 B>>1; B=B&127; if(!B){SET_FLAG_Z(0);}else{SET_FLAG_Z(1);} WAIT; WAIT;
+
+// 0x39
+#define OP_SRL_C /* TODO ... */
+
+
 //check if bit n (counting from 0 to 7) is set in X
 #define CHECK_BIT(X,n) ((X) & (1<<(n)))
