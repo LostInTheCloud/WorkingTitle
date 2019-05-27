@@ -22,7 +22,7 @@
 #define OP_LD_B_D8 B = MEM[PC+1]; WAIT; WAIT;
 
 // 0x07
-#define OP_RLCA if(CHECK_BIT(A,7)){SET_FLAG_C(1);;}else{SET_FLAG_C(0);} \
+#define OP_RLCA if(CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                 A<<1; if(FLAG_C){A=A|1;}else{A=A&254;} \
                 if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
 
@@ -86,7 +86,7 @@
                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); WAIT;
 
 // 0x18
-#define OP_JR_R8 PC=PC+ (*((int8_t*)MEM+PC+1)); WAIT; WAIT; WAIT;
+#define OP_JR_R8 PC=PC+(*((int8_t*)MEM+PC+1)); WAIT; WAIT; WAIT;
 
 // 0x19
 #define OP_ADD_HL_DE if(HL&2047+DE&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
@@ -139,7 +139,7 @@
 // 0x26
 #define OP_LD_H_D8 H = MEM[PC+1]; WAIT; WAIT;
 
-// 0x27 decial adjust register A
+// 0x27 decimal adjust register A
 #define OP_DAA if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_H(0); /* TODO */
 // https://www.tutorialspoint.com/daa-instruction-in-8085-microprocessor
 
@@ -200,9 +200,9 @@
 //0x38
 #define OP_JR_C_R8 if(FLAG_C){PC=PC+MEM[PC+1];WAIT;} WAIT; WAIT;
 
-// 0x39 TODO overflow at 32767 ?
+// 0x39
 #define OP_ADD_HL_SP if(HL&2047+SP&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if(HL+SP<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                     if((uint32_t)HL+(uint32_t)SP<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+SP; SET_FLAG_N(0); WAIT; WAIT;
 // 0x3A
 #define OP_LD_A_PHL_DEC A=MEM[HL--]; WAIT; WAIT;
@@ -726,6 +726,11 @@
                     if(A+MEM[PC+1]>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                     A=A+MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
+// 0xCE
+#define OP_ADC_A_D8 if((A&15)+MEM[PC+1]+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                    if(A+MEM[PC+1]+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                    A=A+MEM[PC+1]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
+
 // 0xD1
 #define OP_POP_DE E=MEM[SP+1];D=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
 
@@ -736,6 +741,11 @@
 #define OP_SUB_A_D8 if((A&15)<(MEM[PC+1]&15)){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
                    if(A<MEM[PC+1]){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A-MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT; WAIT;
+
+// 0xDE
+#define OP_SBC_A_D8 if((A&15)<(MEM[PC+1])+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
+                   if(A<MEM[PC+1]+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
+                   A=A-MEM[PC+1]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
 
 // 0xE0 load A into FF00+n
@@ -754,18 +764,26 @@
 #define OP_AND_D8 A=A&MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
                  SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;DE&2047
 
-// 0xE8 TODO overflow at 32767 ?
-#define OP_ADD_SP_R8 if(HL&2047+(int8_t)MEM[PC+1]<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if(HL+(int8_t)MEM[PC+1]<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+(int8_t)MEM[PC+1]; SET_FLAG_N(0); WAIT; WAIT; WAIT; WAIT;
+// 0xE8
+#define OP_ADD_SP_R8 if(HL&2047+(*((int8_t*)MEM+PC+1));<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if((uint32_t)HL+(*((int8_t*)MEM+PC+1));<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                     HL=HL+(*((int8_t*)MEM+PC+1)); SET_FLAG_Z(0); SET_FLAG_N(0); WAIT; WAIT; WAIT; WAIT;
+
+// 0xEA
+#define OP_LD_A16_A *((uint16_t*) (MEM+PC+1))=A; WAIT; WAIT; WAIT; WAIT;
+
+// 0xEE
+#define OP_XOR_D8 A=A^MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
+                  SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
+
 // 0xF0
 #define OP_LDH_A_A8 A=MEM[65280+MEM[PC+1]]; WAIT; WAIT; WAIT;
 
 // 0xF1
 #define OP_POP_AF F=MEM[SP+1];A=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
 
-// 0xF3 disable interrupts TODO
-#define OP_DI WAIT;
+// 0xF3 disable interrupts
+#define OP_DI DISABLE_IME WAIT;
 
 // 0xF5
 #define OP_PUSH_AF MEM[SP-1]=A; MEM[SP-2]=F; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
@@ -775,7 +793,24 @@
                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
 
 // 0xF8
-#define OP_LD_SP_R8 WAIT; WAIT; WAIT;
+#define OP_LD_HL_SP_R8  if(SP&2047+(*((int8_t*)MEM+PC+1));<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                        if((uint32_t)SP+(*((int8_t*)MEM+PC+1));<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                        HL=SP+(*((int8_t*)MEM+PC+1)); SET_FLAG_Z(0); SET_FLAG_N(0); WAIT; WAIT; WAIT; WAIT;
+
+// 0xF9
+#define OP_LD_SP_HL SP=HL; WAIT; WAIT;
+
+// 0xFA
+#define OP_A_A16 A=*((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT; WAIT;
+
+// 0xFB enable interrupts
+#define OP_EI ENABLE_IME WAIT;
+
+// 0xFE
+#define OP_CP_D8 if(!(A-MEM[PC+1])){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)}; \
+                 if(A<MEM[PC+1]){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+                 if(A&15<MEM[PC+1]){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                 SET_FLAG_N(1); WAIT; WAIT;
 
 
 

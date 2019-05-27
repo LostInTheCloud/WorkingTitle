@@ -18,6 +18,7 @@ int main()
 
     uint8_t   t8 [8];
     uint16_t  t16[8];
+    uint32_t  t32[8];
 
     long x = 0;
 
