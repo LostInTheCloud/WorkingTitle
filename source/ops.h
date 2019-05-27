@@ -757,12 +757,15 @@
 // 0xE8 TODO overflow at 32767 ?
 #define OP_ADD_SP_R8 if(HL&2047+(int8_t)MEM[PC+1]<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
                      if(HL+(int8_t)MEM[PC+1]<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+(int8_t)MEM[PC+1]; SET_FLAG_N(0); WAIT; WAIT;
+                     HL=HL+(int8_t)MEM[PC+1]; SET_FLAG_N(0); WAIT; WAIT; WAIT; WAIT;
 // 0xF0
 #define OP_LDH_A_A8 A=MEM[65280+MEM[PC+1]]; WAIT; WAIT; WAIT;
 
 // 0xF1
 #define OP_POP_AF F=MEM[SP+1];A=MEM[SP+2]; SP+=2; WAIT; WAIT; WAIT;
+
+// 0xF3 disable interrupts TODO
+#define OP_DI WAIT;
 
 // 0xF5
 #define OP_PUSH_AF MEM[SP-1]=A; MEM[SP-2]=F; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
@@ -771,8 +774,9 @@
 #define OP_OR_D8 A=A|MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
 
-// 0xF3 disable interrupts TODO
-#define OP_DI WAIT;
+// 0xF8
+#define OP_LD_SP_R8 WAIT; WAIT; WAIT;
+
 
 
 
