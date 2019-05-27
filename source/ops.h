@@ -87,6 +87,7 @@
 
 // 0x18
 #define OP_JR_R8 PC=PC+MEM[PC+1]; WAIT; WAIT; WAIT;
+#define OP_JR_R8 PC=PC+ (*((int8_t*)MEM+PC+1)); WAIT; WAIT; WAIT;
 
 // 0x19 TODO overflow at 32767 ?
 #define OP_ADD_HL_DE if(HL&2047+DE&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
