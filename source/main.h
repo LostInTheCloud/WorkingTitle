@@ -72,7 +72,7 @@ uint8_t interrupt_master_enable;
 #define ENABLE_JOYPAD				INTERRUPT_ENABLE|=0x10;
 #define DISABLE_JOYPAD				INTERRUPT_ENABLE&=0xEF;
 
-// Timer Register
+// Timer Flags
 #define TIMER_TIMA	MEM[0xFF05]
 #define TIMER_TMA 	MEM[0xFF06]
 #define TIMER_TAC 	MEM[0xFF07]
