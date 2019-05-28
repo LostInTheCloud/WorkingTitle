@@ -25,12 +25,6 @@ void* reg_ptr[12];
 #define DE (*((uint16_t*) reg_ptr + 4/2))
 #define HL (*((uint16_t*) reg_ptr + 6/2))
 
-uint8_t interrupt_master_enable;
-
-#define IME 			(interrupt_master_enable&0x01)
-#define ENABLE_IME		interrupt_master_enable|=0x01;
-#define DISABLE_IME		interrupt_master_enable&=0xFE;
-
 // Zero Flag
 #define FLAG_Z ((F&0x80)>>7)
 #define SET_FLAG_Z(X) F&=0x7F; F|=X<<7;
@@ -46,6 +40,12 @@ uint8_t interrupt_master_enable;
 // Carry Flag
 #define FLAG_C ((F&0x10)>>4)
 #define SET_FLAG_C(X) F&=0xEF; F|=X<<4;
+
+uint8_t interrupt_master_enable;
+
+#define IME 			(interrupt_master_enable&0x01)
+#define ENABLE_IME		interrupt_master_enable|=0x01;
+#define DISABLE_IME		interrupt_master_enable&=0xFE;
 
 #define INTERRUPT_ENABLE			(MEM[0xFFFF])
 #define INTERRUPT_FLAGS 			(MEM[0xFF0F])
@@ -70,6 +70,12 @@ uint8_t interrupt_master_enable;
 #define DISABLE_SERIAL				INTERRUPT_ENABLE&=0xF7;
 #define ENABLE_JOYPAD				INTERRUPT_ENABLE|=0x10;
 #define DISABLE_JOYPAD				INTERRUPT_ENABLE&=0xEF;
+
+#define GENERATE_VBLANK				INTERRUPT_FLAGS|=0x01;if(IME&&INTERRUPT_ENABLE&0x01){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x40;}
+#define GENERATE_LCD				INTERRUPT_FLAGS|=0x02;if(IME&&INTERRUPT_ENABLE&0x02){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x48;}
+#define GENERATE_TIMER				INTERRUPT_FLAGS|=0x04;if(IME&&INTERRUPT_ENABLE&0x04){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x50;}
+#define GENERATE_SERIAL				INTERRUPT_FLAGS|=0x08;if(IME&&INTERRUPT_ENABLE&0x08){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x58;}
+#define GENERATE_JOYPAD				INTERRUPT_FLAGS|=0x10;if(IME&&INTERRUPT_ENABLE&0x10){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x60;}
 
 #define TIMER_DIV 	MEM[0xFF04]
 // Timer Flags
