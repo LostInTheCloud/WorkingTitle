@@ -1,9 +1,9 @@
 - ~~Flags~~
 
-- OPs
+- ~OPs~
 
 - Timer
 
-- Interrups
+- ~Interrups~
 
 - *fix clock*
