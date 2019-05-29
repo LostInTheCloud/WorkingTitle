@@ -3,3 +3,5 @@
 - shed wait (yield)
 
 - rdtscp, rdtsc
+
+- inline function (inline)
