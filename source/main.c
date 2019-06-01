@@ -4,6 +4,8 @@ int main()
 {
     printf("Hello, DMG\n");
 
+	setvbuf(stdout, NULL, _IONBF,0);
+
     uint8_t* MEM = malloc(sizeof(uint8_t) * 65536);
     if(!MEM)
     {

@@ -77,6 +77,11 @@ uint8_t interrupt_master_enable;
 #define GENERATE_SERIAL				INTERRUPT_FLAGS|=0x08;if(IME&&INTERRUPT_ENABLE&0x08){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x58;}
 #define GENERATE_JOYPAD				INTERRUPT_FLAGS|=0x10;if(IME&&INTERRUPT_ENABLE&0x10){DISABLE_IME;SP-=2;(((uint16_t*)MEM)+SP)=PC;PC=0x60;}
 
+// Memory Map
+#define MEM_INTERRUPT (MEM+0x00)
+#define MEM_ROM (MEM+0x100)
+#define MEM_USER_PROG (MEM+0x150)
+
 #define TIMER_DIV 	MEM[0xFF04]
 // Timer Flags
 #define TIMER_TIMA	MEM[0xFF05]

@@ -724,8 +724,8 @@
 // 0xC3
 #define OP_JP_A16 PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT; WAIT;
 
-// 0xC4 /* TODO PC+2? */
-#define OP_CALL_NZ_A16 if(!FLAG_Z){MEM[SP-2]=PC+2; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+// 0xC4 
+#define OP_CALL_NZ_A16 if(!FLAG_Z){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xC5
 #define OP_PUSH_BC MEM[SP-1]=B; MEM[SP-2]=C; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
@@ -736,8 +736,8 @@
                     A=A+MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
 
-// 0xC7 /* TODO present adress? */
-#define OP_RST_00 MEM[SP-2]=PC; SP=-2; PC=0x00; WAIT; WAIT; WAIT; WAIT;
+// 0xC7 
+#define OP_RST_00 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x00; WAIT; WAIT; WAIT; WAIT;
 
 // 0xC8
 #define OP_RET_Z if(FLAG_Z){(*((int8_t*)MEM+SP+2)); SP+=2; WAIT; WAIT; WAIT;} WAIT; WAIT;
@@ -751,19 +751,19 @@
 // 0xCB
 /* prefix CB is defined below*/
 
-// 0xCC /* TODO PC+2? */
-#define OP_CALL_Z_A16 if(FLAG_Z){MEM[SP-2]=PC+2; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+// 0xCC
+#define OP_CALL_Z_A16 if(FLAG_Z){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
-// 0xCD /* TODO PC+2? */
-#define OP_CALL_A16 MEM[SP-2]=PC+2; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT; WAIT; WAIT; WAIT;
+// 0xCD 
+#define OP_CALL_A16 MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT; WAIT; WAIT; WAIT;
 
 // 0xCE
 #define OP_ADC_A_D8 if((A&15)+MEM[PC+1]+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
                     if(A+MEM[PC+1]+FLAG_C>255){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                     A=A+MEM[PC+1]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
-// 0xCF /* TODO present adress? */
-#define OP_RST_08 MEM[SP-2]=PC; SP=-2; PC=0x08; WAIT; WAIT; WAIT; WAIT;
+// 0xCF 
+#define OP_RST_08 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x08; WAIT; WAIT; WAIT; WAIT;
 
 // 0xD0
 #define OP_RET_NC if(!FLAG_C){(*((int8_t*)MEM+SP+2)); SP+=2; WAIT; WAIT; WAIT;} WAIT; WAIT;
@@ -774,8 +774,8 @@
 // 0xD2
 #define OP_JP_NC_A16 if(!FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); WAIT;} WAIT; WAIT; WAIT;
 
-// 0xD4 /* TODO PC+2? */
-#define OP_CALL_NC_A16 if(!FLAG_Z){MEM[SP-2]=PC+2; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+// 0xD4
+#define OP_CALL_NC_A16 if(!FLAG_Z){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xD5
 #define OP_PUSH_DE MEM[SP-1]=D; MEM[SP-2]=E; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
@@ -785,8 +785,8 @@
                    if(A<MEM[PC+1]){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A-MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(1); WAIT; WAIT;
 
-// 0xD7 /* TODO present adress? */
-#define OP_RST_10 MEM[SP-2]=PC; SP=-2; PC=0x10; WAIT; WAIT; WAIT; WAIT;
+// 0xD7
+#define OP_RST_10 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x10; WAIT; WAIT; WAIT; WAIT;
 
 // 0xD8 
 #define OP_RET_C if(FLAG_C){PC=(*((int8_t*)MEM+SP+2)); SP+=2; WAIT; WAIT; WAIT;} WAIT; WAIT;
@@ -797,16 +797,16 @@
 // 0xDA
 #define OP_JP_C_A16 if(FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); WAIT;} WAIT; WAIT; WAIT;
 
-// 0xDC /* TODO PC+2? */
-#define OP_CALL_C_A16 if(FLAG_C){MEM[SP-2]=PC+2; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+// 0xDC
+#define OP_CALL_C_A16 if(FLAG_C){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xDE
 #define OP_SBC_A_D8 if((A&15)<(MEM[PC+1])+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
                    if(A<MEM[PC+1]+FLAG_C){SET_FLAG_C(1);}else{SET_FLAG_C(0);}\
                    A=A-MEM[PC+1]+FLAG_C; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); WAIT; WAIT;
 
-// 0xDF /* TODO present adress? */
-#define OP_RST_18 MEM[SP-2]=PC; SP=-2; PC=0x18; WAIT; WAIT; WAIT; WAIT;
+// 0xDF 
+#define OP_RST_18 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x18; WAIT; WAIT; WAIT; WAIT;
 
 
 // 0xE0 load A into FF00+n
@@ -825,8 +825,8 @@
 #define OP_AND_D8 A=A&MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
                  SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;DE&2047
 
-// 0xE7 /* TODO present adress? */
-#define OP_RST_20 MEM[SP-2]=PC; SP=-2; PC=0x20; WAIT; WAIT; WAIT; WAIT;
+// 0xE7 
+#define OP_RST_20 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x20; WAIT; WAIT; WAIT; WAIT;
 
 // 0xE8
 #define OP_ADD_SP_R8 if(HL&2047+(*((int8_t*)MEM+PC+1));<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
@@ -843,8 +843,8 @@
 #define OP_XOR_D8 A=A^MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
                   SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
 
-// 0xEF /* TODO present adress? */
-#define OP_RST_28 MEM[SP-2]=PC; SP=-2; PC=0x28; WAIT; WAIT; WAIT; WAIT;
+// 0xEF 
+#define OP_RST_28 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x28; WAIT; WAIT; WAIT; WAIT;
 
 // 0xF0
 #define OP_LDH_A_A8 A=MEM[65280+MEM[PC+1]]; WAIT; WAIT; WAIT;
@@ -865,8 +865,8 @@
 #define OP_OR_D8 A=A|MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
                 SET_FLAG_C(0); SET_FLAG_H(0); SET_FLAG_N(0); WAIT; WAIT;
 
-// 0xF7 /* TODO present adress? */
-#define OP_RST_30 MEM[SP-2]=PC; SP=-2; PC=0x30; WAIT; WAIT; WAIT; WAIT;
+// 0xF7 
+#define OP_RST_30 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x30; WAIT; WAIT; WAIT; WAIT;
 
 // 0xF8
 #define OP_LD_HL_SP_R8  if(SP&2047+(*((int8_t*)MEM+PC+1));<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
@@ -888,8 +888,8 @@
                  if(A&15<MEM[PC+1]){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
                  SET_FLAG_N(1); WAIT; WAIT;
 
-// 0xFF /* TODO present adress? */
-#define OP_RST_38 MEM[SP-2]=PC; SP=-2; PC=0x38; WAIT; WAIT; WAIT; WAIT;
+// 0xFF 
+#define OP_RST_38 *(((uint16_t)MEM)+SP-1)=PC; SP-=2; PC=0x38; WAIT; WAIT; WAIT; WAIT;
 
 
 
