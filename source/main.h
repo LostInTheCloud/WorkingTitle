@@ -81,6 +81,13 @@ uint8_t interrupt_master_enable;
 #define MEM_INTERRUPT (MEM+0x00)
 #define MEM_ROM (MEM+0x100)
 #define MEM_USER_PROG (MEM+0x150)
+#define MEM_BANK0 (MEM+0x8000)
+#define MEM_EXT_RAM (MEM+0xA000)
+#define MEM_RAM (MEM+0xC000)
+#define MEM_ECHO_RAM (MEM+0xE000)
+#define MEM_OAM (MEM+0xFE00)
+#define MEM_IO_PORTS (MEM+0xFF00)
+#define MEM_RAM2 (MEM+0xFF80)
 
 #define TIMER_DIV 	MEM[0xFF04]
 // Timer Flags
