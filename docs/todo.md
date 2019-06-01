@@ -1,12 +1,12 @@
 - ~~Flags~~
 
-- ~OPs~
+- ~~OPs~~
 
 - Timer
 
-- ~Interrups~
+- ~~Interrups~~
 
-- ~memory regions~
+- ~~memory regions~~
 
 - PPU research
 
