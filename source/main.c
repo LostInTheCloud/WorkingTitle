@@ -4,6 +4,7 @@ int main()
 {
     printf("Hello, DMG\n");
 
+
 	setvbuf(stdout, NULL, _IONBF,0);
 
     uint8_t* MEM = malloc(sizeof(uint8_t) * 65536);
@@ -12,6 +13,8 @@ int main()
       fprintf(stderr, "ERROR: could not allocate memory!\n");
       return EXIT_FAILURE;
     }
+
+	print_mem(0,32,'b',MEM);
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);

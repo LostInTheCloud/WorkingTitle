@@ -139,6 +139,64 @@ void print_regs(void)
     printf("##################\n");
 }
 
+void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM)
+{
+	int n=high-low;
+	if(n<=0)
+	{
+		printf("invalid range\n");
+	}
+
+	//init for tests
+	#include <time.h>
+	srand(time(NULL));
+	for(int k=0; k<n; k++)
+	{
+		MEM[low+k]=rand()%255;
+	}
+
+	// mode d for decimal output
+	if(mode=='d')
+	{
+		for(int i=0; i<n; i++)
+		{
+			printf("%u ",MEM[low+i]);
+			if(i%8==7){printf("\n");}
+		}
+	}
+	// mode h for hexadecimal output
+	if(mode=='h')
+	{
+		for(int i=0; i<n; i++)
+		{
+			printf("%x ",MEM[low+i]);
+			if(i%8==7){printf("\n");}
+		}
+	}
+	// mode b for binary output
+	if(mode=='b')
+	{
+		uint8_t* buf = malloc(sizeof(uint8_t)*8);
+		for(int i=0; i<n; i++)
+		{
+			buf[0]=MEM[low+i]&1 ? 1 : 0;
+			buf[1]=MEM[low+i]&2 ? 1 : 0;
+			buf[2]=MEM[low+i]&4 ? 1 : 0;
+			buf[3]=MEM[low+i]&8 ? 1 : 0;
+			buf[4]=MEM[low+i]&16 ? 1 : 0;
+			buf[5]=MEM[low+i]&32 ? 1 : 0;
+			buf[6]=MEM[low+i]&64 ? 1 : 0;
+			buf[7]=MEM[low+i]&128 ? 1 : 0;
+			for(int j=0; j<8; j++)
+			{
+				printf("%u ",buf[j]);
+			}
+			printf(" ");
+			if(i%8==7){printf("\n");}
+		}
+	}
+}
+
 // flags
 
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
