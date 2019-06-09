@@ -147,13 +147,6 @@ void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM)
 		printf("invalid range\n");
 	}
 
-	//init for tests
-	srand(time(NULL));
-	for(int k=0; k<n; k++)
-	{
-		MEM[low+k]=rand()%255;
-	}
-
 	// mode d for decimal output
 	if(mode=='d')
 	{
@@ -167,10 +160,9 @@ void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM)
 	if(mode=='h')
 	{
 		for(int i=0; i<n; i++)
-		{
-			printf("%x ",MEM[low+i]);
-			if(i%8==7){printf("\n");}
-		}
+        {
+            printf("%02x%s", MEM[i], (i+1)%8?" ":((i+1)%n?"\n":"\n\n"));
+        }
 	}
 	// mode b for binary output
 	if(mode=='b')
@@ -243,6 +235,8 @@ void read_header(uint8_t* buf)
 	if(buf[0x149]==0x04){ramsize=128;}
 	if(buf[0x149]==0x05){ramsize=64;}
 }
+=======
+int readfff(uint8_t* buffer, char* name);
 
 // flags
 

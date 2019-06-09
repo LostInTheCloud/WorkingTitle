@@ -2,6 +2,7 @@
 
 int main()
 {
+    int err;
     printf("Hello, DMG\n");
 
 
@@ -14,7 +15,11 @@ int main()
       return EXIT_FAILURE;
     }
 
-	print_mem(0,32,'b',MEM);
+    err = readfff(MEM, "ROMs/Tetris.gb");
+
+    if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
+
+	print_mem(0,32,'h',MEM);
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
@@ -1073,6 +1078,28 @@ int main()
     end:
 
     free(MEM);
+
+    return EXIT_SUCCESS;
+}
+
+int readfff(uint8_t* buffer, char* name)
+{
+    int err;
+    FILE* cartridge = fopen(name, "r");
+    if(!cartridge) {fprintf(stderr, "%s failed: fopen returned NULL\n", __func__); return EXIT_FAILURE;}
+    err = fseek(cartridge, 0, SEEK_END);
+    if(err == -1) {fprintf(stderr, "%s failed: fseek returned -1\n", __func__); return EXIT_FAILURE;}
+    long cartridge_size = ftell(cartridge);
+    if(cartridge_size == -1) {fprintf(stderr, "%s failed: ftell returned -1\n", __func__); return EXIT_FAILURE;}
+    
+    // WIP: this only takes 32kiB = 2^15 Bytes Cartridges so far. 
+    if(cartridge_size != 32768) {fprintf(stderr, "%s failed: Cartridge is not sized 32kiB\n", __func__); return EXIT_FAILURE;}
+    err = fseek(cartridge, 0, SEEK_SET);
+    if(err == -1) {fprintf(stderr, "%s failed: fseek returned -1\n", __func__); return EXIT_FAILURE;}
+    err = fread(buffer, 1, 32768, cartridge);
+    if(err != 32768) {fprintf(stderr, "%s failed: fread could not complete - only %i bytes copied\n", __func__, err); return EXIT_FAILURE;}
+
+    fclose(cartridge);
 
     return EXIT_SUCCESS;
 }
