@@ -188,6 +188,54 @@ void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM)
 	}
 }
 
+void read_header(uint8_t* buf)
+{
+	// read name
+	uint8_t* name = malloc(16*(sizeof(uint8_t)));
+	for(int i=0; i<16; i++)
+	{
+		name[i]=(char)buf[0x134+i];
+		if(buf[0x135+i]==0xFF){break;}
+	}
+	//read cartridgetype
+	char* cartridgetype = malloc(sizeof(char)*32);
+	if(buf[0x147==0x00]){cartridgetype="ROM ONLY";}
+	if(buf[0x147==0x01]){cartridgetype="MBC1";}
+	if(buf[0x147==0x02]){cartridgetype="MBC1+RAM";}
+	if(buf[0x147==0x03]){cartridgetype="MBC1+RAM+BATTERY";}
+	if(buf[0x147==0x05]){cartridgetype="MBC2";}
+	if(buf[0x147==0x05]){cartridgetype="MBC2+BATTERY";}
+	if(buf[0x147==0x08]){cartridgetype="ROM+RAM";}
+	if(buf[0x147==0x09]){cartridgetype="ROM+RAM+BATTERY";}
+	if(buf[0x147==0x0B]){cartridgetype="MMM01";}
+	if(buf[0x147==0x0C]){cartridgetype="MMM01+RAM";}
+	if(buf[0x147==0x0D]){cartridgetype="MMM01+RAM+BATTERY";}
+	if(buf[0x147==0x11]){cartridgetype="MBC3";}
+	if(buf[0x147==0x12]){cartridgetype="MBC3+RAM";}
+	if(buf[0x147==0x13]){cartridgetype="MBC2+RAM*BATTERY";}
+
+	// read ROM Size
+	uint8_t banks;
+	if(buf[0x148]==0x00){banks=0;}
+	if(buf[0x148]==0x01){banks=4;}
+	if(buf[0x148]==0x02){banks=8;}
+	if(buf[0x148]==0x03){banks=16;}
+	if(buf[0x148]==0x04){banks=32;}
+	if(buf[0x148]==0x05){banks=64;}
+	if(buf[0x148]==0x06){banks=128;}
+	if(buf[0x148]==0x07){banks=256;}
+	if(buf[0x148]==0x08){banks=512;}
+
+	// read RAM Size
+	uint8_t ramsize;
+	if(buf[0x149]==0x00){ramsize=0;}
+	if(buf[0x149]==0x01){ramsize=2;}
+	if(buf[0x149]==0x02){ramsize=8;}
+	if(buf[0x149]==0x03){ramsize=32;}
+	if(buf[0x149]==0x04){ramsize=128;}
+	if(buf[0x149]==0x05){ramsize=64;}
+}
+=======
 int readfff(uint8_t* buffer, char* name);
 
 // flags
