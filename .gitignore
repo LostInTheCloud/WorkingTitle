@@ -56,3 +56,6 @@ dkms.conf
 source/test\.txt
 
 */.vscode/
+Tests/
+
+source/ROMs/
