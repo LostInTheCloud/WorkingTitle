@@ -212,7 +212,7 @@ void read_header(uint8_t* buf)
 	if(buf[0x147==0x0D]){cartridgetype="MMM01+RAM+BATTERY";}
 	if(buf[0x147==0x11]){cartridgetype="MBC3";}
 	if(buf[0x147==0x12]){cartridgetype="MBC3+RAM";}
-	if(buf[0x147==0x13]){cartridgetype="MBC2+RAM*BATTERY";}
+	if(buf[0x147==0x13]){cartridgetype="MBC2+RAM+BATTERY";}
 
 	// read ROM Size
 	uint8_t banks;
