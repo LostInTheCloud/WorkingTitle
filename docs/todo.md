@@ -8,9 +8,9 @@
 
 - ~~memory regions~~
 
-- PPU research
+- ~~PPU research~~
 
-- inline function (inline)
+- ~~inline function (inline)~~
 
 - fix clock
 
@@ -19,3 +19,23 @@
     - shed wait (yield)
 
     - rdtscp, rdtsc
+
+- boot rom
+
+- ppu
+
+    - SDL2 
+    
+        - screen create
+        
+        - screen update
+        
+    - without palettes for sprites
+    
+    - without windows
+    
+    - without blanks
+    
+    - debug window / info
+    
+    
