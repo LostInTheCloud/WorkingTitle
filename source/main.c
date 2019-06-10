@@ -26,6 +26,7 @@ int main()
     clock_gettime(CLOCK_MONOTONIC, &t0);
     uint32_t nanosecs;
     uint8_t opcode;
+    uint8_t extended_opcode;
 
     uint8_t   t8 [8];
     uint16_t  t16[8];
@@ -852,7 +853,11 @@ int main()
 					break;
         
 		case 0xcb:
-					// TODO prefix code here
+					extended_opcode = MEM[PC+1];
+                    switch(extended_opcode)
+                    {
+                        case 0x00:
+                    }                    
 					break;
         
 		case 0xcc:
