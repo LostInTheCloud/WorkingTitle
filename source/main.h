@@ -215,7 +215,7 @@ void read_header(uint8_t* buf)
 	if(buf[0x147==0x13]){cartridgetype="MBC2+RAM+BATTERY";}
 
 	// read ROM Size
-	uint8_t banks;
+	uint16_t banks;
 	if(buf[0x148]==0x00){banks=0;}
 	if(buf[0x148]==0x01){banks=4;}
 	if(buf[0x148]==0x02){banks=8;}

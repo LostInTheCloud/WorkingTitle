@@ -40,903 +40,903 @@ int main()
     switch(opcode)
     {
         case 0x0:
-					OP_NOP;
+					OP_NOP
 					break;
 
 		case 0x1:
-					// code here
+					OP_LD_BC_D16
 					break;
 
 		case 0x2:
-					// code here
+					OP_LD_PBC_A
 					break;
 
 		case 0x3:
-					// code here
+					OP_INC_BC
 					break;
 
 		case 0x4:
-					// code here
+					OP_INC_B
 					break;
 
 		case 0x5:
-					// code here
+					OP_DEC_B
 					break;
 
 		case 0x6:
-					// code here
+					OP_LD_B_D8
 					break;
 
 		case 0x7:
-					// code here
+					OP_RLCA
 					break;
 
 		case 0x8:
-					// code here
+					OP_LD_A16_SP
 					break;
 
-		case 0x9:
-					// code here
+		case 0x9:	OP_ADD_HL_BC
+					
 					break;
 
 		case 0xa:
-					// code here
+					OP_LD_A_PBC
 					break;
 
 		case 0xb:
-					// code here
+					OP_DEC_BC
 					break;
 
 		case 0xc:
-					// code here
+					OP_INC_C
 					break;
 
 		case 0xd:
-					// code here
+					OP_DEC_C
 					break;
 
 		case 0xe:
-					// code here
+					OP_LD_C_D8
 					break;
 
 		case 0xf:
-					// code here
+					OP_RRCA
 					break;
 
 		case 0x10:
-					// code here
+					printf("STOP isn't implemented yet\n");
 					break;
 
 		case 0x11:
-					// code here
+					OP_LD_DE_D16
 					break;
 
 		case 0x12:
-					// code here
+					OP_LD_PDE_A
 					break;
 
 		case 0x13:
-					// code here
+					OP_INC_DE
 					break;
 
 		case 0x14:
-					// code here
+					OP_INC_D
 					break;
 
 		case 0x15:
-					// code here
+					OP_DEC_D
 					break;
 
 		case 0x16:
-					// code here
+					OP_LD_D_D8
 					break;
 
 		case 0x17:
-					// code here
+					OP_RLA
 					break;
 
 		case 0x18:
-					// code here
+					OP_JR_R8
 					break;
 
 		case 0x19:
-					// code here
+					OP_ADD_HL_DE
 					break;
 
 		case 0x1a:
-					// code here
+					OP_LD_A_PDE
 					break;
 
 		case 0x1b:
-					// code here
+					OP_DEC_DE
 					break;
 
 		case 0x1c:
-					// code here
+					OP_INC_E
 					break;
 
 		case 0x1d:
-					// code here
+					OP_DEC_E
 					break;
 
 		case 0x1e:
-					// code here
+					OP_LD_E_D8
 					break;
 
 		case 0x1f:
-					// code here
+					OP_RRA
 					break;
 
 		case 0x20:
-					// code here
+					OP_JR_NZ_R8
 					break;
 
 		case 0x21:
-					// code here
+					OP_LD_HL_D16
 					break;
 
 		case 0x22:
-					// code here
+					OP_LD_PHLI_A
 					break;
 
 		case 0x23:
-					// code here
+					OP_INC_HL
 					break;
 
 		case 0x24:
-					// code here
+					OP_INC_H
 					break;
 
 		case 0x25:
-					// code here
+					OP_DEC_H
 					break;
 
 		case 0x26:
-					// code here
+					OP_LD_H_D8
 					break;
 
 		case 0x27:
-					// code here
+					printf("DAA isn't implented yet\n");
 					break;
 
 		case 0x28:
-					// code here
+					OP_JR_Z_R8
 					break;
 
 		case 0x29:
-					// code here
+					OP_ADD_HL_HL
 					break;
 
 		case 0x2a:
-					// code here
+					OP_LD_A_PHLI
 					break;
 
 		case 0x2b:
-					// code here
+					OP_DEC_HL
 					break;
 
 		case 0x2c:
-					// code here
+					OP_INC_L
 					break;
 
 		case 0x2d:
-					// code here
+					OP_DEC_L
 					break;
 
 		case 0x2e:
-					// code here
+					OP_LD_L_D8
 					break;
 
 		case 0x2f:
-					// code here
+					OP_CPL
 					break;
 
 		case 0x30:
-					// code here
+					OP_JR_NC_R8
 					break;
 
 		case 0x31:
-					// code here
+					OP_LD_SP_D16
 					break;
 
 		case 0x32:
-					// code here
+					OP_LD_PHLD_A
 					break;
 
 		case 0x33:
-					// code here
+					OP_INC_SP
 					break;
 
 		case 0x34:
-					// code here
+					OP_INC_PHL
 					break;
 
 		case 0x35:
-					// code here
+					OP_DEC_PHL
 					break;
 
 		case 0x36:
-					// code here
+					OP_LD_PHL_D8
 					break;
 
 		case 0x37:
-					// code here
+					OP_SCF
 					break;
 
 		case 0x38:
-					// code here
+					OP_JR_C_R8
 					break;
 
 		case 0x39:
-					// code here
+					OP_ADD_HL_SP
 					break;
 
 		case 0x3a:
-					// code here
+					OP_LD_A_PHLI
 					break;
 
 		case 0x3b:
-					// code here
+					OP_DEC_SP
 					break;
 
 		case 0x3c:
-					// code here
+					OP_INC_A
 					break;
 
 		case 0x3d:
-					// code here
+					OP_DEC_A
 					break;
 
 		case 0x3e:
-					// code here
+					OP_LD_A_D8
 					break;
 
 		case 0x3f:
-					// code here
+					OP_CCF
 					break;
 
 		case 0x40:
-					// code here
+					OP_LD_B_B
 					break;
 
 		case 0x41:
-					// code here
+					OP_LD_B_C
 					break;
 
 		case 0x42:
-					// code here
+					OP_LD_B_D
 					break;
 
 		case 0x43:
-					// code here
+					OP_LD_B_E
 					break;
 
 		case 0x44:
-					// code here
+					OP_LD_B_H
 					break;
 
 		case 0x45:
-					// code here
+					OP_LD_B_L
 					break;
 
 		case 0x46:
-					// code here
+					OP_LD_B_PHL
 					break;
 
 		case 0x47:
-					// code here
+					OP_LD_B_A
 					break;
 
 		case 0x48:
-					// code here
+					OP_LD_C_B
 					break;
 
 		case 0x49:
-					// code here
+					OP_LD_C_C
 					break;
 
 		case 0x4a:
-					// code here
+					OP_LD_C_D
 					break;
 
 		case 0x4b:
-					// code here
+					OP_LD_C_E
 					break;
 
 		case 0x4c:
-					// code here
+					OP_LD_C_H
 					break;
 
 		case 0x4d:
-					// code here
+					OP_LD_C_L
 					break;
 
 		case 0x4e:
-					// code here
+					OP_LD_C_PHL
 					break;
 
 		case 0x4f:
-					// code here
+					OP_LD_C_A
 					break;
 
 		case 0x50:
-					// code here
+					OP_LD_D_B
 					break;
 
 		case 0x51:
-					// code here
+					OP_LD_D_C
 					break;
 
 		case 0x52:
-					// code here
+					OP_LD_D_D
 					break;
 
 		case 0x53:
-					// code here
+					OP_LD_D_E
 					break;
 
 		case 0x54:
-					// code here
+					OP_LD_D_H
 					break;
 
 		case 0x55:
-					// code here
+					OP_LD_D_L
 					break;
 
 		case 0x56:
-					// code here
+					OP_LD_D_PHL
 					break;
 
 		case 0x57:
-					// code here
+					OP_LD_D_A
 					break;
 
 		case 0x58:
-					// code here
+					OP_LD_E_B
 					break;
 
 		case 0x59:
-					// code here
+					OP_LD_E_C
 					break;
 
 		case 0x5a:
-					// code here
+					OP_LD_E_D
 					break;
 
 		case 0x5b:
-					// code here
+					OP_LD_E_E
 					break;
 
 		case 0x5c:
-					// code here
+					OP_LD_E_H
 					break;
 
 		case 0x5d:
-					// code here
+					OP_LD_E_L
 					break;
 
 		case 0x5e:
-					// code here
+					OP_LD_E_PHL
 					break;
 
 		case 0x5f:
-					// code here
+					OP_LD_E_A
 					break;
 
 		case 0x60:
-					// code here
+					OP_LD_H_B
 					break;
 
 		case 0x61:
-					// code here
+					OP_LD_H_C
 					break;
 
 		case 0x62:
-					// code here
+					OP_LD_H_D
 					break;
 
 		case 0x63:
-					// code here
+					OP_LD_H_E
 					break;
 
 		case 0x64:
-					// code here
+					OP_LD_H_H
 					break;
 
 		case 0x65:
-					// code here
+					OP_LD_H_L
 					break;
 
 		case 0x66:
-					// code here
+					OP_LD_H_PHL
 					break;
 
 		case 0x67:
-					// code here
+					OP_LD_H_A
 					break;
 
 		case 0x68:
-					// code here
+					OP_LD_L_B
 					break;
 
 		case 0x69:
-					// code here
+					OP_LD_L_C
 					break;
 
 		case 0x6a:
-					// code here
+					OP_LD_L_D
 					break;
 
 		case 0x6b:
-					// code here
+					OP_LD_L_E
 					break;
 
 		case 0x6c:
-					// code here
+					OP_LD_L_H
 					break;
 
 		case 0x6d:
-					// code here
+					OP_LD_L_L
 					break;
 
 		case 0x6e:
-					// code here
+					OP_LD_L_PHL
 					break;
 
 		case 0x6f:
-					// code here
+					OP_LD_L_A
 					break;
 
 		case 0x70:
-					// code here
+					OP_LD_PHL_B
 					break;
 
 		case 0x71:
-					// code here
+					OP_LD_PHL_C
 					break;
 
 		case 0x72:
-					// code here
+					OP_LD_PHL_D
 					break;
 
 		case 0x73:
-					// code here
+					OP_LD_PHL_E
 					break;
 
 		case 0x74:
-					// code here
+					OP_LD_PHL_H
 					break;
 
 		case 0x75:
-					// code here
+					OP_LD_PHL_L
 					break;
 
 		case 0x76:
-					// code here
+					printf("HALT isn't implemented yet\n");
 					break;
 
 		case 0x77:
-					// code here
+					OP_LD_PHL_A
 					break;
 
 		case 0x78:
-					// code here
+					OP_LD_A_B
 					break;
 
 		case 0x79:
-					// code here
+					OP_LD_A_C
 					break;
 
 		case 0x7a:
-					// code here
+					OP_LD_A_D
 					break;
 
 		case 0x7b:
-					// code here
+					OP_LD_A_E
 					break;
 
 		case 0x7c:
-					// code here
+					OP_LD_A_H
 					break;
 
 		case 0x7d:
-					// code here
+					OP_LD_A_L
 					break;
 
 		case 0x7e:
-					// code here
+					OP_LD_A_PHL
 					break;
 
 		case 0x7f:
-					// code here
+					OP_LD_A_A
 					break;
 
 		case 0x80:
-					// code here
+					OP_ADD_A_B
 					break;
 
 		case 0x81:
-					// code here
+					OP_ADD_A_C
 					break;
 
 		case 0x82:
-					// code here
+					OP_ADD_A_D
 					break;
 
 		case 0x83:
-					// code here
+					OP_ADD_A_E
 					break;
 
 		case 0x84:
-					// code here
+					OP_ADD_A_H
 					break;
 
 		case 0x85:
-					// code here
+					OP_ADD_A_L
 					break;
 
 		case 0x86:
-					// code here
+					OP_ADD_A_PHL
 					break;
 
 		case 0x87:
-					// code here
+					OP_ADD_A_A
 					break;
 
 		case 0x88:
-					// code here
+					OP_ADC_A_B
 					break;
 
 		case 0x89:
-					// code here
+					OP_ADC_A_C
 					break;
 
 		case 0x8a:
-					// code here
+					OP_ADC_A_D
 					break;
 
 		case 0x8b:
-					// code here
+					OP_ADC_A_E
 					break;
 
 		case 0x8c:
-					// code here
+					OP_ADC_A_H
 					break;
 
 		case 0x8d:
-					// code here
+					OP_ADC_A_L
 					break;
 
 		case 0x8e:
-					// code here
+					OP_ADC_A_PHL
 					break;
 
 		case 0x8f:
-					// code here
+					OP_ADC_A_A
 					break;
 
 		case 0x90:
-					// code here
+					OP_SUB_A_B
 					break;
 
 		case 0x91:
-					// code here
+					OP_SUB_A_C
 					break;
 
 		case 0x92:
-					// code here
+					OP_SUB_A_D
 					break;
 
 		case 0x93:
-					// code here
+					OP_SUB_A_E
 					break;
 
 		case 0x94:
-					// code here
+					OP_SUB_A_H
 					break;
 
 		case 0x95:
-					// code here
+					OP_SUB_A_L
 					break;
 
 		case 0x96:
-					// code here
+					OP_SUB_A_PHL
 					break;
 
 		case 0x97:
-					// code here
+					OP_SUB_A_A
 					break;
 
 		case 0x98:
-					// code here
+					OP_SBC_A_B
 					break;
 
 		case 0x99:
-					// code here
+					OP_SBC_A_C
 					break;
 
 		case 0x9a:
-					// code here
+					OP_SBC_A_D
 					break;
 
 		case 0x9b:
-					// code here
+					OP_SBC_A_E
 					break;
 
 		case 0x9c:
-					// code here
+					OP_SBC_A_H
 					break;
 
 		case 0x9d:
-					// code here
+					OP_SBC_A_L
 					break;
 
 		case 0x9e:
-					// code here
+					OP_SBC_A_PHL
 					break;
 
 		case 0x9f:
-					// code here
+					OP_SBC_A_A
 					break;
 
 		case 0xa0:
-					// code here
+					OP_AND_B
 					break;
 
 		case 0xa1:
-					// code here
+					OP_AND_C
 					break;
 
 		case 0xa2:
-					// code here
+					OP_AND_D
 					break;
 
 		case 0xa3:
-					// code here
+					OP_AND_E
 					break;
 
 		case 0xa4:
-					// code here
+					OP_AND_H
 					break;
 
 		case 0xa5:
-					// code here
+					OP_AND_L
 					break;
 
 		case 0xa6:
-					// code here
+					OP_AND_PHL
 					break;
 
 		case 0xa7:
-					// code here
+					OP_AND_A
 					break;
 
 		case 0xa8:
-					// code here
+					OP_XOR_B
 					break;
 
 		case 0xa9:
-					// code here
+					OP_XOR_C
 					break;
 
 		case 0xaa:
-					// code here
+					OP_XOR_D
 					break;
 
 		case 0xab:
-					// code here
+					OP_XOR_E
 					break;
 
 		case 0xac:
-					// code here
+					OP_XOR_H
 					break;
 
 		case 0xad:
-					// code here
+					OP_XOR_L
 					break;
 
 		case 0xae:
-					// code here
+					OP_XOR_PHL
 					break;
 
 		case 0xaf:
-					// code here
+					OP_XOR_A
 					break;
 
 		case 0xb0:
-					// code here
+					OP_OR_B
 					break;
 
 		case 0xb1:
-					// code here
+					OP_OR_C
 					break;
 
 		case 0xb2:
-					// code here
+					OP_OR_D
 					break;
 
 		case 0xb3:
-					// code here
+					OP_OR_E
 					break;
 
 		case 0xb4:
-					// code here
+					OP_OR_H
 					break;
 
 		case 0xb5:
-					// code here
+					OP_OR_L
 					break;
 
 		case 0xb6:
-					// code here
+					OP_OR_PHL
 					break;
 
 		case 0xb7:
-					// code here
+					OP_OR_A
 					break;
 
 		case 0xb8:
-					// code here
+					OP_CP_B
 					break;
 
 		case 0xb9:
-					// code here
+					OP_CP_C
 					break;
 
 		case 0xba:
-					// code here
+					OP_CP_D
 					break;
 
 		case 0xbb:
-					// code here
+					OP_CP_E
 					break;
 
 		case 0xbc:
-					// code here
+					OP_CP_H
 					break;
 
 		case 0xbd:
-					// code here
+					OP_CP_L
 					break;
 
 		case 0xbe:
-					// code here
+					OP_CP_PHL
 					break;
 
 		case 0xbf:
-					// code here
+					OP_CP_A
 					break;
 
 		case 0xc0:
-					// code here
+					OP_RET_NZ
 					break;
 
 		case 0xc1:
-					// code here
+					OP_POP_BC
 					break;
 
 		case 0xc2:
-					// code here
+					OP_JP_NZ_A16
 					break;
 
 		case 0xc3:
-					// code here
+					OP_JP_A16
 					break;
 
 		case 0xc4:
-					// code here
+					OP_CALL_NZ_A16
 					break;
 
-		case 0xc5:
-					// code here
+		/* case 0xc5:
+					OP_PUSH_BC
 					break;
 
 		case 0xc6:
-					// code here
+					OP_ADD_A_D8
 					break;
 
 		case 0xc7:
-					// code here
+					OP_RST_00
 					break;
 
 		case 0xc8:
-					// code here
+					OP_RET_Z
 					break;
 
 		case 0xc9:
-					// code here
+					OP_RET
 					break;
 
 		case 0xca:
-					// code here
+					OP_JP_Z_A16
 					break;
 
 		case 0xcb:
-					// code here
+					// TODO prefix code here
 					break;
 
 		case 0xcc:
-					// code here
+					OP_CALL_Z_A16
 					break;
 
 		case 0xcd:
-					// code here
+					OP_CALL_A16
 					break;
 
 		case 0xce:
-					// code here
+					OP_ADC_A_D8
 					break;
 
 		case 0xcf:
-					// code here
+					OP_RST_08
 					break;
 
 		case 0xd0:
-					// code here
+					OP_RET_NC
 					break;
 
 		case 0xd1:
-					// code here
+					OP_POP_DE
 					break;
 
 		case 0xd2:
-					// code here
+					OP_JP_NC_A16
 					break;
 
 		case 0xd3:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xd4:
-					// code here
+					OP_CALL_NC_A16
 					break;
 
 		case 0xd5:
-					// code here
+					OP_PUSH_DE
 					break;
 
 		case 0xd6:
-					// code here
+					OP_SUB_D8
 					break;
 
 		case 0xd7:
-					// code here
+					OP_RST_10
 					break;
 
 		case 0xd8:
-					// code here
+					OP_RET_C
 					break;
 
 		case 0xd9:
-					// code here
+					OP_RETI
 					break;
 
 		case 0xda:
-					// code here
+					OP_JP_C_A16
 					break;
 
 		case 0xdb:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xdc:
-					// code here
+					OP_CALL_C_A16
 					break;
 
 		case 0xdd:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xde:
-					// code here
+					OP_SBC_A_D8
 					break;
 
 		case 0xdf:
-					// code here
+					OP_RST_18
 					break;
 
 		case 0xe0:
-					// code here
+					OP_LDH_PA8_A
 					break;
 
 		case 0xe1:
@@ -1061,7 +1061,7 @@ int main()
 
 		case 0xff:
 					// code here
-					break;
+					break;*/
 
 
     }
