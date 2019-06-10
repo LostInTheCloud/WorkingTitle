@@ -940,127 +940,127 @@ int main()
 					break;
 
 		case 0xe1:
-					// code here
+					OP_POP_HL
 					break;
 
 		case 0xe2:
-					// code here
+					OP_LD_OC_A
 					break;
 
 		case 0xe3:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xe4:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xe5:
-					// code here
+					OP_PUSH_HL
 					break;
 
 		case 0xe6:
-					// code here
+					OP_AND_D8
 					break;
 
 		case 0xe7:
-					// code here
+					OP_RST_20
 					break;
 
 		case 0xe8:
-					// code here
+					OP_ADD_SP_R8
 					break;
 
 		case 0xe9:
-					// code here
+					OP_JP_PHL
 					break;
 
 		case 0xea:
-					// code here
+					OP_SET_5_D
 					break;
 
 		case 0xeb:
-					// code here
+					OP_SET_5_E
 					break;
 
 		case 0xec:
-					// code here
+					OP_SET_5_H
 					break;
 
 		case 0xed:
-					// code here
+					OP_SET_5_L
 					break;
 
 		case 0xee:
-					// code here
+					OP_SET_5_PHL
 					break;
 
 		case 0xef:
-					// code here
+					OP_SET_5_A
 					break;
 
 		case 0xf0:
-					// code here
+					OP_SET_6_B
 					break;
 
 		case 0xf1:
-					// code here
+					OP_SET_6_C
 					break;
 
 		case 0xf2:
-					// code here
+					OP_SET_6_D
 					break;
 
 		case 0xf3:
-					// code here
+					OP_SET_6_E
 					break;
 
 		case 0xf4:
-					// code here
+					OP_SET_6_H
 					break;
 
 		case 0xf5:
-					// code here
+					OP_SET_6_L
 					break;
 
 		case 0xf6:
-					// code here
+					OP_SET_6_PHL
 					break;
 
 		case 0xf7:
-					// code here
+					OP_SET_6_A
 					break;
 
 		case 0xf8:
-					// code here
+					OP_SET_7_B
 					break;
 
 		case 0xf9:
-					// code here
+					OP_SET_7_C
 					break;
 
 		case 0xfa:
-					// code here
+					OP_SET_7_D
 					break;
 
 		case 0xfb:
-					// code here
+					OP_SET_7_E
 					break;
 
 		case 0xfc:
-					// code here
+					OP_SET_7_H
 					break;
 
 		case 0xfd:
-					// code here
+					OP_SET_7_L
 					break;
 
 		case 0xfe:
-					// code here
+					OP_SET_7_PHL
 					break;
 
 		case 0xff:
-					// code here
+					OP_SET_7_BA
 					break;
 
 
