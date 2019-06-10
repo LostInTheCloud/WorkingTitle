@@ -5,6 +5,7 @@ int main()
     int err;
     printf("Hello, DMG\n");
 
+    PC = 0;
 
 	setvbuf(stdout, NULL, _IONBF,0);
 
@@ -34,8 +35,7 @@ int main()
 
     loop:
 
-    opcode = 0;
-    // retrieve OPCode
+    opcode = MEM[PC];
 
     switch(opcode)
     {
@@ -822,12 +822,12 @@ int main()
 		case 0xc3:
 					OP_JP_A16
 					break;
-
+        
 		case 0xc4:
 					OP_CALL_NZ_A16
 					break;
 
-		/* case 0xc5:
+		case 0xc5:
 					OP_PUSH_BC
 					break;
 
@@ -838,7 +838,7 @@ int main()
 		case 0xc7:
 					OP_RST_00
 					break;
-
+        
 		case 0xc8:
 					OP_RET_Z
 					break;
@@ -850,79 +850,79 @@ int main()
 		case 0xca:
 					OP_JP_Z_A16
 					break;
-
+        
 		case 0xcb:
 					// TODO prefix code here
 					break;
-
+        
 		case 0xcc:
 					OP_CALL_Z_A16
 					break;
-
+        
 		case 0xcd:
 					OP_CALL_A16
 					break;
-
+        
 		case 0xce:
 					OP_ADC_A_D8
 					break;
-
+        
 		case 0xcf:
 					OP_RST_08
 					break;
-
+        
 		case 0xd0:
 					OP_RET_NC
 					break;
-
+        
 		case 0xd1:
 					OP_POP_DE
 					break;
-
+        
 		case 0xd2:
 					OP_JP_NC_A16
 					break;
-
+        
 		case 0xd3:
 					printf("unknown opcode\n");
 					break;
-
+        
 		case 0xd4:
 					OP_CALL_NC_A16
 					break;
-
+        
 		case 0xd5:
 					OP_PUSH_DE
 					break;
 
 		case 0xd6:
-					OP_SUB_D8
+					OP_SUB_A_D8
 					break;
 
 		case 0xd7:
 					OP_RST_10
 					break;
-
+        
 		case 0xd8:
 					OP_RET_C
 					break;
-
+        
 		case 0xd9:
 					OP_RETI
 					break;
-
+        
 		case 0xda:
 					OP_JP_C_A16
 					break;
-
+        
 		case 0xdb:
 					printf("unknown opcode\n");
 					break;
-
+        
 		case 0xdc:
 					OP_CALL_C_A16
 					break;
-
+        
 		case 0xdd:
 					printf("unknown opcode\n");
 					break;
@@ -1061,7 +1061,7 @@ int main()
 
 		case 0xff:
 					// code here
-					break;*/
+					break;
 
 
     }
