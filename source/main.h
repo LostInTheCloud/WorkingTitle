@@ -235,7 +235,7 @@ void read_header(uint8_t* buf)
 	if(buf[0x149]==0x04){ramsize=128;}
 	if(buf[0x149]==0x05){ramsize=64;}
 }
-=======
+
 int readfff(uint8_t* buffer, char* name);
 
 // flags
