@@ -856,7 +856,1029 @@ int main()
 					extended_opcode = MEM[PC+1];
                     switch(extended_opcode)
                     {
-                        case 0x00:
+                        case 0x0:
+									OP_RLC_B
+									break;
+
+						case 0x1:
+									OP_RLC_C
+									break;
+
+						case 0x2:
+									OP_RLC_D
+									break;
+
+						case 0x3:
+									OP_RLC_E
+									break;
+
+						case 0x4:
+									OP_RLC_H
+									break;
+
+						case 0x5:
+									OP_RLC_L
+									break;
+
+						case 0x6:
+									OP_RLC_PHL
+									break;
+
+						case 0x7:
+									OP_RLC_A
+									break;
+
+						case 0x8:
+									OP_RRC_B
+									break;
+
+						case 0x9:	OP_RRC_C
+									
+									break;
+
+						case 0xa:
+									OP_RRC_D
+									break;
+
+						case 0xb:
+									OP_RRC_E
+									break;
+
+						case 0xc:
+									OP_RRC_H
+									break;
+
+						case 0xd:
+									OP_RRC_L
+									break;
+
+						case 0xe:
+									OP_RRC_PHL
+									break;
+
+						case 0xf:
+									OP_RRC_A
+									break;
+
+						case 0x10:
+									OP_RL_B
+									break;
+
+						case 0x11:
+									OP_RL_C
+									break;
+
+						case 0x12:
+									OP_RL_D
+									break;
+
+						case 0x13:
+									OP_RL_E
+									break;
+
+						case 0x14:
+									OP_RL_H
+									break;
+
+						case 0x15:
+									OP_RL_L
+									break;
+
+						case 0x16:
+									OP_RL_PHL
+									break;
+
+						case 0x17:
+									OP_RL_A
+									break;
+
+						case 0x18:
+									OP_RR_B
+									break;
+
+						case 0x19:
+									OP_RR_C
+									break;
+
+						case 0x1a:
+									OP_RR_D
+									break;
+
+						case 0x1b:
+									OP_RR_E
+									break;
+
+						case 0x1c:
+									OP_RR_H
+									break;
+
+						case 0x1d:
+									OP_RR_L
+									break;
+
+						case 0x1e:
+									OP_RR_PHL
+									break;
+
+						case 0x1f:
+									OP_RR_A
+									break;
+
+						case 0x20:
+									OP_SLA_B
+									break;
+
+						case 0x21:
+									OP_SLA_C
+									break;
+
+						case 0x22:
+									OP_SLA_D
+									break;
+
+						case 0x23:
+									OP_SLA_E
+									break;
+
+						case 0x24:
+									OP_SLA_H
+									break;
+
+						case 0x25:
+									OP_SLA_L
+									break;
+
+						case 0x26:
+									OP_SLA_PHL
+									break;
+
+						case 0x27:
+									OP_SLA_A
+									break;
+
+						case 0x28:
+									OP_SRA_B
+									break;
+
+						case 0x29:
+									OP_SRA_C
+									break;
+
+						case 0x2a:
+									OP_SRA_D
+									break;
+
+						case 0x2b:
+									OP_SRA_E
+									break;
+
+						case 0x2c:
+									OP_SRA_H
+									break;
+
+						case 0x2d:
+									OP_SRA_L
+									break;
+
+						case 0x2e:
+									OP_SRA_PHL
+									break;
+
+						case 0x2f:
+									OP_SRA_A
+									break;
+
+						case 0x30:
+									OP_SWAP_B
+									break;
+
+						case 0x31:
+									OP_SWAP_C
+									break;
+
+						case 0x32:
+									OP_SWAP_D
+									break;
+
+						case 0x33:
+									OP_SWAP_E
+									break;
+
+						case 0x34:
+									OP_SWAP_H
+									break;
+
+						case 0x35:
+									OP_SWAP_L
+									break;
+
+						case 0x36:
+									OP_SWAP_PHL
+									break;
+
+						case 0x37:
+									OP_SWAP_A
+									break;
+
+						case 0x38:
+									OP_SRL_B
+									break;
+
+						case 0x39:
+									OP_SRL_C
+									break;
+
+						case 0x3a:
+									OP_SRL_D
+									break;
+
+						case 0x3b:
+									OP_SRL_E
+									break;
+
+						case 0x3c:
+									OP_SRL_H
+									break;
+
+						case 0x3d:
+									OP_SRL_L
+									break;
+
+						case 0x3e:
+									OP_SRL_PHL
+									break;
+
+						case 0x3f:
+									OP_SRL_A
+									break;
+
+						case 0x40:
+									OP_BIT_0_B
+									break;
+
+						case 0x41:
+									OP_BIT_0_C
+									break;
+
+						case 0x42:
+									OP_BIT_0_D
+									break;
+
+						case 0x43:
+									OP_BIT_0_E
+									break;
+
+						case 0x44:
+									OP_BIT_0_H
+									break;
+
+						case 0x45:
+									OP_BIT_0_L
+									break;
+
+						case 0x46:
+									OP_BIT_0_PHL
+									break;
+
+						case 0x47:
+									OP_BIT_0_A
+									break;
+
+						case 0x48:
+									OP_BIT_1_B
+									break;
+
+						case 0x49:
+									OP_BIT_1_C
+									break;
+
+						case 0x4a:
+									OP_BIT_1_D
+									break;
+
+						case 0x4b:
+									OP_BIT_1_E
+									break;
+
+						case 0x4c:
+									OP_BIT_1_H
+									break;
+
+						case 0x4d:
+									OP_BIT_1_L
+									break;
+
+						case 0x4e:
+									OP_BIT_1_PHL
+									break;
+
+						case 0x4f:
+									OP_BIT_1_A
+									break;
+
+						case 0x50:
+									OP_BIT_2_B
+									break;
+
+						case 0x51:
+									OP_BIT_2_C
+									break;
+
+						case 0x52:
+									OP_BIT_2_D
+									break;
+
+						case 0x53:
+									OP_BIT_2_E
+									break;
+
+						case 0x54:
+									OP_BIT_2_H
+									break;
+
+						case 0x55:
+									OP_BIT_2_L
+									break;
+
+						case 0x56:
+									OP_BIT_2_PHL
+									break;
+
+						case 0x57:
+									OP_BIT_2_A
+									break;
+
+						case 0x58:
+									OP_BIT_3_B
+									break;
+
+						case 0x59:
+									OP_BIT_3_C
+									break;
+
+						case 0x5a:
+									OP_BIT_3_D
+									break;
+
+						case 0x5b:
+									OP_BIT_3_E
+									break;
+
+						case 0x5c:
+									OP_BIT_3_H
+									break;
+
+						case 0x5d:
+									OP_BIT_3_L
+									break;
+
+						case 0x5e:
+									OP_BIT_3_PHL
+									break;
+
+						case 0x5f:
+									OP_BIT_3_A
+									break;
+
+						case 0x60:
+									OP_BIT_4_B
+									break;
+
+						case 0x61:
+									OP_BIT_4_C
+									break;
+
+						case 0x62:
+									OP_BIT_4_D
+									break;
+
+						case 0x63:
+									OP_BIT_4_E
+									break;
+
+						case 0x64:
+									OP_BIT_4_H
+									break;
+
+						case 0x65:
+									OP_BIT_4_L
+									break;
+
+						case 0x66:
+									OP_BIT_4_PHL
+									break;
+
+						case 0x67:
+									OP_BIT_4_A
+									break;
+
+						case 0x68:
+									OP_BIT_5_B
+									break;
+
+						case 0x69:
+									OP_BIT_5_C
+									break;
+
+						case 0x6a:
+									OP_BIT_5_D
+									break;
+
+						case 0x6b:
+									OP_BIT_5_E
+									break;
+
+						case 0x6c:
+									OP_BIT_5_H
+									break;
+
+						case 0x6d:
+									OP_BIT_5_L
+									break;
+
+						case 0x6e:
+									OP_BIT_5_PHL
+									break;
+
+						case 0x6f:
+									OP_BIT_5_A
+									break;
+
+						case 0x70:
+									OP_BIT_6_B
+									break;
+
+						case 0x71:
+									OP_BIT_6_C
+									break;
+
+						case 0x72:
+									OP_BIT_6_D
+									break;
+
+						case 0x73:
+									OP_BIT_6_E
+									break;
+
+						case 0x74:
+									OP_BIT_6_H
+									break;
+
+						case 0x75:
+									OP_BIT_6_L
+									break;
+
+						case 0x76:
+									OP_BIT_6_PHL
+									break;
+
+						case 0x77:
+									OP_BIT_6_A
+									break;
+
+						case 0x78:
+									OP_BIT_7_B
+									break;
+
+						case 0x79:
+									OP_BIT_7_C
+									break;
+
+						case 0x7a:
+									OP_BIT_7_D
+									break;
+
+						case 0x7b:
+									OP_BIT_7_E
+									break;
+
+						case 0x7c:
+									OP_BIT_7_H
+									break;
+
+						case 0x7d:
+									OP_BIT_7_L
+									break;
+
+						case 0x7e:
+									OP_BIT_7_PHL
+									break;
+
+						case 0x7f:
+									OP_BIT_7_A
+									break;
+
+						case 0x80:
+									OP_RES_0_B
+									break;
+
+						case 0x81:
+									OP_RES_0_C
+									break;
+
+						case 0x82:
+									OP_RES_0_D
+									break;
+
+						case 0x83:
+									OP_RES_0_E
+									break;
+
+						case 0x84:
+									OP_RES_0_H
+									break;
+
+						case 0x85:
+									OP_RES_0_L
+									break;
+
+						case 0x86:
+									OP_RES_0_PHL
+									break;
+
+						case 0x87:
+									OP_RES_0_A
+									break;
+
+						case 0x88:
+									OP_RES_1_B
+									break;
+
+						case 0x89:
+									OP_RES_1_C
+									break;
+
+						case 0x8a:
+									OP_RES_1_D
+									break;
+
+						case 0x8b:
+									OP_RES_1_E
+									break;
+
+						case 0x8c:
+									OP_RES_1_H
+									break;
+
+						case 0x8d:
+									OP_RES_1_L
+									break;
+
+						case 0x8e:
+									OP_RES_1_PHL
+									break;
+
+						case 0x8f:
+									OP_RES_1_A
+									break;
+
+						case 0x90:
+									OP_RES_2_B
+									break;
+
+						case 0x91:
+									OP_RES_2_C
+									break;
+
+						case 0x92:
+									OP_RES_2_D
+									break;
+
+						case 0x93:
+									OP_RES_2_E
+									break;
+
+						case 0x94:
+									OP_RES_2_H
+									break;
+
+						case 0x95:
+									OP_RES_2_L
+									break;
+
+						case 0x96:
+									OP_RES_2_PHL
+									break;
+
+						case 0x97:
+									OP_RES_2_A
+									break;
+
+						case 0x98:
+									OP_RES_3_B
+									break;
+
+						case 0x99:
+									OP_RES_3_C
+									break;
+
+						case 0x9a:
+									OP_RES_3_D
+									break;
+
+						case 0x9b:
+									OP_RES_3_E
+									break;
+
+						case 0x9c:
+									OP_RES_3_H
+									break;
+
+						case 0x9d:
+									OP_RES_3_L
+									break;
+
+						case 0x9e:
+									OP_RES_3_PHL
+									break;
+
+						case 0x9f:
+									OP_RES_3_A
+									break;
+
+						case 0xa0:
+									OP_RES_4_B
+									break;
+
+						case 0xa1:
+									OP_RES_4_C
+									break;
+
+						case 0xa2:
+									OP_RES_4_D
+									break;
+
+						case 0xa3:
+									OP_RES_4_E
+									break;
+
+						case 0xa4:
+									OP_RES_4_H
+									break;
+
+						case 0xa5:
+									OP_RES_4_L
+									break;
+
+						case 0xa6:
+									OP_RES_4_PHL
+									break;
+
+						case 0xa7:
+									OP_RES_4_A
+									break;
+
+						case 0xa8:
+									OP_RES_5_B
+									break;
+
+						case 0xa9:
+									OP_RES_5_C
+									break;
+
+						case 0xaa:
+									OP_RES_5_D
+									break;
+
+						case 0xab:
+									OP_RES_5_E
+									break;
+
+						case 0xac:
+									OP_RES_5_H
+									break;
+
+						case 0xad:
+									OP_RES_5_L
+									break;
+
+						case 0xae:
+									OP_RES_5_PHL
+									break;
+
+						case 0xaf:
+									OP_RES_5_A
+									break;
+
+						case 0xb0:
+									OP_RES_6_B
+									break;
+
+						case 0xb1:
+									OP_RES_6_C
+									break;
+
+						case 0xb2:
+									OP_RES_6_D
+									break;
+
+						case 0xb3:
+									OP_RES_6_E
+									break;
+
+						case 0xb4:
+									OP_RES_6_H
+									break;
+
+						case 0xb5:
+									OP_RES_6_L
+									break;
+
+						case 0xb6:
+									OP_RES_6_PHL
+									break;
+
+						case 0xb7:
+									OP_RES_6_A
+									break;
+
+						case 0xb8:
+									OP_RES_7_B
+									break;
+
+						case 0xb9:
+									OP_RES_7_C
+									break;
+
+						case 0xba:
+									OP_RES_7_D
+									break;
+
+						case 0xbb:
+									OP_RES_7_E
+									break;
+
+						case 0xbc:
+									OP_RES_7_H
+									break;
+
+						case 0xbd:
+									OP_RES_7_L
+									break;
+
+						case 0xbe:
+									OP_RES_7_PHL
+									break;
+
+						case 0xbf:
+									OP_RES_7_A
+									break;
+
+						case 0xc0:
+									OP_SET_0_B
+									break;
+
+						case 0xc1:
+									OP_SET_0_C
+									break;
+
+						case 0xc2:
+									OP_SET_0_D
+									break;
+
+						case 0xc3:
+									OP_SET_0_E
+									break;
+						
+						case 0xc4:
+									OP_SET_0_H
+									break;
+
+						case 0xc5:
+									OP_SET_0_L
+									break;
+
+						case 0xc6:
+									OP_SET_0_PHL
+									break;
+
+						case 0xc7:
+									OP_SET_0_A
+									break;
+						
+						case 0xc8:
+									OP_SET_1_B
+									break;
+
+						case 0xc9:
+									OP_SET_1_C
+									break;
+
+						case 0xca:
+									OP_SET_1_D
+									break;
+						
+						case 0xcb:
+									OP_SET_1_E               
+									break;
+						
+						case 0xcc:
+									OP_SET_1_H
+									break;
+						
+						case 0xcd:
+									OP_SET_1_L
+									break;
+						
+						case 0xce:
+									OP_SET_1_PHL
+									break;
+						
+						case 0xcf:
+									OP_SET_1_A
+									break;
+						
+						case 0xd0:
+									OP_SET_2_B
+									break;
+						
+						case 0xd1:
+									OP_SET_2_C
+									break;
+						
+						case 0xd2:
+									OP_SET_2_D
+									break;
+						
+						case 0xd3:
+									OP_SET_2_E
+									break;
+						
+						case 0xd4:
+									OP_SET_2_H
+									break;
+						
+						case 0xd5:
+									OP_SET_2_L
+									break;
+
+						case 0xd6:
+									OP_SET_2_PHL
+									break;
+
+						case 0xd7:
+									OP_SET_2_A
+									break;
+						
+						case 0xd8:
+									OP_SET_3_B
+									break;
+						
+						case 0xd9:
+									OP_SET_3_C
+									break;
+						
+						case 0xda:
+									OP_SET_3_D
+									break;
+						
+						case 0xdb:
+									OP_SET_3_E
+									break;
+						
+						case 0xdc:
+									OP_SET_3_H
+									break;
+						
+						case 0xdd:
+									OP_SET_3_L
+									break;
+
+						case 0xde:
+									OP_SET_3_PHL
+									break;
+
+						case 0xdf:
+									OP_SET_3_A
+									break;
+
+						case 0xe0:
+									OP_SET_4_B
+									break;
+
+						case 0xe1:
+									OP_SET_4_C
+									break;
+
+						case 0xe2:
+									OP_SET_4_D
+									break;
+
+						case 0xe3:
+									OP_SET_4_E
+									break;
+
+						case 0xe4:
+									OP_SET_4_H
+									break;
+
+						case 0xe5:
+									OP_SET_4_L
+									break;
+
+						case 0xe6:
+									OP_SET_4_PHL
+									break;
+
+						case 0xe7:
+									OP_SET_4_A
+									break;
+
+						case 0xe8:
+									OP_SET_5_B
+									break;
+
+						case 0xe9:
+									OP_SET_5_C
+									break;
+
+						case 0xea:
+									OP_SET_5_D
+									break;
+
+						case 0xeb:
+									OP_SET_5_E
+									break;
+
+						case 0xec:
+									OP_SET_5_H
+									break;
+
+						case 0xed:
+									OP_SET_5_L
+									break;
+
+						case 0xee:
+									OP_SET_5_PHL
+									break;
+
+						case 0xef:
+									OP_SET_5_A
+									break;
+
+						case 0xf0:
+									OP_SET_6_B
+									break;
+
+						case 0xf1:
+									OP_SET_6_C
+									break;
+
+						case 0xf2:
+									OP_SET_6_D
+									break;
+
+						case 0xf3:
+									OP_SET_6_E
+									break;
+
+						case 0xf4:
+									OP_SET_6_H
+									break;
+
+						case 0xf5:
+									OP_SET_6_L
+									break;
+
+						case 0xf6:
+									OP_SET_6_PHL
+									break;
+
+						case 0xf7:
+									OP_SET_6_A
+									break;
+
+						case 0xf8:
+									OP_SET_7_B
+									break;
+
+						case 0xf9:
+									OP_SET_7_C
+									break;
+
+						case 0xfa:
+									OP_SET_7_D
+									break;
+
+						case 0xfb:
+									OP_SET_7_E
+									break;
+
+						case 0xfc:
+									OP_SET_7_H
+									break;
+
+						case 0xfd:
+									OP_SET_7_L
+									break;
+
+						case 0xfe:
+									OP_SET_7_PHL
+									break;
+
+						case 0xff:
+									OP_SET_7_A
+									break;
                     }                    
 					break;
         
@@ -981,91 +2003,91 @@ int main()
 					break;
 
 		case 0xea:
-					OP_SET_5_D
+					OP_LD_A16_A
 					break;
 
 		case 0xeb:
-					OP_SET_5_E
+					printf("unknown opcode\n");
 					break;
 
 		case 0xec:
-					OP_SET_5_H
+					printf("unknown opcode\n");
 					break;
 
 		case 0xed:
-					OP_SET_5_L
+					printf("unknown opcode\n");
 					break;
 
 		case 0xee:
-					OP_SET_5_PHL
+					OP_XOR_D8
 					break;
 
 		case 0xef:
-					OP_SET_5_A
+					OP_RST_28
 					break;
 
 		case 0xf0:
-					OP_SET_6_B
+					OP_LDH_A_A8
 					break;
 
 		case 0xf1:
-					OP_SET_6_C
+					OP_POP_AF
 					break;
 
 		case 0xf2:
-					OP_SET_6_D
+					OP_LD_A_OC
 					break;
 
 		case 0xf3:
-					OP_SET_6_E
+					OP_DI
 					break;
 
 		case 0xf4:
-					OP_SET_6_H
+					printf("unknown opcode\n");
 					break;
 
 		case 0xf5:
-					OP_SET_6_L
+					OP_PUSH_AF
 					break;
 
 		case 0xf6:
-					OP_SET_6_PHL
+					OP_OR_D8
 					break;
 
 		case 0xf7:
-					OP_SET_6_A
+					OP_RST_30
 					break;
 
 		case 0xf8:
-					OP_SET_7_B
+					OP_LD_HL_SP_R8
 					break;
 
 		case 0xf9:
-					OP_SET_7_C
+					OP_LD_SP_HL
 					break;
 
 		case 0xfa:
-					OP_SET_7_D
+					OP_LD_A_A16
 					break;
 
 		case 0xfb:
-					OP_SET_7_E
+					OP_EI
 					break;
 
 		case 0xfc:
-					OP_SET_7_H
+					printf("unknown opcode\n");
 					break;
 
 		case 0xfd:
-					OP_SET_7_L
+					printf("unknown opcode\n");
 					break;
 
 		case 0xfe:
-					OP_SET_7_PHL
+					OP_CP_D8
 					break;
 
 		case 0xff:
-					OP_SET_7_BA
+					OP_RST_38
 					break;
 
 
