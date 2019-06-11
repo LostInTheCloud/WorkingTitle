@@ -5,6 +5,7 @@ int main()
     int err;
     printf("Hello, DMG\n");
 
+    PC = 0;
 
 	setvbuf(stdout, NULL, _IONBF,0);
 
@@ -25,6 +26,7 @@ int main()
     clock_gettime(CLOCK_MONOTONIC, &t0);
     uint32_t nanosecs;
     uint8_t opcode;
+    uint8_t extended_opcode;
 
     uint8_t   t8 [8];
     uint16_t  t16[8];
@@ -34,8 +36,7 @@ int main()
 
     loop:
 
-    opcode = 0;
-    // retrieve OPCode
+    opcode = MEM[PC];
 
     switch(opcode)
     {
@@ -822,12 +823,12 @@ int main()
 		case 0xc3:
 					OP_JP_A16
 					break;
-
+        
 		case 0xc4:
 					OP_CALL_NZ_A16
 					break;
 
-		/* case 0xc5:
+		case 0xc5:
 					OP_PUSH_BC
 					break;
 
@@ -838,7 +839,7 @@ int main()
 		case 0xc7:
 					OP_RST_00
 					break;
-
+        
 		case 0xc8:
 					OP_RET_Z
 					break;
@@ -850,79 +851,83 @@ int main()
 		case 0xca:
 					OP_JP_Z_A16
 					break;
-
+        
 		case 0xcb:
-					// TODO prefix code here
+					extended_opcode = MEM[PC+1];
+                    switch(extended_opcode)
+                    {
+                        case 0x00:
+                    }                    
 					break;
-
+        
 		case 0xcc:
 					OP_CALL_Z_A16
 					break;
-
+        
 		case 0xcd:
 					OP_CALL_A16
 					break;
-
+        
 		case 0xce:
 					OP_ADC_A_D8
 					break;
-
+        
 		case 0xcf:
 					OP_RST_08
 					break;
-
+        
 		case 0xd0:
 					OP_RET_NC
 					break;
-
+        
 		case 0xd1:
 					OP_POP_DE
 					break;
-
+        
 		case 0xd2:
 					OP_JP_NC_A16
 					break;
-
+        
 		case 0xd3:
 					printf("unknown opcode\n");
 					break;
-
+        
 		case 0xd4:
 					OP_CALL_NC_A16
 					break;
-
+        
 		case 0xd5:
 					OP_PUSH_DE
 					break;
 
 		case 0xd6:
-					OP_SUB_D8
+					OP_SUB_A_D8
 					break;
 
 		case 0xd7:
 					OP_RST_10
 					break;
-
+        
 		case 0xd8:
 					OP_RET_C
 					break;
-
+        
 		case 0xd9:
 					OP_RETI
 					break;
-
+        
 		case 0xda:
 					OP_JP_C_A16
 					break;
-
+        
 		case 0xdb:
 					printf("unknown opcode\n");
 					break;
-
+        
 		case 0xdc:
 					OP_CALL_C_A16
 					break;
-
+        
 		case 0xdd:
 					printf("unknown opcode\n");
 					break;
@@ -940,128 +945,128 @@ int main()
 					break;
 
 		case 0xe1:
-					// code here
+					OP_POP_HL
 					break;
 
 		case 0xe2:
-					// code here
+					OP_LD_OC_A
 					break;
 
 		case 0xe3:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xe4:
-					// code here
+					printf("unknown opcode\n");
 					break;
 
 		case 0xe5:
-					// code here
+					OP_PUSH_HL
 					break;
 
 		case 0xe6:
-					// code here
+					OP_AND_D8
 					break;
 
 		case 0xe7:
-					// code here
+					OP_RST_20
 					break;
 
 		case 0xe8:
-					// code here
+					OP_ADD_SP_R8
 					break;
 
 		case 0xe9:
-					// code here
+					OP_JP_PHL
 					break;
 
 		case 0xea:
-					// code here
+					OP_SET_5_D
 					break;
 
 		case 0xeb:
-					// code here
+					OP_SET_5_E
 					break;
 
 		case 0xec:
-					// code here
+					OP_SET_5_H
 					break;
 
 		case 0xed:
-					// code here
+					OP_SET_5_L
 					break;
 
 		case 0xee:
-					// code here
+					OP_SET_5_PHL
 					break;
 
 		case 0xef:
-					// code here
+					OP_SET_5_A
 					break;
 
 		case 0xf0:
-					// code here
+					OP_SET_6_B
 					break;
 
 		case 0xf1:
-					// code here
+					OP_SET_6_C
 					break;
 
 		case 0xf2:
-					// code here
+					OP_SET_6_D
 					break;
 
 		case 0xf3:
-					// code here
+					OP_SET_6_E
 					break;
 
 		case 0xf4:
-					// code here
+					OP_SET_6_H
 					break;
 
 		case 0xf5:
-					// code here
+					OP_SET_6_L
 					break;
 
 		case 0xf6:
-					// code here
+					OP_SET_6_PHL
 					break;
 
 		case 0xf7:
-					// code here
+					OP_SET_6_A
 					break;
 
 		case 0xf8:
-					// code here
+					OP_SET_7_B
 					break;
 
 		case 0xf9:
-					// code here
+					OP_SET_7_C
 					break;
 
 		case 0xfa:
-					// code here
+					OP_SET_7_D
 					break;
 
 		case 0xfb:
-					// code here
+					OP_SET_7_E
 					break;
 
 		case 0xfc:
-					// code here
+					OP_SET_7_H
 					break;
 
 		case 0xfd:
-					// code here
+					OP_SET_7_L
 					break;
 
 		case 0xfe:
-					// code here
+					OP_SET_7_PHL
 					break;
 
 		case 0xff:
-					// code here
-					break;*/
+					OP_SET_7_BA
+					break;
 
 
     }

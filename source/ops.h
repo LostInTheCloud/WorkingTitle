@@ -752,10 +752,10 @@
 /* prefix CB is defined below*/
 
 // 0xCC
-#define OP_CALL_Z_A16 if(FLAG_Z){MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+#define OP_CALL_Z_A16 if(FLAG_Z){MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xCD 
-#define OP_CALL_A16 MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT; WAIT; WAIT; WAIT;
+#define OP_CALL_A16 MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT; WAIT; WAIT; WAIT;
 
 // 0xCE
 #define OP_ADC_A_D8 if((A&15)+MEM[PC+1]+FLAG_C>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
@@ -775,7 +775,7 @@
 #define OP_JP_NC_A16 if(!FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); WAIT;} WAIT; WAIT; WAIT;
 
 // 0xD4
-#define OP_CALL_NC_A16 if(!FLAG_Z){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+#define OP_CALL_NC_A16 if(!FLAG_Z){MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xD5
 #define OP_PUSH_DE MEM[SP-1]=D; MEM[SP-2]=E; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
@@ -792,13 +792,13 @@
 #define OP_RET_C if(FLAG_C){PC=(*((int8_t*)MEM+SP+2)); SP+=2; WAIT; WAIT; WAIT;} WAIT; WAIT;
 
 // 0xD9
-#define OP_RETI (*((int8_t*)MEM+SP+2)); SP+=2; NABLE_IME WAIT; WAIT; WAIT; WAIT;
+#define OP_RETI (*((int8_t*)MEM+SP+2)); SP+=2; ENABLE_IME WAIT; WAIT; WAIT; WAIT;
 
 // 0xDA
 #define OP_JP_C_A16 if(FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); WAIT;} WAIT; WAIT; WAIT;
 
 // 0xDC
-#define OP_CALL_C_A16 if(FLAG_C){MEM[SP-2]=*(((uint8_t*)PC)+3); SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));} WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
+#define OP_CALL_C_A16 if(FLAG_C){MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1)); WAIT; WAIT; WAIT;} WAIT; WAIT; WAIT;
 
 // 0xDE
 #define OP_SBC_A_D8 if((A&15)<(MEM[PC+1])+FLAG_C){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
@@ -821,16 +821,16 @@
 // 0xE5
 #define OP_PUSH_HL MEM[SP-1]=H; MEM[SP-2]=L; SP=SP-2; WAIT; WAIT; WAIT; WAIT;
 
-// 0xE6
+// 0xE6 // todo ??
 #define OP_AND_D8 A=A&MEM[PC+1]; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} \
-                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;DE&2047
+                 SET_FLAG_C(0); SET_FLAG_H(1); SET_FLAG_N(0); WAIT; WAIT;
 
 // 0xE7 
 #define OP_RST_20 *(((uint16_t*)MEM)+SP-1)=PC; SP-=2; PC=0x20; WAIT; WAIT; WAIT; WAIT;
 
 // 0xE8
-#define OP_ADD_SP_R8 if(HL&2047+(*((int8_t*)MEM+PC+1));<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(*((int8_t*)MEM+PC+1));<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+#define OP_ADD_SP_R8 if(HL&2047+(*((int8_t*)MEM+PC+1))<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if((uint32_t)HL+(*((int8_t*)MEM+PC+1))<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+(*((int8_t*)MEM+PC+1)); SET_FLAG_Z(0); SET_FLAG_N(0); WAIT; WAIT; WAIT; WAIT;
 
 // 0xE9
