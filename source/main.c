@@ -21,6 +21,9 @@ int main()
     if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
 
 	print_mem(0,32,'h',MEM);
+	create_coredump(MEM,65536);
+	reset_coredump(MEM,65536);
+
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
@@ -2227,3 +2230,48 @@ int readfff(uint8_t* buffer, char* name)
 
     return EXIT_SUCCESS;
 }
+
+void create_coredump(uint8_t* MEM, uint32_t length)
+{
+	FILE* coredump;
+	coredump = fopen("coredump.txt","w");
+	//write register
+	fprintf(coredump, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,",A,F,B,C,D,E,H,L,PC,SP);
+	//write memory
+	for(uint32_t i=0; i<length ;i++)
+	{
+		fprintf(coredump, "%u,", MEM[i]);
+	}
+	fclose(coredump);
+}
+
+
+void reset_coredump(uint8_t* MEM, uint32_t length)
+{
+	FILE* coredump;
+	coredump = fopen("coredump.txt","r");
+	uint8_t* buf = malloc(sizeof(uint8_t)*5);
+	int comma = 0; // boolean if comma has been read
+	// reset register
+	CHAR_TO_INT8(A);
+	CHAR_TO_INT8(F);
+	CHAR_TO_INT8(B);
+	CHAR_TO_INT8(C);
+	CHAR_TO_INT8(D);
+	CHAR_TO_INT8(E);
+	CHAR_TO_INT8(H);
+	CHAR_TO_INT8(L);
+	CHAR_TO_INT16(PC);
+	CHAR_TO_INT16(SP);
+	
+	// reset memory
+	for(uint32_t i = 0; i<length; i++)
+	{
+		CHAR_TO_INT8(MEM[i]);
+	}
+	printf("%i\n",MEM[0]);
+	
+
+	fclose(coredump);
+}
+

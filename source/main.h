@@ -142,6 +142,30 @@ void print_regs(void)
 void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM);
 void read_header(uint8_t* buf);
 int readfff(uint8_t* buffer, char* name);
+void create_coredump(uint8_t* MEM, uint32_t length);
+void reset_coredump(uint8_t* MEM, uint32_t length);
+
+// check if second or third char is "," and calculate accordingly (needed for reset_coredump)
+#define CHAR_TO_INT8(R) comma=0;\
+						buf[0]=fgetc(coredump); \
+					    buf[1]=fgetc(coredump); \
+					    if(buf[1]==44){R=buf[0]-48; comma=1;} \
+					    else{buf[2]=fgetc(coredump); \
+					   		if(buf[2]==44){R=buf[1]-48+(buf[0]-48)*10; comma=1;} \
+					   		else{R=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100;}} \
+					    if(!comma){fgetc(coredump);}
+
+#define CHAR_TO_INT16(R) buf[0]=fgetc(coredump); \
+					  	 buf[1]=fgetc(coredump); \
+					  	 if(buf[1]==44){R=buf[0]-48; comma=1;} \
+					 	 else{buf[2]=fgetc(coredump); \
+					 	 	if(buf[2]==44){R=buf[1]-48+(buf[0]-48)*10; comma=1;} \
+					 	 	else{buf[3]=fgetc(coredump);\
+							  	if(buf[3]==44){R=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100; comma=1;}\
+								else{buf[4]=fgetc(coredump);\
+									if(buf[4]==44){R=buf[3]-48+(buf[2]-48)*10+(buf[1]-48)*100+(buf[0]-48)*1000;comma=1;}\
+									else{R=buf[4]-48+(buf[3]-48)*10+(buf[2]-48)*100+(buf[1]-48)*1000+(buf[0]-48)*10000;comma=1;}}}} \
+						 if(!comma){fgetc(coredump); comma=0;}
 
 // flags
 
