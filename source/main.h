@@ -2,6 +2,9 @@
 #include <stdlib.h>
 #include <time.h>       // nanosleep, gettime
 #include <inttypes.h>   // uint8_t, ...
+#include <sys/stat.h>   // mkdir, stat
+#include <sys/types.h>  // mkdir, stat
+#include <unistd.h> 	// stat
 
 #include "ops.h"
 // 4.190MHz 239ns
@@ -142,8 +145,9 @@ void print_regs(void)
 void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM);
 void read_header(uint8_t* buf);
 int readfff(uint8_t* buffer, char* name);
-void create_coredump(uint8_t* MEM, uint32_t length);
-void reset_coredump(uint8_t* MEM, uint32_t length);
+void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
+void reset_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
+void remove_all_coredumps(uint16_t coredumpnum);
 
 // check if second or third char is "," and calculate accordingly (needed for reset_coredump)
 #define CHAR_TO_INT8(R) comma=0;\

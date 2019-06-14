@@ -21,8 +21,18 @@ int main()
     if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
 
 	print_mem(0,32,'h',MEM);
-	create_coredump(MEM,65536);
-	reset_coredump(MEM,65536);
+
+	struct stat st ={0};
+	if(stat("./coredumps",&st)==-1)
+	{
+		mkdir("./coredumps",0777);
+	}
+
+	uint16_t coredumpnum=6;
+	create_coredump(MEM,65536,coredumpnum);
+	reset_coredump(MEM,65536,coredumpnum);
+	sleep(2);
+	remove_all_coredumps(coredumpnum);
 
 
     struct timespec t0;
@@ -2231,13 +2241,15 @@ int readfff(uint8_t* buffer, char* name)
     return EXIT_SUCCESS;
 }
 
-void create_coredump(uint8_t* MEM, uint32_t length)
+void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum)
 {
 	FILE* coredump;
-	coredump = fopen("coredump.txt","w");
-	//write register
+	char* path = malloc(sizeof(char)*64);
+	sprintf(path,"./coredumps/coredump%u.txt",coredumpnum);
+	coredump = fopen(path,"w");
+	// write register
 	fprintf(coredump, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,",A,F,B,C,D,E,H,L,PC,SP);
-	//write memory
+	// write memory
 	for(uint32_t i=0; i<length ;i++)
 	{
 		fprintf(coredump, "%u,", MEM[i]);
@@ -2246,10 +2258,12 @@ void create_coredump(uint8_t* MEM, uint32_t length)
 }
 
 
-void reset_coredump(uint8_t* MEM, uint32_t length)
+void reset_coredump(uint8_t* MEM, uint32_t length,uint16_t coredumpnum)
 {
 	FILE* coredump;
-	coredump = fopen("coredump.txt","r");
+	char* path = malloc(sizeof(char)*64);
+	sprintf(path,"./coredumps/coredump%u.txt",coredumpnum);
+	coredump = fopen(path,"r");
 	uint8_t* buf = malloc(sizeof(uint8_t)*5);
 	int comma = 0; // boolean if comma has been read
 	// reset register
@@ -2269,9 +2283,16 @@ void reset_coredump(uint8_t* MEM, uint32_t length)
 	{
 		CHAR_TO_INT8(MEM[i]);
 	}
-	printf("%i\n",MEM[0]);
 	
-
 	fclose(coredump);
 }
-
+ 
+void remove_all_coredumps(uint16_t coredumpnum)
+{
+	for (uint16_t i=0; i<coredumpnum+1; i++)
+	{
+		char* txt = malloc(sizeof(char)*64);
+		sprintf(txt,"./coredumps/coredump%u.txt",i);
+		remove(txt);
+	}
+}
