@@ -2245,15 +2245,22 @@ void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum)
 {
 	FILE* coredump;
 	char* path = malloc(sizeof(char)*64);
-	sprintf(path,"./coredumps/coredump%u.txt",coredumpnum);
+	sprintf(path,"./coredumps/coredump%u.dmp",coredumpnum);
 	coredump = fopen(path,"w");
 	// write register
-	fprintf(coredump, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,",A,F,B,C,D,E,H,L,PC,SP);
+	
+    // fprintf(coredump, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,",A,F,B,C,D,E,H,L,PC,SP);
+
+    fwrite(reg_ptr, 2, 6, coredump);
+
 	// write memory
-	for(uint32_t i=0; i<length ;i++)
-	{
-		fprintf(coredump, "%u,", MEM[i]);
-	}
+	// for(uint32_t i=0; i<length ;i++)
+	// {
+    //     fprintf(coredump, "%u,", MEM[i]);
+	// }
+
+    fwrite(MEM, 1, length, coredump);
+
 	fclose(coredump);
 }
 
@@ -2262,29 +2269,33 @@ void reset_coredump(uint8_t* MEM, uint32_t length,uint16_t coredumpnum)
 {
 	FILE* coredump;
 	char* path = malloc(sizeof(char)*64);
-	sprintf(path,"./coredumps/coredump%u.txt",coredumpnum);
+	sprintf(path,"./coredumps/coredump%u.dmp",coredumpnum);
 	coredump = fopen(path,"r");
-	uint8_t* buf = malloc(sizeof(uint8_t)*5);
-	int comma = 0; // boolean if comma has been read
-	// reset register
-	CHAR_TO_INT8(A);
-	CHAR_TO_INT8(F);
-	CHAR_TO_INT8(B);
-	CHAR_TO_INT8(C);
-	CHAR_TO_INT8(D);
-	CHAR_TO_INT8(E);
-	CHAR_TO_INT8(H);
-	CHAR_TO_INT8(L);
-	CHAR_TO_INT16(PC);
-	CHAR_TO_INT16(SP);
+	// uint8_t* buf = malloc(sizeof(uint8_t)*5);
+	// int comma = 0; // boolean if comma has been read
+	// // reset register
+	// CHAR_TO_INT8(A);
+	// CHAR_TO_INT8(F);
+	// CHAR_TO_INT8(B);
+	// CHAR_TO_INT8(C);
+	// CHAR_TO_INT8(D);
+	// CHAR_TO_INT8(E);
+	// CHAR_TO_INT8(H);
+	// CHAR_TO_INT8(L);
+	// CHAR_TO_INT16(PC);
+	// CHAR_TO_INT16(SP);
 	
-	// reset memory
-	for(uint32_t i = 0; i<length; i++)
-	{
-		CHAR_TO_INT8(MEM[i]);
-	}
+	// // reset memory
+	// for(uint32_t i = 0; i<length; i++)
+	// {
+	// 	CHAR_TO_INT8(MEM[i]);
+	// }
 	
-	fclose(coredump);
+	// fclose(coredump);
+
+    fread(reg_ptr, 2, 6, coredump);
+    fread(MEM, 1, length, coredump);
+
 }
  
 void remove_all_coredumps(uint16_t coredumpnum)
@@ -2292,7 +2303,7 @@ void remove_all_coredumps(uint16_t coredumpnum)
 	for (uint16_t i=0; i<coredumpnum+1; i++)
 	{
 		char* txt = malloc(sizeof(char)*64);
-		sprintf(txt,"./coredumps/coredump%u.txt",i);
+		sprintf(txt,"./coredumps/coredump%u.dmp",i);
 		remove(txt);
 	}
 }
