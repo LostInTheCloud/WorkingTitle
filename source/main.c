@@ -33,7 +33,14 @@ int main()
 	uint16_t coredumpnum=6;
     remove_all_coredumps(coredumpnum);
 	sleep(2);
+    print_mem(0,16,'h',MEM+0x8000);
+    uint8_t tile1[16] = {
+                            0x00,0x00,0x36,0x36,0x5F,0x49,0x5F,0x41,0x7F,0x41,0x3E,0x22,0x1C,0x14,0x08,0x08
+                        };
+    memcpy(MEM+0x8000, tile1, 16);
+    print_mem(0,16,'h',MEM+0x8000);
 	create_coredump(MEM,65536,coredumpnum);
+    print_mem(0,16,'h',MEM+0x8000);
 	reset_coredump(MEM,65536,coredumpnum);
 
 
@@ -2266,6 +2273,8 @@ void reset_coredump(uint8_t* MEM, uint32_t length,uint16_t coredumpnum)
     
     fread(reg_ptr, 2, 6, coredump);
     fread(MEM, 1, length, coredump);
+
+    fclose(coredump);
 
 }
  

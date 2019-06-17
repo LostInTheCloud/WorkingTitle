@@ -5,6 +5,7 @@
 #include <sys/stat.h>   // mkdir, stat
 #include <sys/types.h>  // mkdir, stat
 #include <unistd.h> 	// stat
+#include <string.h>     // memcpy
 
 #include "ops.h"
 // 4.190MHz 239ns
