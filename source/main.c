@@ -16,12 +16,14 @@ int main()
       return EXIT_FAILURE;
     }
 
+    // load ROM into Memory (Bank 0 and Bank 1)
     err = readfff(MEM, "ROMs/Tetris.gb");
 
     if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
 
 	print_mem(0,32,'h',MEM);
 
+    // create coredump folder, if not already existent
 	struct stat st ={0};
 	if(stat("./coredumps",&st)==-1)
 	{
@@ -29,10 +31,10 @@ int main()
 	}
 
 	uint16_t coredumpnum=6;
+    remove_all_coredumps(coredumpnum);
+	sleep(2);
 	create_coredump(MEM,65536,coredumpnum);
 	reset_coredump(MEM,65536,coredumpnum);
-	sleep(2);
-	remove_all_coredumps(coredumpnum);
 
 
     struct timespec t0;
@@ -2247,18 +2249,8 @@ void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum)
 	char* path = malloc(sizeof(char)*64);
 	sprintf(path,"./coredumps/coredump%u.dmp",coredumpnum);
 	coredump = fopen(path,"w");
-	// write register
-	
-    // fprintf(coredump, "%u,%u,%u,%u,%u,%u,%u,%u,%u,%u,",A,F,B,C,D,E,H,L,PC,SP);
 
     fwrite(reg_ptr, 2, 6, coredump);
-
-	// write memory
-	// for(uint32_t i=0; i<length ;i++)
-	// {
-    //     fprintf(coredump, "%u,", MEM[i]);
-	// }
-
     fwrite(MEM, 1, length, coredump);
 
 	fclose(coredump);
@@ -2271,28 +2263,7 @@ void reset_coredump(uint8_t* MEM, uint32_t length,uint16_t coredumpnum)
 	char* path = malloc(sizeof(char)*64);
 	sprintf(path,"./coredumps/coredump%u.dmp",coredumpnum);
 	coredump = fopen(path,"r");
-	// uint8_t* buf = malloc(sizeof(uint8_t)*5);
-	// int comma = 0; // boolean if comma has been read
-	// // reset register
-	// CHAR_TO_INT8(A);
-	// CHAR_TO_INT8(F);
-	// CHAR_TO_INT8(B);
-	// CHAR_TO_INT8(C);
-	// CHAR_TO_INT8(D);
-	// CHAR_TO_INT8(E);
-	// CHAR_TO_INT8(H);
-	// CHAR_TO_INT8(L);
-	// CHAR_TO_INT16(PC);
-	// CHAR_TO_INT16(SP);
-	
-	// // reset memory
-	// for(uint32_t i = 0; i<length; i++)
-	// {
-	// 	CHAR_TO_INT8(MEM[i]);
-	// }
-	
-	// fclose(coredump);
-
+    
     fread(reg_ptr, 2, 6, coredump);
     fread(MEM, 1, length, coredump);
 

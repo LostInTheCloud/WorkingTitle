@@ -8,21 +8,23 @@ CC  := gcc
 CFLAGS := -g -W
 ### END CHANGE ###
 
-SRC = $(wildcard *.c) # careful with test.c etc
-DEPS := $(wildcard *.h)
-OBJECTS :=$(patsubst %.c,$(DIR)%.o,$(wildcard *.c))
+SRC = main.c
+DEPS := main.h ops.h
+OBJECTS :=$(patsubst %.c,$(DIR)%.o, $(SRC))
 
 dir_exists: | $(DIR)
 	@echo 
 
-$(DIR)%.o: %.c $(DEPS)
+$(DIR)%.o: SRC $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(NAME): $(OBJECTS)
 	$(CC) -o $(DIR)$@ $^ $(CFLAGS)
 
 clean: 
-	@echo $(shell rm $(DIR)$(NAME) $(OBJECTS))
+	@echo $(shell pushd $(DIR))
+	@echo $(shell rm $(NAME) $(OBJECTS) viewer)
+	@echo $(shell popd)
 	@echo $(shell rm -r -f $(DIR))
 
 run:
@@ -39,3 +41,15 @@ compile:
 
 $(DIR):
 	mkdir -p $@
+
+sdl_install:
+	sudo apt-get update
+	sudo apt-get install libsdl2-dev -y
+	sudo apt-get install clang -y
+	sudo apt-get install clang++ -y
+	clang++ -shared -fPIC -o libgbsdl.so display.cpp exception.cpp
+
+viewer:
+	clang -o viewer viewer.c -L./ -l gbsdl -lSDL2 $(sdl2-config --cflags)
+	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
+	./viewer
