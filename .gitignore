@@ -63,3 +63,9 @@ source/ROMs/
 source/\.idea/
 
 source/coredumps/
+
+source/pokemontiledata\.bin
+
+source/pokemontiledata\.txt
+
+source/test\.c

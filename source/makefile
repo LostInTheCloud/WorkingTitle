@@ -49,7 +49,7 @@ sdl_install:
 	sudo apt-get install clang++ -y
 	clang++ -shared -fPIC -o libgbsdl.so display.cpp exception.cpp
 
-viewer:
+viewer: viewer.c
 	clang -o viewer viewer.c -L./ -l gbsdl -lSDL2 $(sdl2-config --cflags)
 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
 	./viewer
