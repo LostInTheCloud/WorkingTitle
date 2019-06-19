@@ -66,6 +66,6 @@
 
 - ~~Core dump / restore from dump~~
  
-- Profiler    
+- Profiler (C code analysis tool)   
 
 - input: SDL thread writes into struct, main reads that struct
