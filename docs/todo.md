@@ -20,11 +20,17 @@
 
     - rdtscp, rdtsc
 
-- boot rom
+    - limit fps by __
+
+- Rom ausgabe ding
+
+- CPU: stop, halt, ..
+
+- boot rom (3)
 
 - ppu
 
-    -FiFo (2)
+    -FiFo
 
     - SDL2 
     
@@ -42,11 +48,23 @@
     
     - debug window / info
         
-         - Background Tiles/Sprites Output (1)
+         - ~~Background Tiles/Sprites Output~~
 
     - sync CPU & PPU: single thread counter imprecise, then clock every picture.
 
-- Core dump / restore from dump (0)
+    - fetcher (1)
+
+        - test: endless loop  
+            manual write tile into middle of screen
+
+        - maybe without fifo
+
+    - sync PPU and CPU & get clock fixed (0)
+
+        -   vblank / hblank
+
+
+- ~~Core dump / restore from dump~~
  
 - Profiler    
 
