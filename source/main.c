@@ -2197,6 +2197,7 @@ void read_header(uint8_t* buf)
 	if(buf[0x147]==0x11){cartridgetype="MBC3";}
 	if(buf[0x147]==0x12){cartridgetype="MBC3+RAM";}
 	if(buf[0x147]==0x13){cartridgetype="MBC3+RAM+BATTERY";}
+	if(buf[0x147]==0x13){cartridgetype="unknown";}
 
 	// read ROM Size
 	uint16_t banks;
@@ -2218,6 +2219,8 @@ void read_header(uint8_t* buf)
 	if(buf[0x149]==0x03){ramsize=32;}
 	if(buf[0x149]==0x04){ramsize=128;}
 	if(buf[0x149]==0x05){ramsize=64;}
+
+	printf("Name: %s\nCartridgetype: %s\nBanks:%i\nRAM Size:%i\n",name,cartridgetype,banks,ramsize);
 }
 
 int readfff(uint8_t* buffer, char* name)
@@ -2285,21 +2288,24 @@ void remove_all_coredumps(uint16_t coredumpnum)
 uint16_t fetch_new_pixels(uint8_t* MEM)
 {
 	uint16_t pixels=0;
+
+	/* Code here */
+
 	return pixels;
 }
+//defines for fetcher
 
+// current line being transfered to LCD (0-153) (144-153 is v blank)
+#define LY MEM[0xFF44]
 
-
-#define Y_COORDINATE(x) MEM[0xFE00]
-
-#define X_COORDINATE(x) MEM[0xFE01]
+#define WINDOWS_Y_COORDINATE MEM[0xFF4A]
+#define WINDOW_X_COORDINATE MEM[0xFF4B]
+#define SPRITE_Y_COORDINATE(x) MEM[0xFE00]
+#define SPRITE_X_COORDINATE(x) MEM[0xFE01]
 
 #define PRIORITY(x) MEM[0xFE03+x*4]&128
-
 // flipped vertically
 #define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
-
 // flipped horizontal
 #define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
-
 #define PALETTE(x) MEM[0xFE03+x*4]&16
