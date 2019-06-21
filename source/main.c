@@ -2279,3 +2279,27 @@ void remove_all_coredumps(uint16_t coredumpnum)
 		remove(txt);
 	}
 }
+
+//fetcher
+
+uint16_t fetch_new_pixels(uint8_t* MEM)
+{
+	uint16_t pixels=0;
+	return pixels;
+}
+
+
+
+#define Y_COORDINATE(x) MEM[0xFE00]
+
+#define X_COORDINATE(x) MEM[0xFE01]
+
+#define PRIORITY(x) MEM[0xFE03+x*4]&128
+
+// flipped vertically
+#define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
+
+// flipped horizontal
+#define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
+
+#define PALETTE(x) MEM[0xFE03+x*4]&16
