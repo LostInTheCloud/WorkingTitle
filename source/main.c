@@ -38,6 +38,7 @@ int main()
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
+	uint32_t cycle = 0;
     uint32_t nanosecs;
     uint8_t opcode;
     uint8_t extended_opcode;
@@ -45,8 +46,6 @@ int main()
     uint8_t   t8 [8];
     uint16_t  t16[8];
     uint32_t  t32[8];
-
-    long x = 0;
 
     loop:
 
@@ -2109,7 +2108,7 @@ int main()
 
     PC += OPCODE_LENGTH[opcode];
 
-    if(++x == 4190000)
+    if(++x == NTH_CYCLE)
     {
         fprintf(stderr, "4.19 Million clocks passed!\n\n");
         x=0;

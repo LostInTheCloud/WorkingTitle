@@ -10,6 +10,7 @@
 #include "ops.h"
 // 4.190MHz 239ns
 #define cycle_duration 239;
+#define NTH_CYCLE 280896;
 #define WIDTH 160; // todo: doublecheck
 
 void* reg_ptr[12];
@@ -147,16 +148,6 @@ int OPCODE_LENGTH[0x100] =
 					fifo<<2;
 
 #define CLEAR_FIFO fifo = 0; pixelcounter = -8;
-
-#define WAIT 	nanosecs = cycle_duration; \
-				nanosecs += t0.tv_nsec; \
-				if(unlikely(nanosecs > 999999999)) \
-				{ \
-						nanosecs -= 1000000000; \
-						t0.tv_sec ++; \
-				} \
-				t0.tv_nsec = nanosecs; \
-				clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
 
 void print_regs(void)
 {
