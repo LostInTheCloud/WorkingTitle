@@ -10,8 +10,12 @@
 #include "ops.h"
 // 4.190MHz 239ns
 #define cycle_duration 239;
+#define WIDTH 160; // todo: doublecheck
 
 void* reg_ptr[12];
+uint8_t pixelcounter;
+uint32_t fifo;
+uint8_t LX;
 
 #define F (*((uint8_t*) reg_ptr + 0))
 #define A (*((uint8_t*) reg_ptr + 1))
@@ -118,6 +122,31 @@ int OPCODE_LENGTH[0x100] =
 	2,1,1,0,0,1,2,1,2,1,3,0,0,0,2,1,
 	2,1,1,1,0,1,2,1,2,1,3,1,0,0,2,1
 };
+
+// current line being transfered to LCD (0-153) (144-153 is v blank)
+#define LY MEM[0xFF44]
+
+#define WINDOWS_Y_COORDINATE MEM[0xFF4A]
+#define WINDOW_X_COORDINATE MEM[0xFF4B]
+#define SPRITE_Y_COORDINATE(x) MEM[0xFE00]
+#define SPRITE_X_COORDINATE(x) MEM[0xFE01]
+
+#define PRIORITY(x) MEM[0xFE03+x*4]&128
+// flipped vertically
+#define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
+// flipped horizontal
+#define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
+#define PALETTE(x) MEM[0xFE03+x*4]&16
+
+#define INIT_FIFO fifo =0 ; /* fetch first 16bit of fifo */ pixelcounter = 0;
+
+#define SHIFT_FIFO  if(!pixelcounter){/* */}	\
+					OUTPUT_ARRAY[WIDTH*LY+LX] 	\
+					= (0xC0000000&fifo)>>30;	\
+					pixelcounter--;				\
+					fifo<<2;
+
+#define CLEAR_FIFO fifo = 0; pixelcounter = -8;
 
 #define WAIT 	nanosecs = cycle_duration; \
 				nanosecs += t0.tv_nsec; \
