@@ -29,7 +29,7 @@ int main()
 	{
 		mkdir("./coredumps",0777);
 	}
-
+	read_header(MEM);
 	uint16_t coredumpnum=6;
     remove_all_coredumps(coredumpnum);
 	create_coredump(MEM,65536,coredumpnum);
