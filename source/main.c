@@ -47,6 +47,8 @@ int main()
     uint16_t  t16[8];
     uint32_t  t32[8];
 
+    int x = 0;
+
     loop:
 
     opcode = MEM[PC];
@@ -2107,11 +2109,27 @@ int main()
     }
 
     PC += OPCODE_LENGTH[opcode];
+    cycle += CYCLE_LENGTH[opcode];
 
-    if(++x == NTH_CYCLE)
-    {
-        fprintf(stderr, "4.19 Million clocks passed!\n\n");
-        x=0;
+    if(cycle >= NTH_CYCLE)
+    {   
+        cycle -= NTH_CYCLE;
+        // post frame stuff        
+        fprintf(stderr, ".");
+        if(++x==60)
+        {
+            fprintf(stderr, "\n");
+            x=0;
+        }
+        nanosecs = cycle_duration;
+        nanosecs += t0.tv_nsec;
+        if(unlikely(nanosecs > 999999999))
+        {
+                nanosecs -= 1000000000;
+                t0.tv_sec ++;
+        }
+        t0.tv_nsec = nanosecs;
+        clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
     }
 
     goto loop;
