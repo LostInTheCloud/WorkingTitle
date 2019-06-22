@@ -20,7 +20,7 @@
 
     - rdtscp, rdtsc
 
-    - limit fps by __
+    - ~~limit fps by __~~
 
 - ~~rom ausgabe ding~~
 
