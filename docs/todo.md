@@ -22,7 +22,7 @@
 
     - limit fps by __
 
-- Rom ausgabe ding
+- ~~rom ausgabe ding~~
 
 - CPU: stop, halt, ..
 
