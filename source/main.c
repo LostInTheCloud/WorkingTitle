@@ -1,9 +1,40 @@
 #include "main.h"
 
+void PPU()
+{
+    uint16_t temp;
+    if(!pixelcounter)}
+    {
+        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+TX]) + LY%8];
+        for(uint8_t mask = 0x80; mask != 0; mask>>=1)
+        {
+            (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&temp))[1]]) & mask);
+            (((uint8_t*)(&fifo))[1]) <<= 1;
+            (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&temp))[0]]) & mask);
+        }
+        TX++;
+    }
+    if(!(pixelcounter%8))
+    {
+        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+TX]) + LY%8];
+        for(uint8_t mask = 0x80; mask != 0; mask>>=1)
+        {
+            (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&temp))[1]]) & mask);
+            (((uint8_t*)(&fifo))[0]) <<= 1;
+            (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&temp))[0]]) & mask);
+        }
+        TX++;
+    }
+    // check for Sprites and Window
+    if(LY-SCY >= 0 && LY-SCY < HEIGHT && TX-SCX >= 0 && TX-SCX < WIDTH)
+    OUTPUT_ARRAY[VRAM_WIDTH*(LY-SCY)+(LX-SCX)] = (0xC0000000&fifo)>>30;
+    pixelcounter++; 
+    fifo<<2;
+}
+
 int main()
 {
     int err;
-    printf("Hello, DMG\n");
 
     PC = 0;
 
@@ -20,8 +51,6 @@ int main()
     err = readfff(MEM, "ROMs/Tetris.gb");
 
     if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
-
-	print_mem(0,32,'h',MEM);
 
     // create coredump folder, if not already existent
 	struct stat st ={0};

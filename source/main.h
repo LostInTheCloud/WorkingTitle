@@ -11,12 +11,16 @@
 // 4194304Hz -> ~238ns * 70224 = 16740000ns
 #define cycle_duration 16740000
 #define NTH_CYCLE 70224
-#define WIDTH 160 // todo: doublecheck
+#define HEIGHT = 144;   // 18x8 px
+#define WIDTH = 160;    // 20x8 px
+#define VRAM_WIDTH 256  // 32x8 px
+#define VRAM_HEIGHT 256 // 32x8 px
 
 void* reg_ptr[12];
-uint8_t pixelcounter;
+uint32_t pixelcounter;   // the amount of pixels that have been pushed into the FiFo
 uint32_t fifo;
-uint8_t LX;
+uint32_t tilecounter;    // the # of the BG Map Tile within the current line that's next to go into the FiFo
+uint32_t OUTPUT_ARRAY[144*160];
 
 #define F (*((uint8_t*) reg_ptr + 0))
 #define A (*((uint8_t*) reg_ptr + 1))
@@ -49,6 +53,29 @@ uint8_t LX;
 // Carry Flag
 #define FLAG_C ((F&0x10)>>4)
 #define SET_FLAG_C(X) F&=0xEF; F|=X<<4;
+
+// 0x9800 - 0x9FFF
+#define BG_CUR_FRAME MEM[0x9800]
+#define BG_MEM_MAP MEM[0x8000]
+
+#define LY MEM[0xFF44]
+#define TX tilecounter
+
+// SCY and SCX
+#define SCY MEM[0xFF42]
+#define SCX MEM[0xFF43]
+
+#define WINDOW_Y_COORDINATE MEM[0xFF4A]
+#define WINDOW_X_COORDINATE MEM[0xFF4B]
+#define SPRITE_Y_COORDINATE(x) MEM[0xFE00]
+#define SPRITE_X_COORDINATE(x) MEM[0xFE01]
+
+#define PRIORITY(x) MEM[0xFE03+x*4]&128
+// flipped vertically
+#define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
+// flipped horizontal
+#define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
+#define PALETTE(x) MEM[0xFE03+x*4]&16
 
 uint8_t interrupt_master_enable;
 
@@ -144,31 +171,6 @@ int CYCLE_LENGTH[0x100] =
     3, 3, 2, 1, 0, 4, 2, 4, 3, 2, 4, 1, 0, 0, 2, 4
 };
 
-// current line being transfered to LCD (0-153) (144-153 is v blank)
-#define LY MEM[0xFF44]
-
-#define WINDOWS_Y_COORDINATE MEM[0xFF4A]
-#define WINDOW_X_COORDINATE MEM[0xFF4B]
-#define SPRITE_Y_COORDINATE(x) MEM[0xFE00]
-#define SPRITE_X_COORDINATE(x) MEM[0xFE01]
-
-#define PRIORITY(x) MEM[0xFE03+x*4]&128
-// flipped vertically
-#define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
-// flipped horizontal
-#define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
-#define PALETTE(x) MEM[0xFE03+x*4]&16
-
-#define INIT_FIFO fifo =0 ; /* fetch first 16bit of fifo */ pixelcounter = 0;
-
-#define SHIFT_FIFO  if(!pixelcounter){/* */}	\
-					OUTPUT_ARRAY[WIDTH*LY+LX] 	\
-					= (0xC0000000&fifo)>>30;	\
-					pixelcounter--;				\
-					fifo<<2;
-
-#define CLEAR_FIFO fifo = 0; pixelcounter = -8;
-
 void print_regs(void)
 {
     // 18 characters per line
@@ -189,6 +191,7 @@ int readfff(uint8_t* buffer, char* name);
 void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
 void reset_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
 void remove_all_coredumps(uint16_t coredumpnum);
+void PPU();
 
 // check if second or third char is "," and calculate accordingly (needed for reset_coredump)
 #define CHAR_TO_INT8(R) comma=0;\
