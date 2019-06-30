@@ -52,12 +52,12 @@
 
     - sync CPU & PPU: single thread counter imprecise, then clock every picture.
 
-    - fetcher (1)
+    - ~~fetcher (1)~~
 
         - test: endless loop  
             manual write tile into middle of screen
 
-        - maybe without fifo
+        - ~~maybe without fifo~~
 
     - sync PPU and CPU & get clock fixed (0)
 
