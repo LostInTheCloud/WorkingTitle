@@ -59,7 +59,8 @@ uint32_t OUTPUT_ARRAY[144*160];
 #define BG_MEM_MAP MEM[0x8000]
 
 #define LY MEM[0xFF44]
-#define TX tilecounter
+#define LX pixelcounter
+#define TC tilecounter
 
 // SCY and SCX
 #define SCY MEM[0xFF42]
