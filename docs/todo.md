@@ -29,6 +29,7 @@
 - boot rom (3)
 
 - ppu
+    - substitute generic 0x9000 base address for BG Tiles with actual logic based on the memory flags
 
     -~~fiFo~~
 
