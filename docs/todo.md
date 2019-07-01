@@ -70,3 +70,8 @@
 - Profiler (C code analysis tool)   
 
 - input: SDL thread writes into struct, main reads that struct
+
+- funktionsprologue/epilogue
+    - O2
+    - no vars and calls
+    - alternatively: naked
