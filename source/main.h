@@ -17,9 +17,12 @@
 #define VRAM_HEIGHT 256 // 32x8 px
 
 void* reg_ptr[12];
-uint32_t pixelcounter;   // the amount of pixels that have been pushed into the FiFo
+
+// the amount of pixels that have been pushed 
+// out of the FiFo within the current line
+uint32_t pixelcounter;
+
 uint32_t fifo;
-uint32_t tilecounter;    // the # of the BG Map Tile within the current line that's next to go into the FiFo
 uint32_t OUTPUT_ARRAY[144*160];
 
 #define F (*((uint8_t*) reg_ptr + 0))
@@ -60,7 +63,6 @@ uint32_t OUTPUT_ARRAY[144*160];
 
 #define LY MEM[0xFF44]
 #define LX pixelcounter
-#define TC tilecounter
 
 // SCY and SCX
 #define SCY MEM[0xFF42]

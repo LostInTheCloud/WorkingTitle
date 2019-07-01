@@ -5,27 +5,23 @@ void PPU()
     uint16_t temp;
     if(!LX)}
     {
-        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+TC]) + LY%8];
+        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+(LX/8)+(LY/8)*32]) + LY%8];
         for(uint8_t mask = 0x80; mask != 0; mask>>=1)
         {
             (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&temp))[1]]) & mask);
             (((uint8_t*)(&fifo))[1]) <<= 1;
             (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&temp))[0]]) & mask);
         }
-        TC++;
-        if((LY%8)==7) TC-=32;
     }
     if(!(LX%8))
     {
-        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+TC]) + LY%8];
+        temp = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+(LX/8)+(LY/8)*32]) + LY%8];
         for(uint8_t mask = 0x80; mask != 0; mask>>=1)
         {
             (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&temp))[1]]) & mask);
             (((uint8_t*)(&fifo))[0]) <<= 1;
             (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&temp))[0]]) & mask);
         }
-        TC++;
-        if((LY%8)==7) TC-=32;
     }
     // check for Sprites and Window
     if(LY-SCY >= 0 && LY-SCY < HEIGHT && LX-SCX >= 0 && LX-SCX < WIDTH)
