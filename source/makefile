@@ -19,7 +19,7 @@ $(DIR)%.o: SRC $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
 $(NAME): $(OBJECTS)
-	$(CC) -o $(DIR)$@ $^ $(CFLAGS)
+	$(CC) -o $(DIR)$@ $^ $(CFLAGS) -L./ -l gbsdl -lSDL2 $(sdl2-config --cflags)
 
 clean: 
 	@echo $(shell pushd $(DIR))
@@ -49,12 +49,12 @@ sdl_install:
 	sudo apt-get install clang++ -y
 	clang++ -shared -fPIC -o libgbsdl.so display.cpp exception.cpp
 
-viewer: viewer.c
-	clang -o viewer viewer.c -L./ -l gbsdl -lSDL2 $(sdl2-config --cflags)
-	# Den Library Path neu zu setzen ist nur ein Hack! Man will den Library
-	# Path nicht bis zum Ende der TerminalSession setzen!
-	# Bitte macht das anders. Zum Beispiel durch setzten des
-	# run-time search path in der Ausführbaren Datei. Siehe
-	# https://stackoverflow.com/questions/8482152/whats-the-difference-between-rpath-and-l
-	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
-	./viewer
+# viewer: viewer.c
+# 	clang -o viewer viewer.c -L./ -l gbsdl -lSDL2 $(sdl2-config --cflags)
+# 	# Den Library Path neu zu setzen ist nur ein Hack! Man will den Library
+# 	# Path nicht bis zum Ende der TerminalSession setzen!
+# 	# Bitte macht das anders. Zum Beispiel durch setzten des
+# 	# run-time search path in der Ausführbaren Datei. Siehe
+# 	# https://stackoverflow.com/questions/8482152/whats-the-difference-between-rpath-and-l
+# 	export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:./
+# 	./viewer

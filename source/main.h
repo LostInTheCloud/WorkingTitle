@@ -7,7 +7,9 @@
 #include <unistd.h> 	// stat
 #include <string.h>     // memcpy
 
+#include "display.h"
 #include "ops.h"
+
 // 4194304Hz -> ~238ns * 70224 = 16740000ns
 #define cycle_duration 16740000
 #define NTH_CYCLE 70224
@@ -16,6 +18,10 @@
 #define VRAM_WIDTH 256  // 32x8 px
 #define VRAM_HEIGHT 256 // 32x8 px
 
+// BackGround Debug Window
+#define BG_DBG_WINDOW_WIDTH 128
+#define BG_DBG_WINDOW_HEIGHT 192
+
 void* reg_ptr[12];
 
 // the amount of pixels that have been pushed 
@@ -23,8 +29,11 @@ void* reg_ptr[12];
 uint32_t pixelcounter;
 
 uint32_t fifo;
-uint32_t OUTPUT_ARRAY[144*160];
+uint32_t OUTPUT_ARRAY[WIDTH*HEIGHT];
 uint8_t* MEM;
+uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
+uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},{DARK_GREY, BLACK}};
+uint8_t* GAME_NAME;
 
 #define F (*((uint8_t*) reg_ptr + 0))
 #define A (*((uint8_t*) reg_ptr + 1))
@@ -151,7 +160,6 @@ uint8_t interrupt_master_enable;
 
 #define LCD_MODE_FLAG (MEM[0xFF41]&=0x3)
 
-
 int OPCODE_LENGTH[0x100] =
 {
     1, 3, 1, 1, 1, 1, 2, 1, 3, 1, 1, 1, 1, 1, 2, 1,
@@ -213,6 +221,10 @@ void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
 void reset_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
 void remove_all_coredumps(uint16_t coredumpnum);
 void PPU();
+
+void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr);
+void convert_line(uint8_t* input_ptr, uint32_t* output_ptr);
+void background_tiles();
 
 // check if second or third char is "," and calculate accordingly (needed for reset_coredump)
 #define CHAR_TO_INT8(R) comma=0;\
