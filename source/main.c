@@ -2152,10 +2152,10 @@ int main()
             }
         }
         // check for Sprites and Window
-        // if(LY-SCY >= 0 && LY-SCY < HEIGHT && (int32_t)LX-SCX >= 0 && LX-SCX < WIDTH)
-        // {
-        //     OUTPUT_ARRAY[VRAM_WIDTH*(LY-SCY)+(LX-SCX)] = (0xC0000000&fifo)>>30;
-        // }
+        if(LY-SCY >= 0 && LY-SCY < HEIGHT && (int32_t)LX-SCX >= 0 && LX-SCX < WIDTH)
+        {
+            OUTPUT_ARRAY[WIDTH*(LY-SCY)+(LX-SCX)] = (0xC0000000&fifo)>>30;
+        }
         LX++; 
         fifo<<2;
         ppu_cycle++;
@@ -2183,11 +2183,14 @@ int main()
         
         for (int i = 0; i < WIDTH*HEIGHT; ++i)
         {
-            //OUTPUT_ARRAY[i+0] = DEFAULT_PALETTE[OUTPUT_ARRAY[i+0]];
-            OUTPUT_ARRAY[i+0] = DEFAULT_PALETTE[rand()%4];
+            OUTPUT_ARRAY[i+0] = DEFAULT_PALETTE[OUTPUT_ARRAY[i+0]];
         }
 
         display_draw(OUTPUT_ARRAY);
+
+        // sleep(5);
+
+        // exit(0);
 
         fprintf(stderr, ".");
         if(++x==60)
@@ -2413,8 +2416,5 @@ void background_tiles()
     display_init(BG_DBG_WINDOW_WIDTH, BG_DBG_WINDOW_HEIGHT, 6);
     display_set_window_title("Working Title - Tile Viewer");
     display_draw(pixel);
-
-    sleep(10);
-
     free(pixel);
 }
