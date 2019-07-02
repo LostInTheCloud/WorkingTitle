@@ -11,8 +11,8 @@
 // 4194304Hz -> ~238ns * 70224 = 16740000ns
 #define cycle_duration 16740000
 #define NTH_CYCLE 70224
-#define HEIGHT = 144;   // 18x8 px
-#define WIDTH = 160;    // 20x8 px
+#define HEIGHT 144      // 18x8 px
+#define WIDTH 160       // 20x8 px
 #define VRAM_WIDTH 256  // 32x8 px
 #define VRAM_HEIGHT 256 // 32x8 px
 
@@ -24,6 +24,7 @@ uint32_t pixelcounter;
 
 uint32_t fifo;
 uint32_t OUTPUT_ARRAY[144*160];
+uint8_t* MEM;
 
 #define F (*((uint8_t*) reg_ptr + 0))
 #define A (*((uint8_t*) reg_ptr + 1))
