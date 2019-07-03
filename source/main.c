@@ -58,10 +58,12 @@ int main()
     strcpy(title, "Working Title - ");
     memcpy(title+16, GAME_NAME, strlen(GAME_NAME));
     display_set_window_title(title);
+    LOG_OUTPUT = fopen("log.log", "w");
 
     uint8_t   t8 [8];
     uint16_t  t16[8];
     uint32_t  t32[8];
+    uint8_t* t8p;
 
     int x = 0;
 
@@ -2133,31 +2135,40 @@ int main()
     {
         if(!LX)
         {        
-            t16[0] = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+(LX/8)+(LY/8)*32]) + LY%8];
+            t32[0] = 16*MEM[0x9800+(LX/8)+(LY/8)*32];
+            t8p = (void*) MEM;
+            t8p += 0x8000;
+            t8p += t32[0];
+            t8p += 2*(LY%8);
             for(uint8_t mask = 0x80; mask != 0; mask>>=1)
             {
-                (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&t16[0]))[1]) & mask);
-                (((uint8_t*)(&fifo))[1]) <<= 1;
-                (((uint8_t*)(&fifo))[1]) &= ((((uint8_t*)(&t16[0]))[0]) & mask);
+                (((uint16_t*)(&fifo))[1]) |= (t8p[1] & mask);
+                (((uint16_t*)(&fifo))[1]) <<= 1;
+                (((uint16_t*)(&fifo))[1]) |= (t8p[0] & mask);
             }
         }
         if(!(LX%8))
         {
-            t16[0] = ((uint16_t*) MEM)[0x9000 + (MEM[0x9800+(LX/8)+(LY/8)*32]) + LY%8];
+            t32[0] = 16*MEM[0x9800+(LX/8)+1+(LY/8)*32];
+            t8p = (void*) MEM;
+            t8p += 0x8000;
+            t8p += t32[0];
+            t8p += 2*(LY%8);
             for(uint8_t mask = 0x80; mask != 0; mask>>=1)
             {
-                (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&t16[0]))[1]) & mask);
-                (((uint8_t*)(&fifo))[0]) <<= 1;
-                (((uint8_t*)(&fifo))[0]) &= ((((uint8_t*)(&t16[0]))[0]) & mask);
+                (((uint16_t*)(&fifo))[0]) |= (t8p[1] & mask);
+                (((uint16_t*)(&fifo))[0]) <<= 1;
+                (((uint16_t*)(&fifo))[0]) |= (t8p[0] & mask);
             }
         }
+
         // check for Sprites and Window
         if(LY-SCY >= 0 && LY-SCY < HEIGHT && (int32_t)LX-SCX >= 0 && LX-SCX < WIDTH)
         {
             OUTPUT_ARRAY[WIDTH*(LY-SCY)+(LX-SCX)] = (0xC0000000&fifo)>>30;
         }
         LX++; 
-        fifo<<2;
+        fifo<<=2;
         ppu_cycle++;
         current_line_cycles++;
 
@@ -2188,9 +2199,9 @@ int main()
 
         display_draw(OUTPUT_ARRAY);
 
-        // sleep(5);
+        sleep(15);
 
-        // exit(0);
+        exit(0);
 
         fprintf(stderr, ".");
         if(++x==60)
@@ -2213,6 +2224,7 @@ int main()
     end:
 
     free(MEM);
+    fclose(LOG_OUTPUT);
 
     return EXIT_SUCCESS;
 }

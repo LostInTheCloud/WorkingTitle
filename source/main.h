@@ -34,6 +34,7 @@ uint8_t* MEM;
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
 uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},{DARK_GREY, BLACK}};
 uint8_t* GAME_NAME;
+FILE* LOG_OUTPUT;
 
 #define F (*((uint8_t*) reg_ptr + 0))
 #define A (*((uint8_t*) reg_ptr + 1))
