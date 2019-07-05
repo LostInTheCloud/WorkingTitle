@@ -17,7 +17,7 @@ int main()
     memset(MEM, 0, sizeof(uint8_t) * 65536);
 
     // load ROM into Memory (Bank 0 and Bank 1) 
-    err = readfff(MEM, "ROMs/Tetris.gb");
+    // err = readfff(MEM, "ROMs/Tetris.gb");
 
     if(err == EXIT_FAILURE) {return EXIT_FAILURE;}
 
