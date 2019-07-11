@@ -71,3 +71,7 @@ source/pokemontiledata\.txt
 source/test\.c
 
 source/exe
+
+\.idea/
+
+cmake-build-default/
