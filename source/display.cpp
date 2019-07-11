@@ -1,7 +1,7 @@
 #include "display.h"
 
-#include <stdint.h>
-#include <stdlib.h>
+#include <cstdint>
+#include <cstdlib>
 
 #include "exception.hpp"
 
@@ -23,7 +23,8 @@ void display_init(size_t native_width, size_t native_height, size_t window_scale
 
   uint32_t flags = 0;
 
-  window = SDL_CreateWindow("DMG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, width*scale, height*scale, flags | SDL_WINDOW_RESIZABLE);
+  window = SDL_CreateWindow("DMG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, static_cast<int>(width * scale),
+                            static_cast<int>(height * scale), flags | SDL_WINDOW_RESIZABLE);
 
   if(window == nullptr) { throw RuntimeError(SDL_GetError()); }
 

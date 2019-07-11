@@ -75,3 +75,5 @@ source/exe
 \.idea/
 
 cmake-build-default/
+
+cmake-build-debug/

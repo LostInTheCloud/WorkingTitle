@@ -33,7 +33,7 @@ uint32_t OUTPUT_ARRAY[WIDTH*HEIGHT];
 uint8_t* MEM;
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
 uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},{DARK_GREY, BLACK}};
-uint8_t* GAME_NAME;
+char* GAME_NAME;
 FILE* LOG_OUTPUT;
 
 #define F (*((uint8_t*) reg_ptr + 0))
@@ -215,16 +215,16 @@ void print_regs(void)
     printf("##################\n");
 }
 
-void print_mem(uint16_t low, uint16_t high, char mode, uint8_t* MEM);
-void read_header(uint8_t* buf);
-int readfff(uint8_t* buffer, char* name);
-void create_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
-void reset_coredump(uint8_t* MEM, uint32_t length, uint16_t coredumpnum);
+void print_mem(uint16_t low, uint16_t high, char mode);
+void read_header(const uint8_t* buf);
+int readfff(uint8_t *buffer);
+void create_coredump(uint32_t length, uint16_t coredumpnum);
+void reset_coredump(uint32_t length, uint16_t coredumpnum);
 void remove_all_coredumps(uint16_t coredumpnum);
 void PPU();
 
 void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr);
-void convert_line(uint8_t* input_ptr, uint32_t* output_ptr);
+void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr);
 void background_tiles();
 
 // check if second or third char is "," and calculate accordingly (needed for reset_coredump)
