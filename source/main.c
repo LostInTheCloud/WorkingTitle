@@ -54,6 +54,7 @@ int main(int argc, char **argv)
     uint8_t opcode;
     uint8_t extended_opcode;
     display_init(WIDTH, HEIGHT, 6);
+    // todo: fix invalid writes
     char *title = malloc(16 + strlen(GAME_NAME));
     strcpy(title, "Working Title - ");
     memcpy(title + 16, GAME_NAME, strlen(GAME_NAME));
@@ -1706,10 +1707,12 @@ int main(int argc, char **argv)
         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
     }
 
-    goto loop;
+    //goto loop;
 
     free(MEM);
     fclose(LOG_OUTPUT);
+    free(GAME_NAME);
+    free(title);
 
     return EXIT_SUCCESS;
 }
@@ -1773,7 +1776,7 @@ void read_header(const uint8_t *buf)
         if(buf[0x135 + i] == 0xFF){break;}
     }
     //read cartridgetype
-    char *cartridgetype = malloc(sizeof(char) * 32);
+    char *cartridgetype = "unreadable";
     if(buf[0x147] == 0x00){cartridgetype = "ROM ONLY";}
     if(buf[0x147] == 0x01){cartridgetype = "MBC1";}
     if(buf[0x147] == 0x02){cartridgetype = "MBC1+RAM";}
