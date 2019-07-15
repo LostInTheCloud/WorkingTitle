@@ -1772,7 +1772,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
 void read_header(const uint8_t* buf)
 {
     // read GAME_NAME
-    GAME_NAME = malloc(16 * sizeof(uint8_t));
+    GAME_NAME = malloc(17 * sizeof(char));
     int i = 0;
     for(; i < 16 && buf[0x134 + i] != 0x00; i++)
     {
