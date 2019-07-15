@@ -16,10 +16,11 @@ int main(int argc, char **argv)
     }
     memset(MEM, 0, sizeof(uint8_t) * 65536);
 
-    // load ROM into Memory (Bank 0 and Bank 1) 
-    // err = readfff(MEM, "ROMs/Tetris.gb");
-
+    // ROM into Memory (Bank 0 and Bank 1)
+    err = readfff(MEM, "Tetris.gb");
     if(err == EXIT_FAILURE){return EXIT_FAILURE;}
+
+    read_header(MEM);
 
     // create coredump folder, if not already existent
     struct stat st = {0};
@@ -27,8 +28,6 @@ int main(int argc, char **argv)
     {
         mkdir("./coredumps", 0777);
     }
-    read_header(MEM);
-
 
     // TEST
 
@@ -1773,16 +1772,14 @@ void print_mem(uint16_t low, uint16_t high, char mode)
 void read_header(const uint8_t *buf)
 {
     // read GAME_NAME
-    GAME_NAME = malloc(16 * (sizeof(uint8_t)));
-    for(int i = 0; i < 16; i++)
+    GAME_NAME = malloc(16 * sizeof(uint8_t));
+    int i = 0;
+    for(; i < 16 && buf[0x134 + i] != 0x00; i++)
     {
         GAME_NAME[i] = (char) buf[0x134 + i];
-        if(buf[0x135 + i] == 0xFF)
-        {
-            GAME_NAME[i+1] = '\0';
-            break;
-        }
     }
+    GAME_NAME[i] = '\0';
+
     //read cartridgetype
     char *cartridgetype = "unreadable";
     if(buf[0x147] == 0x00){cartridgetype = "ROM ONLY";}
