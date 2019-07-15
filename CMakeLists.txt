@@ -1,8 +1,8 @@
 cmake_minimum_required(VERSION 3.10)
 project(BA)
 
+set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 14)
-set(CMAKE_CXX_FLAGS )
 
 include_directories(source)
 add_executable(WorkingTitle source/main.c source/display.cpp source/exception.cpp)

@@ -55,9 +55,9 @@ int main(int argc, char **argv)
     uint8_t extended_opcode;
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
-    char *title = malloc(16 + strlen(GAME_NAME));
+    char *title = malloc(16 + strlen(GAME_NAME) + 1);
     strcpy(title, "Working Title - ");
-    memcpy(title + 16, GAME_NAME, strlen(GAME_NAME));
+    strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
 
@@ -1690,6 +1690,9 @@ int main(int argc, char **argv)
 
         display_draw(OUTPUT_ARRAY);
 
+        sleep(3);
+        goto end;
+
         fprintf(stderr, ".");
         if(++x == 60)
         {
@@ -1707,8 +1710,9 @@ int main(int argc, char **argv)
         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
     }
 
-    //goto loop;
+    goto loop;
 
+    end:
     free(MEM);
     fclose(LOG_OUTPUT);
     free(GAME_NAME);
@@ -1773,7 +1777,11 @@ void read_header(const uint8_t *buf)
     for(int i = 0; i < 16; i++)
     {
         GAME_NAME[i] = (char) buf[0x134 + i];
-        if(buf[0x135 + i] == 0xFF){break;}
+        if(buf[0x135 + i] == 0xFF)
+        {
+            GAME_NAME[i+1] = '\0';
+            break;
+        }
     }
     //read cartridgetype
     char *cartridgetype = "unreadable";
