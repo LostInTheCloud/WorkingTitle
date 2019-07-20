@@ -6,7 +6,7 @@
 
 ### Memory
 
-|||
+| | |
 |:---:|:---:|
 Interrupt Enable Regs | 0xffff
 Internal RAM | 0xff80
@@ -19,8 +19,7 @@ echo | 0xe000
 8kB switchable RAM bank | 0xa000
 8kB VRAM | 0x8000
 16kB switchable ROM bank | 0x4000
-16 kB ROM bank #0 | 0x0000
-```// todo: find out about the upper bound of interrupt enable regs```
+16 kB ROM bank #0 | 0x0000```// todo: find out about the upper bound of interrupt enable regs```
 
 #### echo
 

@@ -57,7 +57,8 @@
                 if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); 
 
 // 0x10
-#define OP_STOP  /* TODO */
+// todo
+#define OP_STOP
 
 // 0x11
 #define OP_LD_DE_D16 DE = *((uint16_t*) (MEM+PC+1));
@@ -140,6 +141,7 @@
 #define OP_LD_H_D8 H = MEM[PC+1];
 
 // 0x27 decimal adjust register A
+// todo
 #define OP_DAA if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_H(0); /* TODO */
 // https://www.tutorialspoint.com/daa-instruction-in-8085-microprocessor
 
@@ -205,6 +207,7 @@
                      if((uint32_t)HL+(uint32_t)SP<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+SP; SET_FLAG_N(0);
 // 0x3A
+// todo
 #define OP_LD_A_PHLD A=MEM[HL--];
 
 // 0x3B
@@ -387,7 +390,8 @@
 #define OP_LD_PHL_L MEM[HL]=L;
 
 // 0x76
-#define OP_HALT  /* TODO HALT */
+// todo
+#define OP_HALT
 
 // 0x77
 #define OP_LD_PHL_A MEM[HL]=A;

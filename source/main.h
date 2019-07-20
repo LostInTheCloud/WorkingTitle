@@ -54,19 +54,19 @@ FILE* LOG_OUTPUT;
 
 // Zero Flag
 #define FLAG_Z ((F&0x80)>>7)
-#define SET_FLAG_Z(X) F&=0x7F; F|=X<<7;
+#define SET_FLAG_Z(X) F&=0x7F; F|=(X)<<7;
 
 // Add/Sub Flag (BCD)
 #define FLAG_N ((F&0x40)>>6)
-#define SET_FLAG_N(X) F&=0xBF; F|=X<<6;
+#define SET_FLAG_N(X) F&=0xBF; F|=(X)<<6;
 
 //Half Carry Flag
 #define FLAG_H ((F&0x20)>>5)
-#define SET_FLAG_H(X) F&=0xDF; F|=X<<5;
+#define SET_FLAG_H(X) F&=0xDF; F|=(X)<<5;
 
 // Carry Flag
 #define FLAG_C ((F&0x10)>>4)
-#define SET_FLAG_C(X) F&=0xEF; F|=X<<4;
+#define SET_FLAG_C(X) F&=0xEF; F|=(X)<<4;
 
 // 0x9800 - 0x9FFF
 #define BG_CUR_FRAME MEM[0x9800]
@@ -83,15 +83,15 @@ FILE* LOG_OUTPUT;
 
 #define WINDOW_Y_COORDINATE MEM[0xFF4A]
 #define WINDOW_X_COORDINATE MEM[0xFF4B]
-#define SPRITE_Y_COORDINATE(x) MEM[0xFE00+x*4]
-#define SPRITE_X_COORDINATE(x) MEM[0xFE01+x*4]
+#define SPRITE_Y_COORDINATE(x) MEM[0xFE00+(x)*4]
+#define SPRITE_X_COORDINATE(x) MEM[0xFE01+(x)*4]
 
-#define PRIORITY(x) MEM[0xFE03+x*4]&128
+#define PRIORITY(x) MEM[0xFE03+(x)*4]&128
 // flipped vertically
-#define IS_FLIPPED_V(x) MEM[0xFE03+x*4]&64
+#define IS_FLIPPED_V(x) MEM[0xFE03+(x)*4]&64
 // flipped horizontal
-#define IS_FLIPPED_H(x) MEM[0xFE03+x*4]&32
-#define PALETTE(x) MEM[0xFE03+x*4]&16
+#define IS_FLIPPED_H(x) MEM[0xFE03+(x)*4]&32
+#define PALETTE(x) MEM[0xFE03+(x)*4]&16
 
 uint8_t interrupt_master_enable;
 
@@ -102,15 +102,15 @@ uint8_t interrupt_master_enable;
 #define INTERRUPT_ENABLE        (MEM[0xFFFF])
 #define INTERRUPT_FLAGS         (MEM[0xFF0F])
 #define INTERRUPT_VBLANK        (INTERRUPT_FLAGS&0x01)
-#define SET_INTERRUPT_VBLANK(X) INTERRUPT_FLAGS&=0x01; INTERRUPT_FLAGS|=X;
+#define SET_INTERRUPT_VBLANK(X) INTERRUPT_FLAGS&=0x01; INTERRUPT_FLAGS|=(X);
 #define INTERRUPT_LCD           (INTERRUPT_FLAGS&0x02)
-#define SET_INTERRUPT_LCD(X)    INTERRUPT_FLAGS&=0x02; INTERRUPT_FLAGS|=X<<1;
+#define SET_INTERRUPT_LCD(X)    INTERRUPT_FLAGS&=0x02; INTERRUPT_FLAGS|=(X)<<1;
 #define INTERRUPT_TIMER         (INTERRUPT_FLAGS&0x04)
-#define SET_INTERRUPT_TIMER(X)  INTERRUPT_FLAGS&=0x04; INTERRUPT_FLAGS|=X<<2;
+#define SET_INTERRUPT_TIMER(X)  INTERRUPT_FLAGS&=0x04; INTERRUPT_FLAGS|=(X)<<2;
 #define INTERRUPT_SERIAL        (INTERRUPT_FLAGS&0x08)
-#define SET_INTERRUPT_SERIAL(X) INTERRUPT_FLAGS&=0x08; INTERRUPT_FLAGS|=X<<3;
+#define SET_INTERRUPT_SERIAL(X) INTERRUPT_FLAGS&=0x08; INTERRUPT_FLAGS|=(X)<<3;
 #define INTERRUPT_JOYPAD        (INTERRUPT_FLAGS&0x10)
-#define SET_INTERRUPT_JOYPAD(X) INTERRUPT_FLAGS&=0x10; INTERRUPT_FLAGS|=X<<4;
+#define SET_INTERRUPT_JOYPAD(X) INTERRUPT_FLAGS&=0x10; INTERRUPT_FLAGS|=(X)<<4;
 
 #define ENABLE_VBLANK           INTERRUPT_ENABLE|=0x01;
 #define DISABLE_VBLANK          INTERRUPT_ENABLE&=0xFE;
@@ -227,8 +227,6 @@ void reset_coredump(uint32_t length, uint16_t coredumpnum);
 
 void remove_all_coredumps(uint16_t coredumpnum);
 
-void PPU();
-
 void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr);
 
 void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr);
@@ -239,22 +237,22 @@ void background_tiles();
 #define CHAR_TO_INT8(R) comma=0;\
                         buf[0]=fgetc(coredump); \
                         buf[1]=fgetc(coredump); \
-                        if(buf[1]==44){R=buf[0]-48; comma=1;} \
+                        if(buf[1]==44){(R)=buf[0]-48; comma=1;} \
                         else{buf[2]=fgetc(coredump); \
-                            if(buf[2]==44){R=buf[1]-48+(buf[0]-48)*10; comma=1;} \
-                            else{R=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100;}} \
+                            if(buf[2]==44){(R)=buf[1]-48+(buf[0]-48)*10; comma=1;} \
+                            else{(R)=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100;}} \
                         if(!comma){fgetc(coredump);}
 
 #define CHAR_TO_INT16(R) buf[0]=fgetc(coredump); \
                          buf[1]=fgetc(coredump); \
-                         if(buf[1]==44){R=buf[0]-48; comma=1;} \
+                         if(buf[1]==44){(R)=buf[0]-48; comma=1;} \
                          else{buf[2]=fgetc(coredump); \
-                            if(buf[2]==44){R=buf[1]-48+(buf[0]-48)*10; comma=1;} \
+                            if(buf[2]==44){(R)=buf[1]-48+(buf[0]-48)*10; comma=1;} \
                             else{buf[3]=fgetc(coredump);\
-                                if(buf[3]==44){R=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100; comma=1;}\
+                                if(buf[3]==44){(R)=buf[2]-48+(buf[1]-48)*10+(buf[0]-48)*100; comma=1;}\
                                 else{buf[4]=fgetc(coredump);\
-                                    if(buf[4]==44){R=buf[3]-48+(buf[2]-48)*10+(buf[1]-48)*100+(buf[0]-48)*1000;comma=1;}\
-                                    else{R=buf[4]-48+(buf[3]-48)*10+(buf[2]-48)*100+(buf[1]-48)*1000+(buf[0]-48)*10000;comma=1;}}}} \
+                                    if(buf[4]==44){(R)=buf[3]-48+(buf[2]-48)*10+(buf[1]-48)*100+(buf[0]-48)*1000;comma=1;}\
+                                    else{(R)=buf[4]-48+(buf[3]-48)*10+(buf[2]-48)*100+(buf[1]-48)*1000+(buf[0]-48)*10000;comma=1;}}}} \
                          if(!comma){fgetc(coredump); comma=0;}
 
 // flags
