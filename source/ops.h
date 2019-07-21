@@ -833,9 +833,9 @@
 #define OP_RST_20 *(((uint16_t*)MEM)+SP-1)=PC; SP-=2; PC=0x20;
 
 // 0xE8
-// todo: (HL&(2047+bla))<blub or ((HL&2047)+bla)<blub ?
-#define OP_ADD_SP_R8 if((HL&2047)+(*((int8_t*)MEM+PC+1))<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(*((int8_t*)MEM+PC+1))<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// todo: HL&2047
+#define OP_ADD_SP_R8 if(((HL&2047)+(*((int8_t*)MEM+PC+1)))<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                     if(((uint32_t)HL+(*((int8_t*)MEM+PC+1)))<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                      HL=HL+(*((int8_t*)MEM+PC+1)); SET_FLAG_Z(0); SET_FLAG_N(0);
 
 // 0xE9
@@ -874,9 +874,9 @@
 #define OP_RST_30 *(((uint16_t*)MEM)+SP-1)=PC; SP-=2; PC=0x30;
 
 // 0xF8
-// todo: (SP&(2047+bla))<blub or ((SP&2047)+bla)<blub ?
-#define OP_LD_HL_SP_R8  if((SP&2047)+(*((int8_t*)MEM+PC+1))<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                        if((uint32_t)SP+(*((int8_t*)MEM+PC+1))<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
+// todo: SP&2047
+#define OP_LD_HL_SP_R8  if(((SP&2047)+(*((int8_t*)MEM+PC+1)))<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
+                        if(((uint32_t)SP+(*((int8_t*)MEM+PC+1)))<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
                         HL=SP+(*((int8_t*)MEM+PC+1)); SET_FLAG_Z(0); SET_FLAG_N(0);
 
 // 0xF9
