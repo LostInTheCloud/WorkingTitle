@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(int argc, char** argv)
+int main(int argc, char **argv)
 {
     int err;
 
@@ -31,7 +31,7 @@ int main(int argc, char** argv)
 
     // TEST
 
-    FILE* coredump = fopen("Tetris.dump", "r");
+    FILE *coredump = fopen("Tetris.dump", "r");
 
     fread(MEM, 1, 65536, coredump);
 
@@ -54,7 +54,7 @@ int main(int argc, char** argv)
     uint8_t extended_opcode;
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
-    char* title = malloc(16 + strlen(GAME_NAME) + 1);
+    char *title = malloc(16 + strlen(GAME_NAME) + 1);
     strcpy(title, "Working Title - ");
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
@@ -63,7 +63,7 @@ int main(int argc, char** argv)
     uint8_t t8[8];
     uint16_t t16[8];
     uint32_t t32[8];
-    uint8_t* t8p;
+    uint8_t *t8p;
 
     int x = 0;
 
@@ -1623,38 +1623,62 @@ int main(int argc, char** argv)
     }
     else    // PPU's turn
     {
+        if(ppu_cycle < 80)
+        {
+            // OAM search
+
+            memset(VISIBLE_SPRITE_ARRAY, 0, 10);
+            t8[0] = 0; // visible_sprite_array index
+            for(int i = 0; i < 40; i++)
+            {
+                if(SPRITE_Y_COORDINATE(i)>LY && SPRITE_Y_COORDINATE(i) <= LY+8)
+                {
+                    VISIBLE_SPRITE_ARRAY[t8[0]] = ((uint32_t *) (MEM + 0xFE00))[i];
+                    t8[0]++;
+                    if(t8[0] == 10) break;
+                }
+            }
+
+            ppu_cycle = 80;
+            goto loop;
+        }
+
+
         if(!LX)
         {
             t32[0] = (uint32_t) (16 * MEM[0x9800 + (LX / 8) + (LY / 8) * 32]);
-            t8p = (void*) MEM;
+            t8p = (void *) MEM;
             t8p += 0x8000;
             t8p += t32[0];
             t8p += 2 * (LY % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t*) (&fifo))[1]) <<= 1u;
-                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t *) (&fifo))[1]) |= (uint16_t) (t8p[1] & mask);
+                (((uint16_t *) (&fifo))[1]) <<= 1u;
+                (((uint16_t *) (&fifo))[1]) |= (uint16_t) (t8p[0] & mask);
             }
         }
         if(!(LX % 8))
         {
             t32[0] = (uint32_t) (16 * MEM[0x9800 + (LX / 8) + 1 + (LY / 8) * 32]);
-            t8p = (void*) MEM;
+            t8p = (void *) MEM;
             t8p += 0x8000;
             t8p += t32[0];
             t8p += 2 * (LY % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t*) (&fifo))[0]) <<= 1u;
-                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
+                (((uint16_t *) (&fifo))[0]) <<= 1u;
+                (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
             }
         }
 
         // check for Sprites and Window
         if(LY - SCY >= 0 && LY - SCY < HEIGHT && (int32_t) LX - SCX >= 0 && LX - SCX < WIDTH)
         {
+            // check for sprite
+            // load pixel
+            // todo: #23: pixel mixing
             OUTPUT_ARRAY[WIDTH * (LY - SCY) + (LX - SCX)] = (0xC0000000 & fifo) >> 30u;
         }
         LX++;
@@ -1689,7 +1713,7 @@ int main(int argc, char** argv)
 
         display_draw(OUTPUT_ARRAY);
 
-        sleep(3);
+        sleep(300);
         goto end;
 
         fprintf(stderr, ".");
@@ -1748,7 +1772,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
     // mode b for binary output
     if(mode == 'b')
     {
-        uint8_t* buf = malloc(sizeof(uint8_t) * 8);
+        uint8_t *buf = malloc(sizeof(uint8_t) * 8);
         for(int i = 0; i < n; i++)
         {
             buf[0] = (uint8_t) (MEM[low + i] & 1u ? 1u : 0u);
@@ -1769,7 +1793,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
     }
 }
 
-void read_header(const uint8_t* buf)
+void read_header(const uint8_t *buf)
 {
     // read GAME_NAME
     GAME_NAME = malloc(17 * sizeof(char));
@@ -1781,7 +1805,7 @@ void read_header(const uint8_t* buf)
     GAME_NAME[i] = '\0';
 
     //read cartridgetype
-    char* cartridgetype = "unreadable";
+    char *cartridgetype = "unreadable";
     if(buf[0x147] == 0x00){cartridgetype = "ROM ONLY";}
     if(buf[0x147] == 0x01){cartridgetype = "MBC1";}
     if(buf[0x147] == 0x02){cartridgetype = "MBC1+RAM";}
@@ -1822,10 +1846,10 @@ void read_header(const uint8_t* buf)
     printf("Name: %s\nCartridgetype: %s\nBanks:%i\nRAM Size:%i\n", GAME_NAME, cartridgetype, banks, ramsize);
 }
 
-int readfff(uint8_t* buffer, const char* filename)
+int readfff(uint8_t *buffer, const char *filename)
 {
     int err;
-    FILE* cartridge = fopen(filename, "r");
+    FILE *cartridge = fopen(filename, "r");
     if(!cartridge)
     {
         fprintf(stderr, "%s failed: fopen returned NULL\n", __func__);
@@ -1870,8 +1894,8 @@ int readfff(uint8_t* buffer, const char* filename)
 
 void create_coredump(uint32_t length, uint16_t coredumpnum)
 {
-    FILE* coredump;
-    char* path = malloc(sizeof(char) * 64);
+    FILE *coredump;
+    char *path = malloc(sizeof(char) * 64);
     sprintf(path, "./coredumps/coredump%u.dmp", coredumpnum);
     coredump = fopen(path, "w");
 
@@ -1884,8 +1908,8 @@ void create_coredump(uint32_t length, uint16_t coredumpnum)
 
 void reset_coredump(uint32_t length, uint16_t coredumpnum)
 {
-    FILE* coredump;
-    char* path = malloc(sizeof(char) * 64);
+    FILE *coredump;
+    char *path = malloc(sizeof(char) * 64);
     sprintf(path, "./coredumps/coredump%u.dmp", coredumpnum);
     coredump = fopen(path, "r");
 
@@ -1900,13 +1924,13 @@ void remove_all_coredumps(uint16_t coredumpnum)
 {
     for(uint16_t i = 0; i < coredumpnum + 1; i++)
     {
-        char* txt = malloc(sizeof(char) * 64);
+        char *txt = malloc(sizeof(char) * 64);
         sprintf(txt, "./coredumps/coredump%u.dmp", i);
         remove(txt);
     }
 }
 
-void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr)
+void convert_tile(uint8_t *input_ptr, uint32_t *output_ptr)
 {
     for(int i = 0; i < 8; i++)
     {
@@ -1915,7 +1939,7 @@ void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr)
 
 }
 
-void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr)
+void convert_line(const uint8_t *input_ptr, uint32_t *output_ptr)
 {
     for(int i = 0; i < 8; i++)
     {
@@ -1926,7 +1950,7 @@ void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr)
 
 void background_tiles()
 {
-    uint32_t* pixel = malloc(BG_DBG_WINDOW_HEIGHT * BG_DBG_WINDOW_WIDTH * sizeof(uint32_t));
+    uint32_t *pixel = malloc(BG_DBG_WINDOW_HEIGHT * BG_DBG_WINDOW_WIDTH * sizeof(uint32_t));
     size_t i = 0;
 
     for(i = 0; i < BG_DBG_WINDOW_WIDTH * BG_DBG_WINDOW_HEIGHT; ++i)

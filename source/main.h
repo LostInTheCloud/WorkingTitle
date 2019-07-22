@@ -29,6 +29,7 @@ void* reg_ptr[12];
 uint32_t pixelcounter;
 
 uint32_t fifo;
+uint32_t VISIBLE_SPRITE_ARRAY[10];
 uint32_t OUTPUT_ARRAY[WIDTH * HEIGHT];
 uint8_t* MEM;
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
