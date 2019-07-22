@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 
     LY = 0;
 
-    background_tiles();
+//    background_tiles();
 
     // /TEST
 
@@ -1623,7 +1623,7 @@ int main(int argc, char **argv)
     }
     else    // PPU's turn
     {
-        if(ppu_cycle < 80)
+        if((ppu_cycle % 456) < 80)
         {
             // OAM search
 
@@ -1631,15 +1631,23 @@ int main(int argc, char **argv)
             t8[0] = 0; // visible_sprite_array index
             for(int i = 0; i < 40; i++)
             {
-                if(SPRITE_Y_COORDINATE(i)>LY && SPRITE_Y_COORDINATE(i) <= LY+8)
+                t32[2] = SPRITE_Y_COORDINATE(i);
+                t32[3] = LY;
+                t32[4] = LY + 8;
+                if(SPRITE_Y_COORDINATE(i) > LY && SPRITE_Y_COORDINATE(i) <= LY + 8)
                 {
-                    VISIBLE_SPRITE_ARRAY[t8[0]] = ((uint32_t *) (MEM + 0xFE00))[i];
+                    VISIBLE_SPRITE_ARRAY[t8[0]] = i; // ((uint32_t *) (MEM + 0xFE00))[i];
                     t8[0]++;
-                    if(t8[0] == 10) break;
+                    if(t8[0] == 10)
+                    {
+                        fprintf(stderr, "help");
+                        break;
+                    }
                 }
             }
 
-            ppu_cycle = 80;
+            current_line_cycles = 80;
+            ppu_cycle += 80;
             goto loop;
         }
 
@@ -1662,6 +1670,7 @@ int main(int argc, char **argv)
         {
             t32[0] = (uint32_t) (16 * MEM[0x9800 + (LX / 8) + 1 + (LY / 8) * 32]);
             t8p = (void *) MEM;
+            // todo: #6
             t8p += 0x8000;
             t8p += t32[0];
             t8p += 2 * (LY % 8);
@@ -1676,9 +1685,29 @@ int main(int argc, char **argv)
         // check for Sprites and Window
         if(LY - SCY >= 0 && LY - SCY < HEIGHT && (int32_t) LX - SCX >= 0 && LX - SCX < WIDTH)
         {
-            // check for sprite
-            // load pixel
-            // todo: #23: pixel mixing
+            for(int i = 0; i < 10; i++)
+            {
+                if(SPRITE_X_COORDINATE(VISIBLE_SPRITE_ARRAY[i]) == LX + 8)
+                {
+                    // load CHR code
+                    t8[0] = SPRITE_CHR_CODE(VISIBLE_SPRITE_ARRAY[i]);
+                    t8[0] *= 0x10;
+                    // load 2pixelBytes
+                    t8p = (void *) MEM;
+                    // todo: #6
+                    t8p += 0x8800;
+                    t8p += t8[0];
+                    t8p += 2 * (8 + LY - SPRITE_Y_COORDINATE(VISIBLE_SPRITE_ARRAY[i]));
+                    // todo: #23: pixel mixing
+                    // here we just copy the sprite in there
+                    for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
+                    {
+                        (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
+                        (((uint16_t *) (&fifo))[0]) <<= 1u;
+                        (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                    }
+                }
+            }
             OUTPUT_ARRAY[WIDTH * (LY - SCY) + (LX - SCX)] = (0xC0000000 & fifo) >> 30u;
         }
         LX++;
@@ -1713,7 +1742,7 @@ int main(int argc, char **argv)
 
         display_draw(OUTPUT_ARRAY);
 
-        sleep(300);
+        sleep(30);
         goto end;
 
         fprintf(stderr, ".");

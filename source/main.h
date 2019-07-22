@@ -29,7 +29,7 @@ void* reg_ptr[12];
 uint32_t pixelcounter;
 
 uint32_t fifo;
-uint32_t VISIBLE_SPRITE_ARRAY[10];
+uint8_t VISIBLE_SPRITE_ARRAY[10];
 uint32_t OUTPUT_ARRAY[WIDTH * HEIGHT];
 uint8_t* MEM;
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
@@ -70,6 +70,7 @@ FILE* LOG_OUTPUT;
 #define SET_FLAG_C(X) F&=0xEF; F|=(X)<<4;
 
 // 0x9800 - 0x9FFF
+// todo: #6
 #define BG_CUR_FRAME MEM[0x9800]
 #define BG_MEM_MAP MEM[0x8000]
 
@@ -84,8 +85,10 @@ FILE* LOG_OUTPUT;
 
 #define WINDOW_Y_COORDINATE MEM[0xFF4A]
 #define WINDOW_X_COORDINATE MEM[0xFF4B]
-#define SPRITE_Y_COORDINATE(x) MEM[0xFE00+(x)*4]
-#define SPRITE_X_COORDINATE(x) MEM[0xFE01+(x)*4]
+#define SPRITE_Y_COORDINATE(x) (MEM[0xFE00+(x)*4])
+#define SPRITE_X_COORDINATE(x) (MEM[0xFE01+(x)*4])
+#define SPRITE_CHR_CODE(x) (MEM[0xFE02+(x)*4])
+#define SPRITE_ATTR_FLAG(x) (MEM[0xFE03+(x)*4])
 
 #define PRIORITY(x) MEM[0xFE03+(x)*4]&128
 // flipped vertically
