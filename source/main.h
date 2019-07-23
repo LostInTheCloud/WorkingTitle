@@ -165,6 +165,9 @@ uint8_t interrupt_master_enable;
 
 #define LCD_MODE_FLAG                           (MEM[0xFF41]&=0x3)
 
+// todo: change this to 0x100
+void (*exec_opcode[1])(void) = {op_nop};
+
 int OPCODE_LENGTH[0x100] =
         {
                 1, 3, 1, 1, 1, 1, 2, 1, 3, 1, 1, 1, 1, 1, 2, 1,
