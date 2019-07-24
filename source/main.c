@@ -276,6 +276,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
             }
             printf(" ");
             if(i % 8 == 7){printf("\n");}
+            free(buf);
         }
     }
 }
@@ -307,7 +308,6 @@ void read_header(const uint8_t *buf)
     if(buf[0x147] == 0x11){cartridgetype = "MBC3";}
     if(buf[0x147] == 0x12){cartridgetype = "MBC3+RAM";}
     if(buf[0x147] == 0x13){cartridgetype = "MBC3+RAM+BATTERY";}
-    if(buf[0x147] == 0x13){cartridgetype = "unknown";}
 
     // read ROM Size
     uint16_t banks = 0;
@@ -390,6 +390,7 @@ void create_coredump(uint32_t length, uint16_t coredumpnum)
     fwrite(MEM, 1, length, coredump);
 
     fclose(coredump);
+    free(path);
 }
 
 
@@ -404,16 +405,17 @@ void reset_coredump(uint32_t length, uint16_t coredumpnum)
     fread(MEM, 1, length, coredump);
 
     fclose(coredump);
-
+    free(path);
 }
 
 void remove_all_coredumps(uint16_t coredumpnum)
 {
     for(uint16_t i = 0; i < coredumpnum + 1; i++)
     {
-        char *txt = malloc(sizeof(char) * 64);
-        sprintf(txt, "./coredumps/coredump%u.dmp", i);
-        remove(txt);
+        char *name = malloc(sizeof(char) * 64);
+        sprintf(name, "./coredumps/coredump%u.dmp", i);
+        remove(name);
+        free(name);
     }
 }
 
