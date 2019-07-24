@@ -1,10 +1,5 @@
 // 0x00
-#define OP_NOP ;
-
-void op_nop(void)
-{
-    OP_NOP;
-}
+void OP_NOP(void);
 
 // 0x01
 #define OP_LD_BC_D16 BC = *((uint16_t*) (MEM+PC+1));   
