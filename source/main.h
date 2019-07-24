@@ -23,6 +23,15 @@
 #define BG_DBG_WINDOW_HEIGHT 192
 
 void* reg_ptr[12];
+uint8_t opcode;
+uint8_t extended_opcode;
+
+// temp registers
+
+uint8_t t8[8];
+uint16_t t16[8];
+uint32_t t32[8];
+uint8_t *t8p;
 
 // the amount of pixels that have been pushed 
 // out of the FiFo within the current line
@@ -166,7 +175,7 @@ uint8_t interrupt_master_enable;
 #define LCD_MODE_FLAG                           (MEM[0xFF41]&=0x3)
 
 // todo: change this to 0x100
-void (*exec_opcode[1])(void) = {OP_NOP};
+void (*exec_opcode[2])(void) = {OP_NOP, OP_LD_BC_D16};
 
 int OPCODE_LENGTH[0x100] =
         {

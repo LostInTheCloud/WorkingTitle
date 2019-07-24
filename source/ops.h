@@ -2,7 +2,7 @@
 void OP_NOP(void);
 
 // 0x01
-#define OP_LD_BC_D16 BC = *((uint16_t*) (MEM+PC+1));   
+void OP_LD_BC_D16(void);
 
 // 0x02 ld (BC) A
 #define OP_LD_PBC_A MEM[BC]=A;  

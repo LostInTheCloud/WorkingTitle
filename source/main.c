@@ -30,19 +30,12 @@ int main(int argc, char **argv)
     }
 
     // TEST
-
     FILE *coredump = fopen("Tetris.dump", "r");
-
     fread(MEM, 1, 65536, coredump);
-
     fclose(coredump);
-
     LY = 0;
-
-//    background_tiles();
-
-    // /TEST
-
+    // background_tiles();
+    // /Test
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
@@ -50,8 +43,6 @@ int main(int argc, char **argv)
     int64_t ppu_cycle = 0;
     int64_t current_line_cycles = 0;
     uint32_t nanosecs;
-    uint8_t opcode;
-    uint8_t extended_opcode;
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
     char *title = malloc(16 + strlen(GAME_NAME) + 1);
@@ -59,11 +50,6 @@ int main(int argc, char **argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
-
-    uint8_t t8[8];
-    uint16_t t16[8];
-    uint32_t t32[8];
-    uint8_t *t8p;
 
     int x = 0;
 
@@ -200,7 +186,7 @@ int main(int argc, char **argv)
 
         display_draw(OUTPUT_ARRAY);
 
-        sleep(30);
+        sleep(3);
         goto end;
 
         fprintf(stderr, ".");
