@@ -1,4 +1,4 @@
-#include "main.h"
+#include "stuff.h"
 
 int main(int argc, char **argv)
 {
@@ -445,4 +445,18 @@ void background_tiles()
     display_set_window_title("Working Title - Tile Viewer");
     display_draw(pixel);
     free(pixel);
+}
+
+void print_regs(void)
+{
+// 18 characters per line
+
+printf("##################\n");
+printf("A: 0x%02"PRIx8"    F: 0x%02"PRIx8"\n", A, F);
+printf("B: 0x%02"PRIx8"    C: 0x%02"PRIx8"\n", B, C);
+printf("D: 0x%02"PRIx8"    E: 0x%02"PRIx8"\n", D, E);
+printf("H: 0x%02"PRIx8"    L: 0x%02"PRIx8"\n", H, L);
+printf("     SP: 0x%02"PRIx16"\n", SP);
+printf("     PC: 0x%02"PRIx16"\n", PC);
+printf("##################\n");
 }
