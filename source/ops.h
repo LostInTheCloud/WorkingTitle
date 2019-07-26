@@ -5,227 +5,192 @@ void OP_NOP(void);
 void OP_LD_BC_D16(void);
 
 // 0x02 ld (BC) A
-#define OP_LD_PBC_A MEM[BC]=A;  
+void OP_LD_PBC_A(void);
 
 // 0x03
-#define OP_INC_BC BC++;  
+void OP_INC_BC(void);
 
 // 0x04
-#define OP_INC_B if((B&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 B++; if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_B(void);
 
 // 0x05
-#define OP_DEC_B B--; if((B&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_B(void);
 
 // 0x06
-#define OP_LD_B_D8 B = MEM[PC+1];
+void OP_LD_B_D8(void);
 
 // 0x07
-#define OP_RLCA if(CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                A=A<<1; if(FLAG_C){A=A|1;}else{A=A&254;} \
-                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); 
+void OP_RLCA(void);
 
 // 0x08
-#define OP_LD_A16_SP MEM[*((uint16_t*) (MEM+PC+1))]= SP;
+void OP_LD_A16_SP(void);
 
 // 0x09
-#define OP_ADD_HL_BC if(HL&2047+BC&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(uint32_t)BC>65535){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+BC; SET_FLAG_N(0);
+void OP_ADD_HL_BC(void);
 
 // 0x0A
-#define OP_LD_A_PBC A=MEM[BC];
+void OP_LD_A_PBC(void);
 
 // 0x0B
-#define OP_DEC_BC BC--;
+void OP_DEC_BC(void);
 
 // 0x0C
-#define OP_INC_C if((C&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 C++; if(!C){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_C(void);
 
 // 0x0D
-#define OP_DEC_C C--; if((C&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!C){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_BC(void);
 
 // 0x0E
-#define OP_LD_C_D8 C = MEM[PC+1];
+void OP_LD_C_D8(void);
 
 // 0x0F shift right, CarryBit=Bit0 Bit7=Bit0
-#define OP_RRCA if(CHECK_BIT(A,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                A=A<<1; if(FLAG_C){A=A|128;}else{A=A&127;} \
-                if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); 
+void OP_RRCA(void);
 
 // 0x10
 // todo
-#define OP_STOP
+void OP_STOP(void);
 
 // 0x11
-#define OP_LD_DE_D16 DE = *((uint16_t*) (MEM+PC+1));
+void OP_LD_DE_D16(void);
 
 // 0x12
-#define OP_LD_PDE_A MEM[DE]=A;
+void OP_LD_PDE_A(void);
 
 // 0x13
-#define OP_INC_DE DE++;
+void OP_INC_DE(void);
 
 // 0x14
-#define OP_INC_D if((D&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 D++; if(!D){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_D(void);
 
 // 0x15
-#define OP_DEC_D D--; if((D&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!D){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_D(void);
 
 // 0x16
-#define OP_LD_D_D8 D = MEM[PC+1];
+void OP_LD_D_D8(void);
 
 // 0x17
-#define OP_RLA t8[0] = FLAG_C; \
-               if(CHECK_BIT(A,7)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-               A=A<<1; if(t8[0]){A=A|1;}else{A=A&254;} \
-               if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); 
+void OP_RLA(void);
 
 // 0x18
-#define OP_JR_R8 PC=PC+(*((int8_t*)MEM+PC+1));
+void OP_JR_R8(void);
 
 // 0x19
-#define OP_ADD_HL_DE if(HL&2047+DE&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(uint32_t)DE>65535){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+DE; SET_FLAG_N(0);
+void OP_ADD_HL_DE(void);
 
 // 0x1A
-#define OP_LD_A_PDE A=MEM[DE];
+void OP_LD_A_PDE(void);
 
 // 0x1B
-#define OP_DEC_DE DE--;
+void OP_DEC_DE(void);
 
 // 0x1C
-#define OP_INC_E if((E&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 E++; if(!E){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_E(void);
 
 // 0x1D
-#define OP_DEC_E E--; if((E&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!E){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_E(void);
 
 // 0x1E
-#define OP_LD_E_D8 E = MEM[PC+1];
+void OP_LD_E_D8(void);
 
 // 0x1F
-#define OP_RRA t8[0] = FLAG_C; \
-               if(CHECK_BIT(A,0)){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-               A=A<<1; if(t8[0]){A=A|128;}else{A=A&127;} \
-               if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_N(0); SET_FLAG_H(0); 
+void OP_RRA(void);
 
 // 0x20
-#define OP_JR_NZ_R8 if(!FLAG_Z){PC=PC+MEM[PC+1]; }
+void OP_JR_NZ_R8(void);
 
 // 0x21
-#define OP_LD_HL_D16 HL = *((uint16_t*) (MEM+PC+1));
+void OP_LD_HL_D16(void);
 
 // 0x22
-#define OP_LD_PHLI_A MEM[HL++]=A;
+void OP_LD_PHLI_A(void);
 
 // 0x23
-#define OP_INC_HL HL++;
+void OP_INC_HL(void);
 
 // 0x24
-#define OP_INC_H if((H&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 H++; if(!H){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_H(void);
 
 // 0x25
-#define OP_DEC_H H--; if((H&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!H){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_H(void);
 
 // 0x26
-#define OP_LD_H_D8 H = MEM[PC+1];
+void OP_LD_H_D8(void);
 
 // 0x27 decimal adjust register A
 // todo
-#define OP_DAA if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0);} SET_FLAG_H(0); /* TODO */
-// https://www.tutorialspoint.com/daa-instruction-in-8085-microprocessor
+void OP_DAA(void);
 
 // 0x28
-#define OP_JR_Z_R8 if(FLAG_Z){PC=PC+MEM[PC+1];}
+void OP_JR_Z_R8(void);
 
 // 0x29
-#define OP_ADD_HL_HL if(HL&2047+HL&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(uint32_t)BC>65535){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+BC; SET_FLAG_N(0);
+void OP_ADD_HL_HL(void);
 
 // 0x2A
-#define OP_LD_A_PHLI A=MEM[HL++];
+void OP_LD_A_PHLI(void);
 
 // 0x2B
-#define OP_DEC_HL HL--;
+void OP_DEC_HL(void);
 
 // 0x2C
-#define OP_INC_L if((L&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 L++; if(!B){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_L(void);
 
 // 0x2D
-#define OP_DEC_L L--; if((L&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!L){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_L(void);
 
 // 0x2E
-#define OP_LD_L_D8 L = MEM[PC+1];
+void OP_LD_L_D8(void);
 
 // 0x2F flip all bits in A
-#define OP_CPL A=A^255; SET_FLAG_H(1); SET_FLAG_N(1);
+void OP_CPL(void);
 
 // 0x30
-#define OP_JR_NC_R8 if(!FLAG_C){PC=PC+MEM[PC+1]; }
+void OP_JR_NC_R8(void);
 
 // 0x31
-#define OP_LD_SP_D16 SP = *((uint16_t*) (MEM+PC+1));
+void OP_LD_SP_D16(void);
 
 // 0x32
-#define OP_LD_PHLD_A MEM[HL--]=A;
+void OP_LD_PHLD_A(void);
 
 // 0x33
-#define OP_INC_SP SP++;
+void OP_INC_SP(void);
 
 // 0x34
-#define OP_INC_PHL if((MEM[HL]&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 MEM[HL]++; if(!MEM[HL]){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_PHL(void);
 
 // 0x35
-#define OP_DEC_PHL MEM[HL]--; if((MEM[HL]&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!MEM[HL]){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_PHL(void);
 
 // 0x36
-#define OP_LD_PHL_D8 MEM[HL] = MEM[PC+1];
+void OP_LD_PHL_D8(void);
 
 // 0x37
-#define OP_SCF SET_FLAG_C(1); SET_FLAG_N(0); SET_FLAG_H(0);
+void OP_SCF(void);
 
 //0x38
-#define OP_JR_C_R8 if(FLAG_C){PC=PC+MEM[PC+1];}
+void OP_JR_C_R8(void);
 
 // 0x39
-#define OP_ADD_HL_SP if(HL&2047+SP&2047<2048){SET_FLAG_H(0);}else{SET_FLAG_H(1);} \
-                     if((uint32_t)HL+(uint32_t)SP<32767){SET_FLAG_C(1);}else{SET_FLAG_C(0);} \
-                     HL=HL+SP; SET_FLAG_N(0);
+void OP_ADD_HL_SP(void);
+
 // 0x3A
-// todo
-#define OP_LD_A_PHLD A=MEM[HL--];
+void OP_LD_A_PHLD(void);
 
 // 0x3B
-#define OP_DEC_SP SP--;
+void OP_DEC_SP(void);
 
 // 0x3C
-#define OP_INC_A if((A&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 A++; if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(0);
+void OP_INC_A(void);
 
 // 0x3D
-#define OP_DEC_A A--; if((A&0xF)==0xF){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \
-                 if(!A){SET_FLAG_Z(1);}else{SET_FLAG_Z(0)} SET_FLAG_N(1);
+void OP_DEC_A(void);
 
 // 0x3E
-#define OP_LD_A_D8 A = MEM[PC+1];
+void OP_LD_A_D8(void);
 
 // 0x3F complement carry flag
-#define OP_CCF SET_FLAG_H(0); SET_FLAG_N(0); SET_FLAG_C(!FLAG_C);
+void OP_CCF(void);
 
 // 0x40
 #define OP_LD_B_B B=B;
