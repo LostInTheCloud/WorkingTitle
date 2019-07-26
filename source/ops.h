@@ -193,197 +193,197 @@ void OP_LD_A_D8(void);
 void OP_CCF(void);
 
 // 0x40
-#define OP_LD_B_B B=B;
+void OP_LD_B_B(void);
 
 // 0x41
-#define OP_LD_B_C B=C;
+void OP_LD_B_C(void);
 
 // 0x42
-#define OP_LD_B_D B=D;
+void OP_LD_B_D(void);
 
 // 0x43
-#define OP_LD_B_E B=E;
+void OP_LD_B_E(void);
 
 // 0x44
-#define OP_LD_B_H B=H;
+void OP_LD_B_H(void);
 
 // 0x45
-#define OP_LD_B_L B=L;
+void OP_LD_B_L(void);
 
 // 0x46
-#define OP_LD_B_PHL B=MEM[HL];
+void OP_LD_B_PHL(void);
 
 // 0x47
-#define OP_LD_B_A B=A;
+void OP_LD_B_A(void);
 
 // 0x48
-#define OP_LD_C_B C=B;
+void OP_LD_C_B(void);
 
 // 0x49
-#define OP_LD_C_C C=C;
+void OP_LD_C_C(void);
 
 // 0x4A
-#define OP_LD_C_D C=D;
+void OP_LD_C_D(void);
 
 // 0x4B
-#define OP_LD_C_E C=E;
+void OP_LD_C_E(void);
 
 // 0x4C
-#define OP_LD_C_H C=H;
+void OP_LD_C_H(void);
 
 // 0x4D
-#define OP_LD_C_L C=L;
+void OP_LD_C_L(void);
 
 // 0x4E
-#define OP_LD_C_PHL C=MEM[HL];
+void OP_LD_C_PHL(void);
 
 // 0x4F
-#define OP_LD_C_A C=A;
+void OP_LD_C_A(void);
 
 // 0x50
-#define OP_LD_D_B D=B;
+void OP_LD_D_B(void);
 
 // 0x51
-#define OP_LD_D_C D=C;
+void OP_LD_D_C(void);
 
 // 0x52
-#define OP_LD_D_D D=D;
+void OP_LD_D_D(void);
 
 // 0x53
-#define OP_LD_D_E D=E;
+void OP_LD_D_E(void);
 
 // 0x54
-#define OP_LD_D_H D=H;
+void OP_LD_D_H(void);
 
 // 0x55
-#define OP_LD_D_L D=L;
+void OP_LD_D_L(void);
 
 // 0x56
-#define OP_LD_D_PHL D=MEM[HL];
+void OP_LD_D_PHL(void);
 
 // 0x57
-#define OP_LD_D_A D=A;
+void OP_LD_D_A(void);
 
 // 0x58
-#define OP_LD_E_B E=B;
+void OP_LD_E_B(void);
 
 // 0x59
-#define OP_LD_E_C E=C;
+void OP_LD_E_C(void);
 
 // 0x5A
-#define OP_LD_E_D E=D;
+void OP_LD_E_D(void);
 
 // 0x5B
-#define OP_LD_E_E E=E;
+void OP_LD_E_E(void);
 
 // 0x5C
-#define OP_LD_E_H E=H;
+void OP_LD_E_H(void);
 
 // 0x5D
-#define OP_LD_E_L E=L;
+void OP_LD_E_L(void);
 
 // 0x5E
-#define OP_LD_E_PHL E=MEM[HL];
+void OP_LD_E_PHL(void);
 
 // 0x5F
-#define OP_LD_E_A E=A;
+void OP_LD_E_A(void);
 
 // 0x60
-#define OP_LD_H_B H=B;
+void OP_LD_H_B(void);
 
 // 0x61
-#define OP_LD_H_C H=C;
+void OP_LD_H_C(void);
 
 // 0x62
-#define OP_LD_H_D H=D;
+void OP_LD_H_D(void);
 
 // 0x63
-#define OP_LD_H_E H=E;
+void OP_LD_H_E(void);
 
 // 0x64
-#define OP_LD_H_H H=H;
+void OP_LD_H_H(void);
 
 // 0x65
-#define OP_LD_H_L H=L;
+void OP_LD_H_L(void);
 
 // 0x66
-#define OP_LD_H_PHL H=MEM[HL];
+void OP_LD_H_PHL(void);
 
 // 0x67
-#define OP_LD_H_A H=A;
+void OP_LD_H_A(void);
 
 // 0x68
-#define OP_LD_L_B L=B;
+void OP_LD_L_B(void);
 
 // 0x69
-#define OP_LD_L_C L=C;
+void OP_LD_L_C(void);
 
 // 0x6A
-#define OP_LD_L_D L=D;
+void OP_LD_L_D(void);
 
 // 0x6B
-#define OP_LD_L_E L=E;
+void OP_LD_L_E(void);
 
 // 0x6C
-#define OP_LD_L_H L=H;
+void OP_LD_L_H(void);
 
 // 0x6D
-#define OP_LD_L_L L=L;
+void OP_LD_L_L(void);
 
 // 0x6E
-#define OP_LD_L_PHL L=MEM[HL];
+void OP_LD_L_PHL(void);
 
 // 0x6F
-#define OP_LD_L_A L=A;
+void OP_LD_L_A(void);
 
 // 0x70
-#define OP_LD_PHL_B MEM[HL]=B;
+void OP_LD_PHL_B(void);
 
 // 0x71
-#define OP_LD_PHL_C MEM[HL]=C;
+void OP_LD_PHL_C(void);
 
 // 0x72
-#define OP_LD_PHL_D MEM[HL]=D;
+void OP_LD_PHL_D(void);
 
 // 0x73
-#define OP_LD_PHL_E MEM[HL]=E;
+void OP_LD_PHL_E(void);
 
 // 0x74
-#define OP_LD_PHL_H MEM[HL]=H;
+void OP_LD_PHL_H(void);
 
 // 0x75
-#define OP_LD_PHL_L MEM[HL]=L;
+void OP_LD_PHL_L(void);
 
 // 0x76
 // todo
-#define OP_HALT
+void OP_HALT(void);
 
 // 0x77
-#define OP_LD_PHL_A MEM[HL]=A;
+void OP_LD_PHL_A(void);
 
 // 0x78
-#define OP_LD_A_B A=B;
+void OP_LD_A_B(void);
 
 // 0x79
-#define OP_LD_A_C A=C;
+void OP_LD_A_C(void);
 
 //0 x7A
-#define OP_LD_A_D A=D;
+void OP_LD_A_E(void);
 
 // 0x7B
-#define OP_LD_A_E A=E;
+void OP_LD_A_E(void);
 
 //0 x7C
-#define OP_LD_A_H A=H;
+void OP_LD_A_H(void);
 
 // 0x7D
-#define OP_LD_A_L A=L;
+void OP_LD_A_L(void);
 
 // 0x7E
-#define OP_LD_A_PHL A=MEM[HL];
+void OP_LD_A_PHL(void);
 
 // 0x7F
-#define OP_LD_A_A A=A;
+void OP_LD_A_A(void);
 
 // 0x80 if first 4 bits add to more than 1111 then set H
 #define OP_ADD_A_B if((A&15)+(B&15)>15){SET_FLAG_H(1);}else{SET_FLAG_H(0);} \

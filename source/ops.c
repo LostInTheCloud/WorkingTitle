@@ -432,4 +432,391 @@ void OP_CCF(void)
     SET_FLAG_H(0); SET_FLAG_N(0); SET_FLAG_C(!FLAG_C);
 }
 
+// 0x40
+void OP_LD_B_B(void)
+{
+    B=B;
+}
+
+// 0x41
+void OP_LD_B_C(void)
+{
+    B=C;
+}
+
+// 0x42
+void OP_LD_B_D(void)
+{
+    B=D;
+}
+
+// 0x43
+void OP_LD_B_E(void)
+{
+    B=E;
+}
+
+// 0x44
+void OP_LD_B_H(void)
+{
+    B=H;
+}
+
+// 0x45
+void OP_LD_B_L(void)
+{
+    B=L;
+}
+
+// 0x46
+void OP_LD_B_PHL(void)
+{
+    B=MEM[HL];
+}
+
+// 0x47
+void OP_LD_B_A(void)
+{
+    B=A;
+}
+
+// 0x48
+void OP_LD_C_B(void)
+{
+    C=B;
+}
+
+// 0x49
+void OP_LD_C_C(void)
+{
+    C=C;
+}
+
+// 0x4A
+void OP_LD_C_D(void)
+{
+    C=D;
+}
+
+// 0x4B
+void OP_LD_C_E(void)
+{
+    C=E;
+}
+
+// 0x4C
+void OP_LD_C_H(void)
+{
+    C=H;
+}
+
+// 0x4D
+void OP_LD_C_L(void)
+{
+    C=L;
+}
+
+// 0x4E
+void OP_LD_C_PHL(void)
+{
+    C=MEM[HL];
+}
+
+// 0x4F
+void OP_LD_C_A(void)
+{
+    C=A;
+}
+
+// 0x50
+void OP_LD_D_B(void)
+{
+    D=B;
+}
+
+// 0x51
+void OP_LD_D_C(void)
+{
+    D=C;
+}
+
+// 0x52
+void OP_LD_D_D(void)
+{
+    D=D;
+}
+
+// 0x53
+void OP_LD_D_E(void)
+{
+    D=E;
+}
+
+// 0x54
+void OP_LD_D_H(void)
+{
+    D=H;
+}
+
+// 0x55
+void OP_LD_D_L(void)
+{
+    D=L;
+}
+
+// 0x56
+void OP_LD_D_PHL(void)
+{
+    D=MEM[HL];
+}
+
+// 0x57
+void OP_LD_D_A(void)
+{
+    D=A;
+}
+
+// 0x58
+void OP_LD_E_B(void)
+{
+    E=B;
+}
+
+// 0x59
+void OP_LD_E_C(void)
+{
+    E=C;
+}
+
+// 0x5A
+void OP_LD_E_D(void)
+{
+    E=D;
+}
+
+// 0x5B
+void OP_LD_E_E(void)
+{
+    E=E;
+}
+
+// 0x5C
+void OP_LD_E_H(void)
+{
+    E=H;
+}
+
+// 0x5D
+void OP_LD_E_L(void)
+{
+    E=L;
+}
+
+// 0x5E
+void OP_LD_E_PHL(void)
+{
+    E=MEM[HL];
+}
+
+// 0x5F
+void OP_LD_E_A(void)
+{
+    E=A;
+}
+
+// 0x60
+void OP_LD_H_B(void)
+{
+    H=B;
+}
+
+// 0x61
+void OP_LD_H_C(void)
+{
+    H=C;
+}
+
+// 0x62
+void OP_LD_H_D(void)
+{
+    H=D;
+}
+
+// 0x63
+void OP_LD_H_E(void)
+{
+    H=E;
+}
+
+// 0x64
+void OP_LD_H_H(void)
+{
+    H=H;
+}
+
+// 0x65
+void OP_LD_H_L(void)
+{
+    H=L;
+}
+
+// 0x66
+void OP_LD_H_PHL(void)
+{
+    H=MEM[HL];
+}
+
+// 0x67
+void OP_LD_H_A(void)
+{
+    H=A;
+}
+
+// 0x68
+void OP_LD_L_B(void)
+{
+    L=B;
+}
+
+// 0x69
+void OP_LD_L_C(void)
+{
+    L=C;
+}
+
+// 0x6A
+void OP_LD_L_D(void)
+{
+    L=D;
+}
+
+// 0x6B
+void OP_LD_L_E(void)
+{
+    L=E;
+}
+
+// 0x6C
+void OP_LD_L_H(void)
+{
+    L=H;
+}
+
+// 0x6D
+void OP_LD_L_L(void)
+{
+    L=L;
+}
+
+// 0x6E
+void OP_LD_L_PHL(void)
+{
+    L=MEM[HL];
+}
+
+// 0x6F
+void OP_LD_L_A(void)
+{
+    L=A;
+}
+
+// 0x70
+void OP_LD_PHL_B(void)
+{
+    MEM[HL]=B;
+}
+
+// 0x71
+void OP_LD_PHL_C(void)
+{
+    MEM[HL]=C;
+}
+
+// 0x72
+void OP_LD_PHL_D(void)
+{
+    MEM[HL]=D;
+}
+
+// 0x73
+void OP_LD_PHL_E(void)
+{
+    MEM[HL]=E;
+}
+
+// 0x74
+void OP_LD_PHL_H(void)
+{
+    MEM[HL]=H;
+}
+
+// 0x75
+void OP_LD_PHL_L(void)
+{
+    MEM[HL]=L;
+}
+
+// 0x76
+void OP_HALT(void)
+{
+
+}
+
+// 0x77
+void OP_LD_PHL_A(void)
+{
+    MEM[HL]=A;
+}
+
+// 0x78
+void OP_LD_A_B(void)
+{
+    A=B;
+}
+
+// 0x79
+void OP_LD_A_C(void)
+{
+    A=C;
+}
+
+// 0x7A
+void OP_LD_A_D(void)
+{
+    A=D;
+}
+
+// 0x7B
+void OP_LD_A_E(void)
+{
+    A=E;
+}
+
+// 0x7C
+void OP_LD_A_H(void)
+{
+    A=H;
+}
+
+// 0x7D
+void OP_LD_A_L(void)
+{
+    A=L;
+}
+
+// 0x7E
+void OP_LD_A_PHL(void)
+{
+    A=MEM[HL];
+}
+
+// 0x7F
+void OP_LD_A_A(void)
+{
+    A=A;
+}
+
+
+
+
 
