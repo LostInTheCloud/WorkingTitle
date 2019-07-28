@@ -1126,388 +1126,388 @@ void OP_BIT_7_PHL(void);
 void OP_BIT_7_A(void);
 
 // 0x80
-#define OP_RES_0_B B=B&254;  
+void OP_RES_0_B(void);
 
 // 0x81
-#define OP_RES_0_C C=C&254;  
+void OP_RES_0_C(void);
 
 // 0x82
-#define OP_RES_0_D D=D&254;  
+void OP_RES_0_D(void);
 
 // 0x83
-#define OP_RES_0_E E=E&254;  
+void OP_RES_0_E(void);
 
 // 0x84
-#define OP_RES_0_H H=H&254;  
+void OP_RES_0_H(void);
 
 // 0x85
-#define OP_RES_0_L L=L&254;  
+void OP_RES_0_L(void);
 
 // 0x86
-#define OP_RES_0_PHL MEM[HL]=MEM[HL]&254;    
+void OP_RES_0_PHL(void);
 
 // 0x87
-#define OP_RES_0_A A=A&254;  
+void OP_RES_0_A(void);
 
 // 0x88
-#define OP_RES_1_B B=B&253;  
+void OP_RES_1_B(void);
 
 // 0x89
-#define OP_RES_1_C C=C&253;  
+void OP_RES_1_C(void);
 
 // 0x8A
-#define OP_RES_1_D D=D&253;  
+void OP_RES_1_D(void);
 
 // 0x8B
-#define OP_RES_1_E E=E&253;  
+void OP_RES_1_E(void);
 
 // 0x8C
-#define OP_RES_1_H H=H&253;  
+void OP_RES_1_H(void);
 
 // 0x8D
-#define OP_RES_1_L L=L&253;  
+void OP_RES_1_L(void);
 
 // 0x8E
-#define OP_RES_1_PHL MEM[HL]=MEM[HL]&253;    
+void OP_RES_1_PHL(void);
 
 // 0x8F
-#define OP_RES_1_A A=A&253;  
+void OP_RES_1_A(void);
 
 // 0x90
-#define OP_RES_2_B B=B&251;  
+void OP_RES_2_B(void);
 
 // 0x91
-#define OP_RES_2_C C=C&251;  
+void OP_RES_2_C(void);
 
 // 0x92
-#define OP_RES_2_D D=D&251;  
+void OP_RES_2_D(void);
 
 // 0x93
-#define OP_RES_2_E E=E&251;  
+void OP_RES_2_E(void);
 
 // 0x94
-#define OP_RES_2_H H=H&251;  
+void OP_RES_2_H(void);
 
 // 0x95
-#define OP_RES_2_L L=L&251;  
+void OP_RES_2_L(void);
 
 // 0x96
-#define OP_RES_2_PHL MEM[HL]=MEM[HL]&251;    
+void OP_RES_2_PHL(void);
 
 // 0x97
-#define OP_RES_2_A A=A&251;  
+void OP_RES_2_A(void);
 
 // 0x98
-#define OP_RES_3_B B=B&247;  
+void OP_RES_3_B(void);
 
 // 0x99
-#define OP_RES_3_C C=C&247;  
+void OP_RES_3_C(void);
 
 // 0x9A
-#define OP_RES_3_D D=D&247;  
+void OP_RES_3_D(void);
 
 // 0x9B
-#define OP_RES_3_E E=E&247;  
+void OP_RES_3_E(void);
 
 // 0x9C
-#define OP_RES_3_H H=H&247;  
+void OP_RES_3_H(void);
 
 // 0x9D
-#define OP_RES_3_L L=L&247;  
+void OP_RES_3_L(void);
 
 // 0x9E
-#define OP_RES_3_PHL MEM[HL]=MEM[HL]&247;    
+void OP_RES_3_PHL(void);
 
 // 0x9F
-#define OP_RES_3_A A=A&247;  
+void OP_RES_3_A(void);
 
 // 0xA0
-#define OP_RES_4_B B=B&239;  
+void OP_RES_4_B(void);
 
 // 0xA1
-#define OP_RES_4_C C=C&239;  
+void OP_RES_4_C(void);
 
 // 0xA2
-#define OP_RES_4_D D=D&239;  
+void OP_RES_4_D(void);
 
 // 0xA3
-#define OP_RES_4_E E=E&239;  
+void OP_RES_4_E(void);
 
 // 0xA4
-#define OP_RES_4_H H=H&239;  
+void OP_RES_4_H(void);
 
 // 0xA5
-#define OP_RES_4_L L=L&239;  
+void OP_RES_4_L(void);
 
 // 0xA6
-#define OP_RES_4_PHL MEM[HL]=MEM[HL]&239;    
+void OP_RES_4_PHL(void);
 
 // 0xA7
-#define OP_RES_4_A A=A&239;  
+void OP_RES_4_A(void);
 
 // 0xA8
-#define OP_RES_5_B B=B&223;  
+void OP_RES_5_B(void);
 
 // 0xA9
-#define OP_RES_5_C C=C&223;  
+void OP_RES_5_C(void);
 
 // 0xAA
-#define OP_RES_5_D D=D&223;  
+void OP_RES_5_D(void);
 
 // 0xAB
-#define OP_RES_5_E E=E&223;  
+void OP_RES_5_E(void);
 
 // 0xAC
-#define OP_RES_5_H H=H&223;  
+void OP_RES_5_H(void);
 
 // 0xAD
-#define OP_RES_5_L L=L&223;  
+void OP_RES_5_L(void);
 
 // 0xAE
-#define OP_RES_5_PHL MEM[HL]=MEM[HL]&223;    
+void OP_RES_5_A(void);
 
 // 0xAF
-#define OP_RES_5_A A=A&223;  
+void OP_RES_5_A(void);
 
 // 0xB0
-#define OP_RES_6_B B=B&191;  
+void OP_RES_6_B(void);
 
 // 0xB1
-#define OP_RES_6_C C=C&191;  
+void OP_RES_6_C(void);
 
 // 0xB2
-#define OP_RES_6_D D=D&191;  
+void OP_RES_6_D(void);
 
 // 0xB3
-#define OP_RES_6_E E=E&191;  
+void OP_RES_6_E(void);
 
 // 0xB4
-#define OP_RES_6_H H=H&191;  
+void OP_RES_6_H(void);
 
 // 0xB5
-#define OP_RES_6_L L=L&191;  
+void OP_RES_6_L(void);
 
 // 0xB6
-#define OP_RES_6_PHL MEM[HL]=MEM[HL]&191;    
+void OP_RES_6_PHL(void);
 
 // 0xB7
-#define OP_RES_6_A A=A&191;  
+void OP_RES_6_A(void);
 
 // 0xB8
-#define OP_RES_7_B B=B&127;  
+void OP_RES_7_B(void);
 
 // 0xB9
-#define OP_RES_7_C C=C&127;  
+void OP_RES_7_C(void);
 
 // 0xBA
-#define OP_RES_7_D D=D&127;  
+void OP_RES_7_D(void);
 
 // 0xBB
-#define OP_RES_7_E E=E&127;  
+void OP_RES_7_E(void);
 
 // 0xBC
-#define OP_RES_7_H H=H&127;  
+void OP_RES_7_H(void);
 
 // 0xBD
-#define OP_RES_7_L L=L&127;  
+void OP_RES_7_L(void);
 
 // 0xBE
-#define OP_RES_7_PHL MEM[HL]=MEM[HL]&127;    
+void OP_RES_7_PHL(void);
 
 // 0xBF
-#define OP_RES_7_A A=A&127;  
+void OP_RES_7_A(void);
 
 // 0xC0
-#define OP_SET_0_B B=B|1;  
+void OP_SET_0_B(void);
 
 // 0xC1
-#define OP_SET_0_C C=C|1;  
+void OP_SET_0_C(void);
 
 // 0xC2
-#define OP_SET_0_D D=D|1;  
+void OP_SET_0_D(void);
 
 // 0xC3
-#define OP_SET_0_E E=E|1;  
+void OP_SET_0_E(void);
 
 // 0xC4
-#define OP_SET_0_H H=H|1;  
+void OP_SET_0_H(void);
 
 // 0xC5
-#define OP_SET_0_L L=L|1;  
+void OP_SET_0_L(void);
 
 // 0xC6
-#define OP_SET_0_PHL MEM[HL]=MEM[HL]|1;    
+void OP_SET_0_PHL(void);
 
 // 0xC7
-#define OP_SET_0_A A=A|1;  
+void OP_SET_0_A(void);
 
 // 0xC8
-#define OP_SET_1_B B=B|2;  
+void OP_SET_1_B(void);
 
 // 0xC9
-#define OP_SET_1_C C=C|2;  
+void OP_SET_1_C(void);
 
 // 0xCA
-#define OP_SET_1_D D=D|2;  
+void OP_SET_1_D(void);
 
 // 0xCB
-#define OP_SET_1_E E=E|2;  
+void OP_SET_1_E(void);
 
 // 0xCC
-#define OP_SET_1_H H=H|2;  
+void OP_SET_1_H(void);
 
 // 0xCD
-#define OP_SET_1_L L=L|2;  
+void OP_SET_1_L(void);
 
 // 0xCE
-#define OP_SET_1_PHL MEM[HL]=MEM[HL]|2;    
+void OP_SET_1_PHL(void);
 
 // 0xCF
-#define OP_SET_1_A A=A|2;  
+void OP_SET_1_A(void);
 
 // 0xD0
-#define OP_SET_2_B B=B|4;  
+void OP_SET_2_B(void);
 
 // 0xD1
-#define OP_SET_2_C C=C|4;  
+void OP_SET_2_C(void);
 
 // 0xD2
-#define OP_SET_2_D D=D|4;  
+void OP_SET_2_D(void);
 
 // 0xD3
-#define OP_SET_2_E E=E|4;  
+void OP_SET_2_E(void);
 
 // 0xD4
-#define OP_SET_2_H H=H|4;  
+void OP_SET_2_H(void);
 
 // 0xD5
-#define OP_SET_2_L L=L|4;  
+void OP_SET_2_L(void);
 
 // 0xD6
-#define OP_SET_2_PHL MEM[HL]=MEM[HL]|4;    
+void OP_SET_2_PHL(void);
 
 // 0xD7
-#define OP_SET_2_A A=A|4;  
-
-// 0xD7
-#define OP_SET_3_B B=B|8;  
+void OP_SET_2_A(void);
 
 // 0xD8
-#define OP_SET_3_C C=C|8;  
+void OP_SET_3_B(void);
 
 // 0xD9
-#define OP_SET_3_D D=D|8;  
+void OP_SET_3_C(void);
 
 // 0xDA
-#define OP_SET_3_E E=E|8;  
+void OP_SET_3_D(void);
 
 // 0xDB
-#define OP_SET_3_H H=H|8;  
+void OP_SET_3_E(void);
 
 // 0xDC
-#define OP_SET_3_L L=L|8;  
+void OP_SET_3_H(void);
+
+// 0xDD
+void OP_SET_3_L(void);
 
 // 0xDE
-#define OP_SET_3_PHL MEM[HL]=MEM[HL]|8;    
+void OP_SET_3_PHL(void);
 
 // 0xDF
-#define OP_SET_3_A A=A|8;  
+void OP_SET_3_A(void);
 
 // 0xE0
-#define OP_SET_4_B B=B|16;  
+void OP_SET_4_B(void);
 
 // 0xE1
-#define OP_SET_4_C C=C|16;  
+void OP_SET_4_C(void);
 
 // 0xE2
-#define OP_SET_4_D D=D|16;  
+void OP_SET_4_D(void);
 
 // 0xE3
-#define OP_SET_4_E E=E|16;  
+void OP_SET_4_E(void);
 
 // 0xE4
-#define OP_SET_4_H H=H|16;  
+void OP_SET_4_H(void);
 
 // 0xE5
-#define OP_SET_4_L L=L|16;  
+void OP_SET_4_L(void);
 
 // 0xE6
-#define OP_SET_4_PHL MEM[HL]=MEM[HL]|16;    
+void OP_SET_4_PHL(void);
 
 // 0xE7
-#define OP_SET_4_A A=A|16;  
+void OP_SET_4_A(void);
 
 // 0xE8
-#define OP_SET_5_B B=B|32;  
+void OP_SET_5_B(void);
 
 // 0xE9
-#define OP_SET_5_C C=C|32;  
+void OP_SET_5_C(void);
 
 // 0xEA
-#define OP_SET_5_D D=D|32;  
+void OP_SET_5_D(void);
 
 // 0xEB
-#define OP_SET_5_E E=E|32;  
+void OP_SET_5_E(void);
 
 // 0xEC
-#define OP_SET_5_H H=H|32;  
+void OP_SET_5_H(void);
 
 // 0xED
-#define OP_SET_5_L L=L|32;  
+void OP_SET_5_L(void);
 
 // 0xEE
-#define OP_SET_5_PHL MEM[HL]=MEM[HL]|32;    
+void OP_SET_5_PHL(void);
 
 // 0xEF
-#define OP_SET_5_A A=A|32;  
+void OP_SET_5_A(void);
 
 // 0xF0
-#define OP_SET_6_B B=B|64;  
+void OP_SET_6_B(void);
 
 // 0xF1
-#define OP_SET_6_C C=C|64;  
+void OP_SET_6_C(void);
 
 // 0xF2
-#define OP_SET_6_D D=D|64;  
+void OP_SET_6_D(void);
 
 // 0xF3
-#define OP_SET_6_E E=E|64;  
+void OP_SET_6_E(void);
 
 // 0xF4
-#define OP_SET_6_H H=H|64;  
+void OP_SET_6_H(void);
 
 // 0xF5
-#define OP_SET_6_L L=L|64;  
+void OP_SET_6_L(void);
 
 // 0xF6
-#define OP_SET_6_PHL MEM[HL]=MEM[HL]|64;    
+void OP_SET_6_PHL(void);
 
 // 0xF7
-#define OP_SET_6_A A=A|64;  
+void OP_SET_6_A(void);
 
 // 0xF8
-#define OP_SET_7_B B=B|128;  
+void OP_SET_7_B(void);
 
 // 0xF9
-#define OP_SET_7_C C=C|128;  
+void OP_SET_7_C(void);
 
 // 0xFA
-#define OP_SET_7_D D=D|128;  
+void OP_SET_7_D(void);
 
 // 0xFB
-#define OP_SET_7_E E=E|128;  
+void OP_SET_7_E(void);
 
 // 0xFC
-#define OP_SET_7_H H=H|128;  
+void OP_SET_7_H(void);
 
 // 0xFD
-#define OP_SET_7_L L=L|128;  
+void OP_SET_7_L(void);
 
 // 0xFE
-#define OP_SET_7_PHL MEM[HL]=MEM[HL]|128;    
+void OP_SET_7_PHL(void);
 
 // 0xFF
-#define OP_SET_7_A A=A|128;  
+void OP_SET_7_A(void);
 
 
 
