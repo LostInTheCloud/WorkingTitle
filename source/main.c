@@ -50,6 +50,7 @@ int main(int argc, char **argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
+    SDL_Event close_event;
 
     int x = 0;
 
@@ -186,8 +187,11 @@ int main(int argc, char **argv)
 
         display_draw(OUTPUT_ARRAY);
 
-        sleep(3);
-        goto end;
+        SDL_PollEvent(&close_event);
+        if(close_event.type == SDL_QUIT)
+        {
+            goto end;
+        }
 
         fprintf(stderr, ".");
         if(++x == 60)
