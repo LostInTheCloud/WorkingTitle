@@ -192,6 +192,18 @@ void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr);
 
 void background_tiles();
 
+typedef struct BANKS
+{
+    uint8_t** BANK_ARRAY;
+    uint8_t number;         // the amount of banks the structure holds
+    uint64_t start_addr;    // starting addr of the switchable section
+    uint8_t length;         // length of the section
+    uint8_t active;         // indicates the currently loaded bank
+
+}BANKS;
+
+int switch_banks(BANKS* banks, uint8_t target_bank);
+
 // check if second or third char is "," and calculate accordingly (needed for reset_coredump)
 #define CHAR_TO_INT8(R) comma=0;\
                         buf[0]=fgetc(coredump); \
@@ -218,3 +230,5 @@ void background_tiles();
 
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
 #define likely(expr) __builtin_expect(!!(expr), 1)
+
+#define ERROR(expr) fprintf(stderr, "ERROR IN %s:%d:%s\n> %s\n", __FILE__, __LINE__,__func__, (expr));

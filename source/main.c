@@ -187,10 +187,12 @@ int main(int argc, char **argv)
 
         display_draw(OUTPUT_ARRAY);
 
-        SDL_PollEvent(&close_event);
-        if(close_event.type == SDL_QUIT)
+        while(SDL_PollEvent(&close_event))
         {
-            goto end;
+            if(close_event.type == SDL_QUIT)
+            {
+                goto end;
+            }
         }
 
         fprintf(stderr, ".");
@@ -463,4 +465,59 @@ printf("H: 0x%02"PRIx8"    L: 0x%02"PRIx8"\n", H, L);
 printf("     SP: 0x%02"PRIx16"\n", SP);
 printf("     PC: 0x%02"PRIx16"\n", PC);
 printf("##################\n");
+}
+
+int switch_banks(BANKS* banks, uint8_t target_bank)
+{
+    // check for NULL
+    if(banks == NULL)
+    {
+        ERROR("BANK IS NULL");
+        fprintf(stderr, "BANKS IS NULL!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // in this case nothing to be done
+    if(target_bank == banks->active)
+    {
+        return 1;
+    }
+
+    // check if target bank is in bounds
+    if(target_bank > banks->number)
+    {
+        fprintf(stderr, "TARGET BANK OUT OF BOUNDS!\n");
+        exit(EXIT_FAILURE);
+    }
+
+    // if bank has not been initialised, malloc
+    if(banks->BANK_ARRAY[banks->active] == NULL)
+    {
+        banks->BANK_ARRAY[banks->active] = malloc(sizeof(uint8_t)*banks->length);
+        if(banks->BANK_ARRAY[banks->active] == NULL)
+        {
+            fprintf(stderr, "COULD NOT ALLOCATE MEMORY!\n");
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    // copy currently active bank into the backup
+    memcpy(banks->BANK_ARRAY[banks->active], MEM+banks->start_addr, banks->length);
+
+    // check if target bank is NULL
+    if(banks->BANK_ARRAY[target_bank] == NULL)
+    {
+        banks->BANK_ARRAY[target_bank] = malloc(sizeof(uint8_t)*banks->length);
+        if(banks->BANK_ARRAY[target_bank] == NULL)
+        {
+            fprintf(stderr, "COULD NOT ALLOCATE MEMORY!\n");
+            exit(EXIT_FAILURE);
+        }
+        // set the whole bank to NULLBYTES
+        memset(banks->BANK_ARRAY[target_bank], '\0', banks->length);
+    }
+
+    // copy target bank into memory
+    memcpy(MEM+banks->start_addr, banks->BANK_ARRAY[target_bank], banks->length);
+
 }
