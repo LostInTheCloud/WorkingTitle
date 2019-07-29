@@ -78,8 +78,7 @@ int main(int argc, char **argv)
         switch_banks(bootrom, MEM[0xFF50]);
 
         // todo: after opcodes are implemented, change this
-        //opcode = MEM[PC];
-        opcode = 0;
+        opcode = MEM[PC];
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];

@@ -368,7 +368,7 @@ void OP_LD_A_B(void);
 void OP_LD_A_C(void);
 
 //0 x7A
-void OP_LD_A_E(void);
+void OP_LD_A_D(void);
 
 // 0x7B
 void OP_LD_A_E(void);
@@ -486,6 +486,7 @@ void OP_AND_B(void);
 
 // 0xA1
 void OP_AND_C(void);
+
 // 0xA2
 void OP_AND_D(void);
 
@@ -497,6 +498,7 @@ void OP_AND_H(void);
 
 // 0xA5
 void OP_AND_L(void);
+
 // 0xA6
 void OP_AND_PHL(void);
 
@@ -632,6 +634,9 @@ void OP_POP_DE(void);
 // 0xD2
 void OP_JP_NC_A16(void);
 
+// 0xD3
+void OP_ERROR_D3(void);
+
 // 0xD4
 void OP_CALL_NC_A16(void);
 
@@ -653,8 +658,14 @@ void OP_RETI(void);
 // 0xDA
 void OP_JP_C_A16(void);
 
+// 0xDB
+void OP_ERROR_DB(void);
+
 // 0xDC
 void OP_CALL_C_A16(void);
+
+// 0xDD
+void OP_ERROR_DD(void);
 
 // 0xDE
 void OP_SBC_A_D8(void);
@@ -671,6 +682,12 @@ void OP_POP_HL(void);
 
 // 0xE2 load A into FF00+C (Offset)
 void OP_LD_OC_A(void);
+
+// 0xE3
+void OP_ERROR_E3(void);
+
+// 0xE4
+void OP_ERROR_E4(void);
 
 // 0xE5
 void OP_PUSH_HL(void);
@@ -691,6 +708,15 @@ void OP_JP_PHL(void);
 // 0xEA
 void OP_LD_A16_A(void);
 
+// 0xEB
+void OP_ERROR_EB(void);
+
+// 0xEC
+void OP_ERROR_EC(void);
+
+// 0xED
+void OP_ERROR_ED(void);
+
 // 0xEE
 void OP_XOR_D8(void);
 
@@ -708,6 +734,9 @@ void OP_LD_A_OC(void);
 
 // 0xF3 disable interrupts
 void OP_DI(void);
+
+// 0xF4
+void OP_ERROR_F4(void);
 
 // 0xF5
 void OP_PUSH_AF(void);
@@ -730,6 +759,12 @@ void OP_LD_A_A16(void);
 
 // 0xFB enable interrupts
 void OP_EI(void);
+
+// 0xFC
+void OP_ERROR_FC(void);
+
+// 0xFD
+void OP_ERROR_FD(void);
 
 // 0xFE
 void OP_CP_D8(void);
@@ -1264,7 +1299,7 @@ void OP_RES_5_H(void);
 void OP_RES_5_L(void);
 
 // 0xAE
-void OP_RES_5_A(void);
+void OP_RES_5_PHL(void);
 
 // 0xAF
 void OP_RES_5_A(void);

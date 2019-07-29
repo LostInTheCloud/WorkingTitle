@@ -1379,7 +1379,7 @@ void OP_JP_Z_A16(void)
 // 0xCB
 void OP_CB(void)
 {
-// exec_cb[opcode_extended]();
+    exec_cb[opcode_extended]();
 }
 
 // 0xCC
@@ -1426,6 +1426,12 @@ void OP_JP_NC_A16(void)
     if(!FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); }
 }
 
+// 0xD3
+void OP_ERROR_D3(void)
+{
+    ERROR("OPCODE 0xD3 executed");
+}
+
 // 0xD4
 void OP_CALL_NC_A16(void)
 {
@@ -1470,10 +1476,22 @@ void OP_JP_C_A16(void)
     if(FLAG_C){PC= *((uint16_t*) (MEM+PC+1)); }
 }
 
+// 0xDB
+void OP_ERROR_DB(void)
+{
+    ERROR("OPCODE 0xDB executed");
+}
+
 // 0xDC
 void OP_CALL_C_A16(void)
 {
     if(FLAG_C){MEM[SP-2]=PC+3; SP=SP-2; PC= *((uint16_t*) (MEM+PC+1));   }
+}
+
+// 0xDD
+void OP_ERROR_DD(void)
+{
+    ERROR("OPCODE 0xDD executed");
 }
 
 // 0xDE
@@ -1506,6 +1524,18 @@ void OP_POP_HL(void)
 void OP_LD_OC_A(void)
 {
     MEM[65280+C]=A;
+}
+
+// 0xE3
+void OP_ERROR_E3(void)
+{
+    ERROR("OPCODE 0xE3 executed");
+}
+
+// 0xE4
+void OP_ERROR_E4(void)
+{
+    ERROR("OPCODE 0xE4 executed");
 }
 
 // 0xE5
@@ -1547,6 +1577,24 @@ void OP_LD_A16_A(void)
     *((uint16_t*) (MEM+PC+1))=A;
 }
 
+// 0xEB
+void OP_ERROR_EB(void)
+{
+    ERROR("OPCODE 0xEB executed");
+}
+
+// 0xEC
+void OP_ERROR_EC(void)
+{
+    ERROR("OPCODE 0xEC executed");
+}
+
+// 0xED
+void OP_ERROR_ED(void)
+{
+    ERROR("OPCODE 0xED executed");
+}
+
 // 0xEE
 void OP_XOR_D8(void)
 {
@@ -1582,6 +1630,12 @@ void OP_LD_A_OC(void)
 void OP_DI(void)
 {
     DISABLE_IME
+}
+
+// 0xF4
+void OP_ERROR_F4(void)
+{
+    ERROR("OPCODE 0xF4 executed");
 }
 
 // 0xF5
@@ -1627,6 +1681,18 @@ void OP_LD_A_A16(void)
 void OP_EI(void)
 {
     ENABLE_IME
+}
+
+// 0xFC
+void OP_ERROR_FC(void)
+{
+    ERROR("OPCODE 0xFC executed");
+}
+
+// 0xFD
+void OP_ERROR_FD(void)
+{
+    ERROR("OPCODE 0xFD executed");
 }
 
 // 0xFE
