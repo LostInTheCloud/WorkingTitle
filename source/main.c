@@ -22,6 +22,23 @@ int main(int argc, char **argv)
 
     read_header(MEM);
 
+    // create new BankSwitchingScheme for Boot
+    BANKS* bootrom = malloc(sizeof(BANKS));
+    if(!bootrom){ERROR("ALLOCATING MEMORY FAILED"); exit(EXIT_FAILURE);}
+    bootrom->length = 256u;
+    bootrom->number = 0x2;
+    bootrom->start_addr = 0x0;
+    bootrom->active = 1;
+    bootrom->BANK_ARRAY[0] = malloc(256);
+    if(!bootrom->BANK_ARRAY[0]){ERROR("ALLOCATING MEMORY FAILED"); exit(EXIT_FAILURE);}
+    // copy from Bootromfile
+    FILE* bootromfile = fopen("DMG_ROM.gb", "r");
+    err = (int) fread(bootrom->BANK_ARRAY[0], 1, 256, bootromfile);
+    if(err!=256){ERROR("COULD NOT READ BOOTROM"); exit(EXIT_FAILURE);}
+    fclose(bootromfile);
+    // switch banks: this copies bytes 0-256 to bootrom.1 and copies the bootrom in bootrom.1 to the RAM
+    switch_banks(bootrom, 0);
+
     // create coredump folder, if not already existent
     struct stat st = {0};
     if(stat("./coredumps", &st) == -1)
@@ -52,12 +69,13 @@ int main(int argc, char **argv)
     LOG_OUTPUT = fopen("log.log", "w");
     SDL_Event close_event;
 
-    int x = 0;
-
     loop:
 
     if(ppu_cycle>cpu_cycle)     // CPU's turn
     {
+        // BOOTROM MAPPING
+        switch_banks(bootrom, MEM[0xFF50]);
+
         // todo: after opcodes are implemented, change this
         //opcode = MEM[PC];
         opcode = 0;
@@ -195,12 +213,6 @@ int main(int argc, char **argv)
             }
         }
 
-        fprintf(stderr, ".");
-        if(++x == 60)
-        {
-            fprintf(stderr, "\n");
-            x = 0;
-        }
         nanosecs = cycle_duration;
         nanosecs += t0.tv_nsec;
         if(unlikely(nanosecs > 999999999))
@@ -484,7 +496,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     }
 
     // check if target bank is in bounds
-    if(target_bank > banks->number)
+    if(target_bank-1 > banks->number)
     {
         fprintf(stderr, "TARGET BANK OUT OF BOUNDS!\n");
         exit(EXIT_FAILURE);

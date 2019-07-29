@@ -5,6 +5,7 @@ uint32_t colour[2][2] = {{WHITE, LIGHT_GREY}, {DARK_GREY, BLACK}};
 
 // todo: change this to 0x100
 void (*exec_opcode[2])(void) = {OP_NOP, OP_LD_BC_D16};
+// void (*exec_cb[0x100])(void) = {...};
 
 int OPCODE_LENGTH[0x100] =
         {

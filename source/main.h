@@ -197,7 +197,7 @@ typedef struct BANKS
     uint8_t** BANK_ARRAY;
     uint8_t number;         // the amount of banks the structure holds
     uint64_t start_addr;    // starting addr of the switchable section
-    uint8_t length;         // length of the section
+    uint32_t length;         // length of the section
     uint8_t active;         // indicates the currently loaded bank
 
 }BANKS;
