@@ -1,3 +1,5 @@
+#pragma once
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>       // nanosleep, gettime
@@ -171,6 +173,13 @@ uint8_t interrupt_master_enable;
 #define LCD_CONTROLLER_OPERATION_STOP_FLAG      (LCD_CONTROL_REGISTER&=0x80)
 
 #define LCD_MODE_FLAG                           (MEM[0xFF41]&=0x3)
+
+extern int CYCLE_LENGTH[0x100];
+extern int OPCODE_LENGTH[0x100];
+extern void (*exec_opcode[0x100])(void);
+extern void (*exec_cb[0x100])(void);
+extern uint32_t colour[2][2];
+extern uint32_t DEFAULT_PALETTE[4];
 
 void print_regs(void);
 

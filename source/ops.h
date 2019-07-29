@@ -1,3 +1,5 @@
+#pragma once
+
 // 0x00
 void OP_NOP(void);
 
@@ -38,7 +40,7 @@ void OP_DEC_BC(void);
 void OP_INC_C(void);
 
 // 0x0D
-void OP_DEC_BC(void);
+void OP_DEC_C(void);
 
 // 0x0E
 void OP_LD_C_D8(void);

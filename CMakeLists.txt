@@ -5,5 +5,5 @@ set(CMAKE_C_STANDARD 99)
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(source)
-add_executable(WorkingTitle source/main.c source/display.cpp source/exception.cpp source/ops.c source/stuff.h)
+add_executable(WorkingTitle source/main.c source/display.cpp source/exception.cpp source/ops.c)
 target_link_libraries(WorkingTitle SDL2)

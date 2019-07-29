@@ -1379,7 +1379,7 @@ void OP_JP_Z_A16(void)
 // 0xCB
 void OP_CB(void)
 {
-    exec_cb[opcode_extended]();
+    exec_cb[MEM[PC+1]]();
 }
 
 // 0xCC
