@@ -1377,7 +1377,10 @@ void OP_JP_Z_A16(void)
 }
 
 // 0xCB
-// prefix CB is defined below
+void OP_CB(void)
+{
+// exec_cb[opcode_extended]();
+}
 
 // 0xCC
 void OP_CALL_Z_A16(void)

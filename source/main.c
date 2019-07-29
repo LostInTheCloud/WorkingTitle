@@ -29,10 +29,11 @@ int main(int argc, char **argv)
     bootrom->number = 0x2;
     bootrom->start_addr = 0x0;
     bootrom->active = 1;
+    bootrom->BANK_ARRAY = malloc(sizeof(uint8_t*)*bootrom->number);
     bootrom->BANK_ARRAY[0] = malloc(256);
     if(!bootrom->BANK_ARRAY[0]){ERROR("ALLOCATING MEMORY FAILED"); exit(EXIT_FAILURE);}
     // copy from Bootromfile
-    FILE* bootromfile = fopen("DMG_ROM.gb", "r");
+    FILE* bootromfile = fopen("DMG_ROM.bin", "r");
     err = (int) fread(bootrom->BANK_ARRAY[0], 1, 256, bootromfile);
     if(err!=256){ERROR("COULD NOT READ BOOTROM"); exit(EXIT_FAILURE);}
     fclose(bootromfile);
@@ -485,7 +486,6 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     if(banks == NULL)
     {
         ERROR("BANK IS NULL");
-        fprintf(stderr, "BANKS IS NULL!\n");
         exit(EXIT_FAILURE);
     }
 
@@ -496,10 +496,14 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     }
 
     // check if target bank is in bounds
-    if(target_bank-1 > banks->number)
+    if(target_bank > banks->number)
     {
-        fprintf(stderr, "TARGET BANK OUT OF BOUNDS!\n");
-        exit(EXIT_FAILURE);
+        char* e = malloc(64);
+        snprintf(e, 63, "TARGET BANK OUT OF BOUNDS! (TARGET = %u; NUMBER OF BANKS = %u)", target_bank, banks->number);
+        ERROR(e);
+        free(e);
+        // exit(EXIT_FAILURE);
+        return -1;
     }
 
     // if bank has not been initialised, malloc
@@ -508,7 +512,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
         banks->BANK_ARRAY[banks->active] = malloc(sizeof(uint8_t)*banks->length);
         if(banks->BANK_ARRAY[banks->active] == NULL)
         {
-            fprintf(stderr, "COULD NOT ALLOCATE MEMORY!\n");
+            ERROR("COULD NOT ALLOCATE MEMORY!");
             exit(EXIT_FAILURE);
         }
     }
@@ -522,7 +526,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
         banks->BANK_ARRAY[target_bank] = malloc(sizeof(uint8_t)*banks->length);
         if(banks->BANK_ARRAY[target_bank] == NULL)
         {
-            fprintf(stderr, "COULD NOT ALLOCATE MEMORY!\n");
+            ERROR("COULD NOT ALLOCATE MEMORY!");
             exit(EXIT_FAILURE);
         }
         // set the whole bank to NULLBYTES

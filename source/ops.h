@@ -609,10 +609,7 @@ void OP_RET(void);
 void OP_JP_Z_A16(void);
 
 // 0xCB
-void OP_CB(void)
-{
-    // exec_cb[opcode_extended]();
-}
+void OP_CB(void);
 
 // 0xCC
 void OP_CALL_Z_A16(void);
