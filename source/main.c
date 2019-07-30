@@ -1,6 +1,6 @@
 #include "main.h"
 
-int main(int argc, char **argv)
+int main(int argc, char** argv)
 {
     int err;
 
@@ -24,18 +24,30 @@ int main(int argc, char **argv)
 
     // create new BankSwitchingScheme for Boot
     BANKS* bootrom = malloc(sizeof(BANKS));
-    if(!bootrom){ERROR("ALLOCATING MEMORY FAILED"); exit(EXIT_FAILURE);}
+    if(!bootrom)
+    {
+        ERROR("ALLOCATING MEMORY FAILED");
+        exit(EXIT_FAILURE);
+    }
     bootrom->length = 256u;
     bootrom->number = 0x2;
     bootrom->start_addr = 0x0;
     bootrom->active = 1;
-    bootrom->BANK_ARRAY = malloc(sizeof(uint8_t*)*bootrom->number);
+    bootrom->BANK_ARRAY = malloc(sizeof(uint8_t*) * bootrom->number);
     bootrom->BANK_ARRAY[0] = malloc(256);
-    if(!bootrom->BANK_ARRAY[0]){ERROR("ALLOCATING MEMORY FAILED"); exit(EXIT_FAILURE);}
+    if(!bootrom->BANK_ARRAY[0])
+    {
+        ERROR("ALLOCATING MEMORY FAILED");
+        exit(EXIT_FAILURE);
+    }
     // copy from Bootromfile
     FILE* bootromfile = fopen("DMG_ROM.bin", "r");
     err = (int) fread(bootrom->BANK_ARRAY[0], 1, 256, bootromfile);
-    if(err!=256){ERROR("COULD NOT READ BOOTROM"); exit(EXIT_FAILURE);}
+    if(err != 256)
+    {
+        ERROR("COULD NOT READ BOOTROM");
+        exit(EXIT_FAILURE);
+    }
     fclose(bootromfile);
     // switch banks: this copies bytes 0-256 to bootrom.1 and copies the bootrom in bootrom.1 to the RAM
     switch_banks(bootrom, 0);
@@ -63,7 +75,7 @@ int main(int argc, char **argv)
     uint32_t nanosecs;
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
-    char *title = malloc(16 + strlen(GAME_NAME) + 1);
+    char* title = malloc(16 + strlen(GAME_NAME) + 1);
     strcpy(title, "Working Title - ");
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
@@ -72,7 +84,7 @@ int main(int argc, char **argv)
 
     loop:
 
-    if(ppu_cycle>cpu_cycle)     // CPU's turn
+    if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
         // BOOTROM MAPPING
         switch_banks(bootrom, MEM[0xFF50]);
@@ -81,7 +93,7 @@ int main(int argc, char **argv)
         opcode = MEM[PC];
 
         fprintf(LOG_OUTPUT, "%x", opcode);
-        if(opcode == 0xCB) fprintf(LOG_OUTPUT, " : %x", MEM[PC+1]);
+        if(opcode == 0xCB) fprintf(LOG_OUTPUT, " : %x", MEM[PC + 1]);
         fprintf(LOG_OUTPUT, " - %i\n", OPCODE_LENGTH[opcode]);
         fflush(LOG_OUTPUT);
 
@@ -124,30 +136,30 @@ int main(int argc, char **argv)
         if(!LX)
         {
             t32[0] = (uint32_t) (16 * MEM[0x9800 + (LX / 8) + (LY / 8) * 32]);
-            t8p = (void *) MEM;
+            t8p = (void*) MEM;
             t8p += 0x8000;
             t8p += t32[0];
             t8p += 2 * (LY % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t *) (&fifo))[1]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t *) (&fifo))[1]) <<= 1u;
-                (((uint16_t *) (&fifo))[1]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[1] & mask);
+                (((uint16_t*) (&fifo))[1]) <<= 1u;
+                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[0] & mask);
             }
         }
         if(!(LX % 8))
         {
             t32[0] = (uint32_t) (16 * MEM[0x9800 + (LX / 8) + 1 + (LY / 8) * 32]);
-            t8p = (void *) MEM;
+            t8p = (void*) MEM;
             // todo: #6
             t8p += 0x8000;
             t8p += t32[0];
             t8p += 2 * (LY % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t *) (&fifo))[0]) <<= 1u;
-                (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
+                (((uint16_t*) (&fifo))[0]) <<= 1u;
+                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
             }
         }
 
@@ -162,7 +174,7 @@ int main(int argc, char **argv)
                     t8[0] = SPRITE_CHR_CODE(VISIBLE_SPRITE_ARRAY[i]);
                     t8[0] *= 0x10;
                     // load 2pixelBytes
-                    t8p = (void *) MEM;
+                    t8p = (void*) MEM;
                     // todo: #6
                     t8p += 0x8800;
                     t8p += t8[0];
@@ -171,9 +183,9 @@ int main(int argc, char **argv)
                     // here we just copy the sprite in there
                     for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
                     {
-                        (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
-                        (((uint16_t *) (&fifo))[0]) <<= 1u;
-                        (((uint16_t *) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                        (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
+                        (((uint16_t*) (&fifo))[0]) <<= 1u;
+                        (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
                     }
                 }
             }
@@ -269,7 +281,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
     // mode b for binary output
     if(mode == 'b')
     {
-        uint8_t *buf = malloc(sizeof(uint8_t) * 8);
+        uint8_t* buf = malloc(sizeof(uint8_t) * 8);
         for(int i = 0; i < n; i++)
         {
             buf[0] = (uint8_t) (MEM[low + i] & 1u ? 1u : 0u);
@@ -291,7 +303,7 @@ void print_mem(uint16_t low, uint16_t high, char mode)
     }
 }
 
-void read_header(const uint8_t *buf)
+void read_header(const uint8_t* buf)
 {
     // read GAME_NAME
     GAME_NAME = malloc(17 * sizeof(char));
@@ -303,7 +315,7 @@ void read_header(const uint8_t *buf)
     GAME_NAME[i] = '\0';
 
     //read cartridgetype
-    char *cartridgetype = "unreadable";
+    char* cartridgetype = "unreadable";
     if(buf[0x147] == 0x00){cartridgetype = "ROM ONLY";}
     if(buf[0x147] == 0x01){cartridgetype = "MBC1";}
     if(buf[0x147] == 0x02){cartridgetype = "MBC1+RAM";}
@@ -343,10 +355,10 @@ void read_header(const uint8_t *buf)
     printf("Name: %s\nCartridgetype: %s\nBanks:%i\nRAM Size:%i\n", GAME_NAME, cartridgetype, banks, ramsize);
 }
 
-int readfff(uint8_t *buffer, const char *filename)
+int readfff(uint8_t* buffer, const char* filename)
 {
     int err;
-    FILE *cartridge = fopen(filename, "r");
+    FILE* cartridge = fopen(filename, "r");
     if(!cartridge)
     {
         fprintf(stderr, "%s failed: fopen returned NULL\n", __func__);
@@ -391,8 +403,8 @@ int readfff(uint8_t *buffer, const char *filename)
 
 void create_coredump(uint32_t length, uint16_t coredumpnum)
 {
-    FILE *coredump;
-    char *path = malloc(sizeof(char) * 64);
+    FILE* coredump;
+    char* path = malloc(sizeof(char) * 64);
     sprintf(path, "./coredumps/coredump%u.dmp", coredumpnum);
     coredump = fopen(path, "w");
 
@@ -406,8 +418,8 @@ void create_coredump(uint32_t length, uint16_t coredumpnum)
 
 void reset_coredump(uint32_t length, uint16_t coredumpnum)
 {
-    FILE *coredump;
-    char *path = malloc(sizeof(char) * 64);
+    FILE* coredump;
+    char* path = malloc(sizeof(char) * 64);
     sprintf(path, "./coredumps/coredump%u.dmp", coredumpnum);
     coredump = fopen(path, "r");
 
@@ -422,14 +434,14 @@ void remove_all_coredumps(uint16_t coredumpnum)
 {
     for(uint16_t i = 0; i < coredumpnum + 1; i++)
     {
-        char *name = malloc(sizeof(char) * 64);
+        char* name = malloc(sizeof(char) * 64);
         sprintf(name, "./coredumps/coredump%u.dmp", i);
         remove(name);
         free(name);
     }
 }
 
-void convert_tile(uint8_t *input_ptr, uint32_t *output_ptr)
+void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr)
 {
     for(int i = 0; i < 8; i++)
     {
@@ -438,7 +450,7 @@ void convert_tile(uint8_t *input_ptr, uint32_t *output_ptr)
 
 }
 
-void convert_line(const uint8_t *input_ptr, uint32_t *output_ptr)
+void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr)
 {
     for(int i = 0; i < 8; i++)
     {
@@ -449,7 +461,7 @@ void convert_line(const uint8_t *input_ptr, uint32_t *output_ptr)
 
 void background_tiles()
 {
-    uint32_t *pixel = malloc(BG_DBG_WINDOW_HEIGHT * BG_DBG_WINDOW_WIDTH * sizeof(uint32_t));
+    uint32_t* pixel = malloc(BG_DBG_WINDOW_HEIGHT * BG_DBG_WINDOW_WIDTH * sizeof(uint32_t));
     size_t i = 0;
 
     for(i = 0; i < BG_DBG_WINDOW_WIDTH * BG_DBG_WINDOW_HEIGHT; ++i)
@@ -475,14 +487,14 @@ void print_regs(void)
 {
 // 18 characters per line
 
-printf("##################\n");
-printf("A: 0x%02"PRIx8"    F: 0x%02"PRIx8"\n", A, F);
-printf("B: 0x%02"PRIx8"    C: 0x%02"PRIx8"\n", B, C);
-printf("D: 0x%02"PRIx8"    E: 0x%02"PRIx8"\n", D, E);
-printf("H: 0x%02"PRIx8"    L: 0x%02"PRIx8"\n", H, L);
-printf("     SP: 0x%02"PRIx16"\n", SP);
-printf("     PC: 0x%02"PRIx16"\n", PC);
-printf("##################\n");
+    printf("##################\n");
+    printf("A: 0x%02"PRIx8"    F: 0x%02"PRIx8"\n", A, F);
+    printf("B: 0x%02"PRIx8"    C: 0x%02"PRIx8"\n", B, C);
+    printf("D: 0x%02"PRIx8"    E: 0x%02"PRIx8"\n", D, E);
+    printf("H: 0x%02"PRIx8"    L: 0x%02"PRIx8"\n", H, L);
+    printf("     SP: 0x%02"PRIx16"\n", SP);
+    printf("     PC: 0x%02"PRIx16"\n", PC);
+    printf("##################\n");
 }
 
 int switch_banks(BANKS* banks, uint8_t target_bank)
@@ -514,7 +526,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     // if bank has not been initialised, malloc
     if(banks->BANK_ARRAY[banks->active] == NULL)
     {
-        banks->BANK_ARRAY[banks->active] = malloc(sizeof(uint8_t)*banks->length);
+        banks->BANK_ARRAY[banks->active] = malloc(sizeof(uint8_t) * banks->length);
         if(banks->BANK_ARRAY[banks->active] == NULL)
         {
             ERROR("COULD NOT ALLOCATE MEMORY!");
@@ -523,12 +535,12 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     }
 
     // copy currently active bank into the backup
-    memcpy(banks->BANK_ARRAY[banks->active], MEM+banks->start_addr, banks->length);
+    memcpy(banks->BANK_ARRAY[banks->active], MEM + banks->start_addr, banks->length);
 
     // check if target bank is NULL
     if(banks->BANK_ARRAY[target_bank] == NULL)
     {
-        banks->BANK_ARRAY[target_bank] = malloc(sizeof(uint8_t)*banks->length);
+        banks->BANK_ARRAY[target_bank] = malloc(sizeof(uint8_t) * banks->length);
         if(banks->BANK_ARRAY[target_bank] == NULL)
         {
             ERROR("COULD NOT ALLOCATE MEMORY!");
@@ -539,14 +551,15 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     }
 
     // copy target bank into memory
-    memcpy(MEM+banks->start_addr, banks->BANK_ARRAY[target_bank], banks->length);
+    memcpy(MEM + banks->start_addr, banks->BANK_ARRAY[target_bank], banks->length);
 
 }
 
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
-uint32_t colour[2][2] = {{WHITE, LIGHT_GREY}, {DARK_GREY, BLACK}};
+uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},
+                         {DARK_GREY, BLACK}};
 
-void (*exec_opcode[0x100])(void) =
+void (* exec_opcode[0x100])(void) =
         {OP_NOP, OP_LD_BC_D16, OP_LD_PBC_A, OP_INC_BC, OP_INC_B, OP_INC_B, OP_LD_B_D8, OP_RLCA,
          OP_LD_A16_SP, OP_ADD_HL_BC, OP_LD_A_PBC, OP_DEC_BC, OP_INC_C, OP_DEC_C, OP_LD_C_D8, OP_RRCA,
          OP_STOP, OP_LD_DE_D16, OP_LD_PDE_A, OP_INC_DE, OP_INC_D, OP_DEC_D, OP_LD_D_D8, OP_RLA,
@@ -580,7 +593,7 @@ void (*exec_opcode[0x100])(void) =
          OP_LDH_A_A8, OP_POP_AF, OP_LD_A_OC, OP_DI, OP_ERROR_F4, OP_PUSH_AF, OP_OR_D8, OP_RST_30,
          OP_LD_HL_SP_R8, OP_LD_SP_HL, OP_LD_A_A16, OP_EI, OP_ERROR_FC, OP_ERROR_FD, OP_CP_D8, OP_RST_38};
 
-void (*exec_cb[0x100])(void) =
+void (* exec_cb[0x100])(void) =
         {OP_RLC_B, OP_RLC_C, OP_RLC_D, OP_RLC_E, OP_RLC_H, OP_RLC_L, OP_RLC_PHL, OP_RLC_A,
          OP_RRC_B, OP_RRC_C, OP_RRC_D, OP_RRC_E, OP_RRC_H, OP_RRC_L, OP_RRC_PHL, OP_RRC_A,
          OP_RL_B, OP_RL_C, OP_RL_D, OP_RL_E, OP_RL_H, OP_RL_L, OP_RL_PHL, OP_RL_A,

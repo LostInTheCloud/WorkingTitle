@@ -1549,4 +1549,4 @@ void OP_SET_7_A(void);
 
 
 //check if bit n (counting from 0 to 7) is set in X
-#define CHECK_BIT(X,n) ((X) & (1<<(n)))
+#define CHECK_BIT(X, n) ((X) & (1<<(n)))
