@@ -1549,7 +1549,7 @@ void OP_CALL_NZ_A16(void)
 {
     if(!FLAG_Z)
     {
-        MEM[SP - 2] = PC + 3;
+        ((uint16_t*)MEM)[SP - 2] = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
     }
@@ -1616,7 +1616,7 @@ void OP_CALL_Z_A16(void)
 {
     if(FLAG_Z)
     {
-        MEM[SP - 2] = PC + 3;
+        ((uint16_t*)MEM)[SP - 2] = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
     }
@@ -1625,7 +1625,7 @@ void OP_CALL_Z_A16(void)
 // 0xCD
 void OP_CALL_A16(void)
 {
-    MEM[SP - 2] = PC + 3;
+    ((uint16_t*)MEM)[SP - 2] = PC + 3;
     SP = SP - 2;
     PC = *((uint16_t*) (MEM + PC + 1));
 }
@@ -1684,7 +1684,7 @@ void OP_CALL_NC_A16(void)
 {
     if(!FLAG_Z)
     {
-        MEM[SP - 2] = PC + 3;
+        ((uint16_t*)MEM)[SP - 2] = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
     }
@@ -1752,7 +1752,7 @@ void OP_CALL_C_A16(void)
 {
     if(FLAG_C)
     {
-        MEM[SP - 2] = PC + 3;
+        ((uint16_t*)MEM)[SP - 2] = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
     }
