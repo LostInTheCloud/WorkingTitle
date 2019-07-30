@@ -174,8 +174,8 @@ uint8_t interrupt_master_enable;
 
 #define LCD_MODE_FLAG                           (MEM[0xFF41]&=0x3)
 
-extern int CYCLE_LENGTH[0x100];
-extern int OPCODE_LENGTH[0x100];
+extern uint8_t CYCLE_LENGTH[0x100];
+extern uint8_t OPCODE_LENGTH[0x100];
 extern void (*exec_opcode[0x100])(void);
 extern void (*exec_cb[0x100])(void);
 extern uint32_t colour[2][2];
