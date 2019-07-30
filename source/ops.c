@@ -225,13 +225,16 @@ void OP_RRA(void)
 // 0x20
 void OP_JR_NZ_R8(void)
 {
-    if(!FLAG_Z){PC=PC+MEM[PC+1];}
+    if(!FLAG_Z)
+    {
+        PC=PC+(((int8_t*)MEM)[PC+1]);
+    }
 }
 
 // 0x21
 void OP_LD_HL_D16(void)
 {
-    HL = *((uint16_t*) (MEM+PC+1));
+    HL = (uint16_t) (SP+(*((int8_t*) (MEM+PC+1))));
 }
 
 // 0x22
@@ -278,7 +281,7 @@ void OP_DAA(void)
 // 0x28
 void OP_JR_Z_R8(void)
 {
-    if(FLAG_Z){PC=PC+MEM[PC+1];}
+    if(FLAG_Z){PC=PC+(((int8_t*)MEM)[PC+1]);}
 }
 
 // 0x29
@@ -332,7 +335,7 @@ void OP_CPL(void)
 // 0x30
 void OP_JR_NC_R8(void)
 {
-    if(!FLAG_C){PC=PC+MEM[PC+1];}
+    if(!FLAG_C){PC=PC+(((int8_t*)MEM)[PC+1]);}
 }
 
 // 0x31
@@ -383,7 +386,7 @@ void OP_SCF(void)
 // 0x38
 void OP_JR_C_R8(void)
 {
-    if(FLAG_C){PC=PC+MEM[PC+1];}
+    if(FLAG_C){PC=PC+(((int8_t*)MEM)[PC+1]);}
 }
 
 // 0x39
