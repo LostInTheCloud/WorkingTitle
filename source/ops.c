@@ -1527,8 +1527,8 @@ void OP_RET_NZ(void)
 // 0xC1
 void OP_POP_BC(void)
 {
-    C = MEM[SP + 1];
-    B = MEM[SP + 2];
+    C = MEM[SP + 0];
+    B = MEM[SP + 1];
     SP += 2;
 }
 
@@ -1659,8 +1659,8 @@ void OP_RET_NC(void)
 // 0xD1
 void OP_POP_DE(void)
 {
-    E = MEM[SP + 1];
-    D = MEM[SP + 2];
+    E = MEM[SP + 0];
+    D = MEM[SP + 1];
     SP += 2;
 }
 
@@ -1790,8 +1790,8 @@ void OP_LDH_PA8_A(void)
 // 0xE1
 void OP_POP_HL(void)
 {
-    L = MEM[SP + 1];
-    H = MEM[SP + 2];
+    L = MEM[SP + 0];
+    H = MEM[SP + 1];
     SP += 2;
 }
 
@@ -1911,8 +1911,8 @@ void OP_LDH_A_A8(void)
 // 0xF1
 void OP_POP_AF(void)
 {
-    F = MEM[SP + 1];
-    A = MEM[SP + 2];
+    F = MEM[SP + 0];
+    A = MEM[SP + 1];
     SP += 2;
 }
 
