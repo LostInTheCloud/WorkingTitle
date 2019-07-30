@@ -560,7 +560,7 @@ uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},
                          {DARK_GREY, BLACK}};
 
 void (* exec_opcode[0x100])(void) =
-        {OP_NOP, OP_LD_BC_D16, OP_LD_PBC_A, OP_INC_BC, OP_INC_B, OP_INC_B, OP_LD_B_D8, OP_RLCA,
+        {OP_NOP, OP_LD_BC_D16, OP_LD_PBC_A, OP_INC_BC, OP_INC_B, OP_DEC_B, OP_LD_B_D8, OP_RLCA,
          OP_LD_A16_SP, OP_ADD_HL_BC, OP_LD_A_PBC, OP_DEC_BC, OP_INC_C, OP_DEC_C, OP_LD_C_D8, OP_RRCA,
          OP_STOP, OP_LD_DE_D16, OP_LD_PDE_A, OP_INC_DE, OP_INC_D, OP_DEC_D, OP_LD_D_D8, OP_RLA,
          OP_JR_R8, OP_ADD_HL_DE, OP_LD_A_PDE, OP_DEC_DE, OP_INC_E, OP_DEC_E, OP_LD_E_D8, OP_RRA,
