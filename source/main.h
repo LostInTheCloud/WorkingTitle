@@ -25,8 +25,8 @@
 #define BG_DBG_WINDOW_HEIGHT 192
 
 void* reg_ptr[12];
-uint8_t opcode;
-uint8_t extended_opcode;
+uint8_t opcode;             // todo: remove
+uint8_t extended_opcode;    // todo: remove
 
 // temp registers
 

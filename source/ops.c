@@ -234,7 +234,7 @@ void OP_JR_NZ_R8(void)
 // 0x21
 void OP_LD_HL_D16(void)
 {
-    HL = (uint16_t) (SP+(*((int8_t*) (MEM+PC+1))));
+    HL = ((*((uint16_t*) (MEM+PC+1))));
 }
 
 // 0x22
@@ -1383,6 +1383,7 @@ void OP_JP_Z_A16(void)
 void OP_CB(void)
 {
     exec_cb[MEM[PC+1]]();
+    // todo: #33: add cycles
 }
 
 // 0xCC
@@ -1433,6 +1434,7 @@ void OP_JP_NC_A16(void)
 void OP_ERROR_D3(void)
 {
     ERROR("OPCODE 0xD3 executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xD4
@@ -1483,6 +1485,7 @@ void OP_JP_C_A16(void)
 void OP_ERROR_DB(void)
 {
     ERROR("OPCODE 0xDB executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xDC
@@ -1495,6 +1498,7 @@ void OP_CALL_C_A16(void)
 void OP_ERROR_DD(void)
 {
     ERROR("OPCODE 0xDD executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xDE
@@ -1533,12 +1537,14 @@ void OP_LD_OC_A(void)
 void OP_ERROR_E3(void)
 {
     ERROR("OPCODE 0xE3 executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xE4
 void OP_ERROR_E4(void)
 {
     ERROR("OPCODE 0xE4 executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xE5
@@ -1584,18 +1590,21 @@ void OP_LD_A16_A(void)
 void OP_ERROR_EB(void)
 {
     ERROR("OPCODE 0xEB executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xEC
 void OP_ERROR_EC(void)
 {
     ERROR("OPCODE 0xEC executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xED
 void OP_ERROR_ED(void)
 {
     ERROR("OPCODE 0xED executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xEE
@@ -1639,6 +1648,7 @@ void OP_DI(void)
 void OP_ERROR_F4(void)
 {
     ERROR("OPCODE 0xF4 executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xF5
@@ -1690,12 +1700,14 @@ void OP_EI(void)
 void OP_ERROR_FC(void)
 {
     ERROR("OPCODE 0xFC executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xFD
 void OP_ERROR_FD(void)
 {
     ERROR("OPCODE 0xFD executed");
+    exit(EXIT_FAILURE);
 }
 
 // 0xFE

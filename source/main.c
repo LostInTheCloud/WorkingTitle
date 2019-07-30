@@ -48,10 +48,10 @@ int main(int argc, char **argv)
     }
 
     // TEST
-    FILE *coredump = fopen("Tetris.dump", "r");
-    fread(MEM, 1, 65536, coredump);
-    fclose(coredump);
-    LY = 0;
+//    FILE *coredump = fopen("Tetris.dump", "r");
+//    fread(MEM, 1, 65536, coredump);
+//    fclose(coredump);
+//    LY = 0;
     // background_tiles();
     // /Test
 
@@ -80,9 +80,15 @@ int main(int argc, char **argv)
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
 
+        fprintf(LOG_OUTPUT, "%x", opcode);
+        if(opcode == 0xCB) fprintf(LOG_OUTPUT, " : %x", MEM[PC+1]);
+        fprintf(LOG_OUTPUT, " - %i\n", OPCODE_LENGTH[opcode]);
+        fflush(LOG_OUTPUT);
+
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];
         cpu_cycle += CYCLE_LENGTH[opcode];
+
     }
     else    // PPU's turn
     {
