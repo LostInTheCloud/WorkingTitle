@@ -1519,7 +1519,7 @@ void OP_RET_NZ(void)
 {
     if(!FLAG_Z)
     {
-        (*((int8_t*) MEM + SP + 2));
+        PC = ((uint16_t*) MEM)[SP];
         SP += 2;
     }
 }
@@ -1586,7 +1586,7 @@ void OP_RET_Z(void)
 {
     if(FLAG_Z)
     {
-        (*((int8_t*) MEM + SP + 2));
+        PC = ((uint16_t*) MEM)[SP];
         SP += 2;
     }
 }
@@ -1594,7 +1594,7 @@ void OP_RET_Z(void)
 // 0xC9
 void OP_RET(void)
 {
-    (*((int8_t*) MEM + SP + 2));
+    PC = ((uint16_t*) MEM)[SP];
     SP += 2;
 }
 
@@ -1651,9 +1651,11 @@ void OP_RST_08(void)
 // 0xD0
 void OP_RET_NC(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
-    SP -= 2;
-    PC = 0x08;
+    if(!FLAG_C)
+    {
+        PC = ((uint16_t*) MEM)[SP];
+        SP += 2;
+    }
 }
 
 // 0xD1
@@ -1719,7 +1721,7 @@ void OP_RET_C(void)
 {
     if(FLAG_C)
     {
-        PC = (*((int8_t*) MEM + SP + 2));
+        PC = ((uint16_t*) MEM)[SP];
         SP += 2;
     }
 }
@@ -1727,7 +1729,7 @@ void OP_RET_C(void)
 // 0xD9
 void OP_RETI(void)
 {
-    (*((int8_t*) MEM + SP + 2));
+    PC = ((uint16_t*) MEM)[SP];
     SP += 2;
     ENABLE_IME
 }
