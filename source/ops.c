@@ -98,6 +98,7 @@ void OP_INC_C(void)
 // 0x0D
 void OP_DEC_C(void)
 {
+    C--;
     if((C & 0xF) == 0xF){SET_FLAG_H(1);} else{SET_FLAG_H(0);}
     if(!C){SET_FLAG_Z(1);} else{SET_FLAG_Z(0)}
     SET_FLAG_N(1);

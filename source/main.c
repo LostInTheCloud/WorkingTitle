@@ -2,6 +2,8 @@
 
 int main(int argc, char** argv)
 {
+    int x = 0;
+
     int err;
 
     PC = 0;
@@ -50,7 +52,7 @@ int main(int argc, char** argv)
     }
     fclose(bootromfile);
     // switch banks: this copies bytes 0-256 to bootrom.1 and copies the bootrom in bootrom.1 to the RAM
-    switch_banks(bootrom, 0);
+     switch_banks(bootrom, 0);
 
     // create coredump folder, if not already existent
     struct stat st = {0};
@@ -60,10 +62,10 @@ int main(int argc, char** argv)
     }
 
     // TEST
-//    FILE *coredump = fopen("Tetris.dump", "r");
-//    fread(MEM, 1, 65536, coredump);
-//    fclose(coredump);
-//    LY = 0;
+    FILE *coredump = fopen("Tetris.dump", "r");
+    fread(MEM, 1, 65536, coredump);
+    fclose(coredump);
+    LY = 0;
     // background_tiles();
     // /Test
 
@@ -86,16 +88,18 @@ int main(int argc, char** argv)
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
+        // for now only test Bootrom
+        if(MEM[0xFF50] == 1)
+        {
+            return 0;
+        }
+
         // BOOTROM MAPPING
         switch_banks(bootrom, MEM[0xFF50]);
 
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
-
-        fprintf(LOG_OUTPUT, "%x", opcode);
-        if(opcode == 0xCB) fprintf(LOG_OUTPUT, " : %x", MEM[PC + 1]);
-        fprintf(LOG_OUTPUT, " - %i\n", OPCODE_LENGTH[opcode]);
-        fflush(LOG_OUTPUT);
+        opcode = 0x0;
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];
@@ -115,7 +119,7 @@ int main(int argc, char** argv)
                 t32[2] = SPRITE_Y_COORDINATE(i);
                 t32[3] = LY;
                 t32[4] = LY + 8;
-                if(SPRITE_Y_COORDINATE(i) > LY && SPRITE_Y_COORDINATE(i) <= LY + 8)
+                if(SPRITE_Y_COORDINATE(i) > (LY + SCY) && SPRITE_Y_COORDINATE(i) <= (LY + SCY) + 8)
                 {
                     VISIBLE_SPRITE_ARRAY[t8[0]] = i; // ((uint32_t *) (MEM + 0xFE00))[i];
                     t8[0]++;
@@ -167,7 +171,7 @@ int main(int argc, char** argv)
 
         for(int i = 0; i < 10; i++)
         {
-            if(SPRITE_X_COORDINATE(VISIBLE_SPRITE_ARRAY[i]) == LX + 8)
+            if(SPRITE_X_COORDINATE(VISIBLE_SPRITE_ARRAY[i]) == LX + SCX + 8)
             {
                 // load CHR code
                 t8[0] = SPRITE_CHR_CODE(VISIBLE_SPRITE_ARRAY[i]);
@@ -177,7 +181,7 @@ int main(int argc, char** argv)
                 // todo: #6
                 t8p += 0x8800;
                 t8p += t8[0];
-                t8p += 2 * (8 + LY - SPRITE_Y_COORDINATE(VISIBLE_SPRITE_ARRAY[i]));
+                t8p += 2 * (8 + LY + SCY - SPRITE_Y_COORDINATE(VISIBLE_SPRITE_ARRAY[i]));
                 // todo: #23: pixel mixing
                 // here we just copy the sprite in there
                 for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
@@ -188,7 +192,7 @@ int main(int argc, char** argv)
                 }
             }
         }
-        OUTPUT_ARRAY[WIDTH * (LY/* - SCY*/) + (LX/* - SCX*/)] = (0xC0000000 & fifo) >> 30u;
+        OUTPUT_ARRAY[WIDTH * (LY) + (LX)] = (0xC0000000 & fifo) >> 30u;
         LX++;
         fifo <<= 2u;
         ppu_cycle++;
@@ -223,6 +227,12 @@ int main(int argc, char** argv)
         }
 
         display_draw(OUTPUT_ARRAY);
+        fprintf(stderr, ".");
+        if(++x == 60)
+        {
+            fprintf(stderr, "\n");
+            x = 0;
+        }
 
         while(SDL_PollEvent(&close_event))
         {
@@ -520,8 +530,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
         snprintf(e, 63, "TARGET BANK OUT OF BOUNDS! (TARGET = %u; NUMBER OF BANKS = %u)", target_bank, banks->number);
         ERROR(e);
         free(e);
-        // exit(EXIT_FAILURE);
-        return -1;
+        //exit(EXIT_FAILURE);
     }
 
     // if bank has not been initialised, malloc
@@ -553,6 +562,8 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
 
     // copy target bank into memory
     memcpy(MEM + banks->start_addr, banks->BANK_ARRAY[target_bank], banks->length);
+
+    banks->active = target_bank;
 
 }
 
