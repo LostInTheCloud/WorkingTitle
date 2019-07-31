@@ -129,6 +129,7 @@ int main(int argc, char** argv)
 
             current_line_cycles = 80;
             ppu_cycle += 80;
+            SET_LCD_MODE_FLAG(3);
             goto loop;
         }
 
@@ -200,16 +201,19 @@ int main(int argc, char** argv)
             fifo = 0;
             ppu_cycle += (51 + 43 + 20) * 4 - current_line_cycles;
             current_line_cycles = 0;
+            SET_LCD_MODE_FLAG(0);
             if(LY == HEIGHT)
             {
-                LY = 0;
+                LY = 0x90;
                 ppu_cycle = NTH_CYCLE; // build check if this is correct
+                SET_LCD_MODE_FLAG(1);
             }
         }
     }
 
-    if(ppu_cycle >= NTH_CYCLE)
+    if(ppu_cycle >= NTH_CYCLE && cpu_cycle >= NTH_CYCLE)
     {
+        LY = 0;
         ppu_cycle -= NTH_CYCLE;
         cpu_cycle -= NTH_CYCLE;
 

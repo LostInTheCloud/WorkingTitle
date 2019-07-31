@@ -33,7 +33,7 @@ uint8_t extended_opcode;    // todo: remove
 uint8_t t8[8];
 uint16_t t16[8];
 uint32_t t32[8];
-uint8_t *t8p;
+uint8_t* t8p;
 
 // the amount of pixels that have been pushed 
 // out of the FiFo within the current line
@@ -172,12 +172,15 @@ uint8_t interrupt_master_enable;
 #define WINDOW_CODE_AREA_SELECTION_FLAG         (LCD_CONTROL_REGISTER&=0x40)
 #define LCD_CONTROLLER_OPERATION_STOP_FLAG      (LCD_CONTROL_REGISTER&=0x80)
 
-#define LCD_MODE_FLAG                           (MEM[0xFF41]&=0x3)
+#define SET_LCD_MODE_FLAG(X)                    MEM[0xFF41] &= 0xFC; MEM[0xFF41] |= X
 
 extern uint8_t CYCLE_LENGTH[0x100];
 extern uint8_t OPCODE_LENGTH[0x100];
-extern void (*exec_opcode[0x100])(void);
-extern void (*exec_cb[0x100])(void);
+
+extern void (* exec_opcode[0x100])(void);
+
+extern void (* exec_cb[0x100])(void);
+
 extern uint32_t colour[2][2];
 extern uint32_t DEFAULT_PALETTE[4];
 
@@ -209,7 +212,7 @@ typedef struct BANKS
     uint32_t length;         // length of the section
     uint8_t active;         // indicates the currently loaded bank
 
-}BANKS;
+} BANKS;
 
 int switch_banks(BANKS* banks, uint8_t target_bank);
 
