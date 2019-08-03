@@ -62,10 +62,10 @@ int main(int argc, char** argv)
     }
 
     // TEST
-    FILE *coredump = fopen("Tetris.dump", "r");
-    fread(MEM, 1, 65536, coredump);
-    fclose(coredump);
-    LY = 0;
+//    FILE *coredump = fopen("Tetris.dump", "r");
+//    fread(MEM, 1, 65536, coredump);
+//    fclose(coredump);
+//    LY = 0;
     // background_tiles();
     // /Test
 
@@ -99,7 +99,7 @@ int main(int argc, char** argv)
 
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
-        opcode = 0x0;
+//        opcode = 0x0;
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];
