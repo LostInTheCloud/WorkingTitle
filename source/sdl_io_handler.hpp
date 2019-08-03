@@ -17,6 +17,7 @@ public:
   operator bool() const;
   
   void display_init(const size_t width, const size_t height, const size_t scale);
+  void display_destroy();
   void display_set_window_title(const char* title);
   void display_draw(const uint32_t* pixels);
   bool compare_window_id(Uint32 id) const;
@@ -59,7 +60,6 @@ public:
   void fill_dmg_input(DMG_Input* dmg_input) const;
   
 protected:
-  size_t num_controllers;
   std::vector<SDL_Display> displays;
   SDL_Event current_event;
   bool stop_handle_SDL_events_async;

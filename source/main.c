@@ -75,6 +75,7 @@ int main(int argc, char** argv)
     int64_t ppu_cycle = 0;
     int64_t current_line_cycles = 0;
     uint32_t nanosecs;
+    handle_events_async();
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
     char* title = malloc(16 + strlen(GAME_NAME) + 1);
@@ -82,8 +83,7 @@ int main(int argc, char** argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
-    SDL_Event close_event;
-
+    
     loop:
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
@@ -232,14 +232,6 @@ int main(int argc, char** argv)
         {
             fprintf(stderr, "\n");
             x = 0;
-        }
-
-        while(SDL_PollEvent(&close_event))
-        {
-            if(close_event.type == SDL_QUIT)
-            {
-                goto end;
-            }
         }
 
         nanosecs = cycle_duration;

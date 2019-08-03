@@ -21,10 +21,7 @@ SDL_Display::SDL_Display(const size_t width, const size_t height, const size_t s
 
 SDL_Display::~SDL_Display()
 {
-  if (_window != nullptr)
-  {
-    SDL_DestroyWindow(_window);
-  }
+  SDL_DestroyWindow(_window);
 }
 
 void SDL_Display::display_init(const size_t width, const size_t height, const size_t scale)
@@ -44,6 +41,16 @@ void SDL_Display::display_init(const size_t width, const size_t height, const si
 
     if(_screen == nullptr) { throw RuntimeError(SDL_GetError()); }
   }
+}
+
+void SDL_Display::display_destroy()
+{
+  _width = 0;
+  _height = 0;
+  _scale = 0;
+  _screen = nullptr;
+  SDL_DestroyWindow(_window);
+  _window = nullptr;
 }
 
 SDL_Display::operator bool() const{
@@ -119,12 +126,19 @@ void SDL_IO_Handler::display_destroy(const size_t num)
   std::lock_guard<std::mutex> guard(event_mutex);
   while (displays.size() <= num) { displays.emplace_back(); }
   
-  displays[num] = SDL_Display();
+  displays[num].display_destroy();
+  
+  // Remove all invalid displays
+  while (displays.size() > 0 && displays.back() == false)
+  {
+    displays.pop_back();
+  }
 }
 
 void SDL_IO_Handler::handle_SDL_events_async()
 {
   stop_handle_SDL_events_async = false;
+  std::cout << "Hallo" << std::endl;
   worker_thread = std::thread([&, this] {
     while (!stop_handle_SDL_events_async)
     {
@@ -149,7 +163,7 @@ void SDL_IO_Handler::handle_SDL_events_async()
               {
               case SDL_WINDOWEVENT_CLOSE:
                 // Destroy current display
-                display = SDL_Display();
+                display.display_destroy();
               }
             }
             break;
