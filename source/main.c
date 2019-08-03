@@ -62,10 +62,10 @@ int main(int argc, char** argv)
     }
 
     // TEST
-    FILE *coredump = fopen("Tetris.dump", "r");
-    fread(MEM, 1, 65536, coredump);
-    fclose(coredump);
-    LY = 0;
+//     FILE *coredump = fopen("Tetris.dump", "r");
+//     fread(MEM, 1, 65536, coredump);
+//     fclose(coredump);
+//     LY = 0;
     // background_tiles();
     // /Test
 
@@ -89,17 +89,17 @@ int main(int argc, char** argv)
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
         // for now only test Bootrom
-        if(MEM[0xFF50] == 1)
-        {
-            return 0;
-        }
+//         if(MEM[0xFF50] == 1)
+//         {
+//             return 0;
+//         }
 
         // BOOTROM MAPPING
         switch_banks(bootrom, MEM[0xFF50]);
 
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
-        opcode = 0x0;
+//         opcode = 0x0;
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];
@@ -256,6 +256,7 @@ int main(int argc, char** argv)
     goto loop;
 
     end:
+    handle_events_async_stop();
     free(MEM);
     fclose(LOG_OUTPUT);
     free(GAME_NAME);
@@ -487,7 +488,8 @@ void background_tiles()
             convert_tile((MEM + 0x8000 + 16 * (i * 16 + j)), pixel + (j * 8 + i * 8 * 16 * 8));
         }
     }
-
+    
+    handle_events_async();
     display_init(BG_DBG_WINDOW_WIDTH, BG_DBG_WINDOW_HEIGHT, 6);
     display_set_window_title("Working Title - Tile Viewer");
     display_draw(pixel);
