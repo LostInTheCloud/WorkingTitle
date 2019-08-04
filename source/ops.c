@@ -68,7 +68,7 @@ void OP_LD_A16_SP(void)
 // 0x09
 void OP_ADD_HL_BC(void)
 {
-    if(HL & 2047 + BC & 2047 < 2048){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
+    if((HL & (2047 + BC)) != 0){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
     if((uint32_t) HL + (uint32_t) BC > 65535){SET_FLAG_C(1);} else{SET_FLAG_C(0);}
     HL = HL + BC;
     SET_FLAG_N(0);
@@ -195,7 +195,7 @@ void OP_JR_R8(void)
 // 0x19
 void OP_ADD_HL_DE(void)
 {
-    if(HL & 2047 + DE & 2047 < 2048){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
+    if((HL & (2047 + DE)) != 0){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
     if((uint32_t) HL + (uint32_t) DE > 65535){SET_FLAG_C(1);} else{SET_FLAG_C(0);}
     HL = HL + DE;
     SET_FLAG_N(0);
@@ -322,7 +322,7 @@ void OP_JR_Z_R8(void)
 // 0x29
 void OP_ADD_HL_HL(void)
 {
-    if(HL & 2047 + HL & 2047 < 2048){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
+    if((HL & (2047 + HL)) != 0){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
     if((uint32_t) HL + (uint32_t) BC > 65535){SET_FLAG_C(1);} else{SET_FLAG_C(0);}
     HL = HL + BC;
     SET_FLAG_N(0);
@@ -440,7 +440,7 @@ void OP_JR_C_R8(void)
 // 0x39
 void OP_ADD_HL_SP(void)
 {
-    if(HL & 2047 + SP & 2047 < 2048){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
+    if((HL & (2047 + SP)) != 0){SET_FLAG_H(0);} else{SET_FLAG_H(1);}
     if((uint32_t) HL + (uint32_t) SP < 32767){SET_FLAG_C(1);} else{SET_FLAG_C(0);}
     HL = HL + SP;
     SET_FLAG_N(0);

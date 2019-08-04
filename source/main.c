@@ -44,6 +44,7 @@ int main(int argc, char** argv)
     }
     // copy from Bootromfile
     FILE* bootromfile = fopen("DMG_ROM.bin", "r");
+    if(!bootromfile){ERROR("BOOT ROM NOT READABLE"); exit(EXIT_FAILURE);}
     err = (int) fread(bootrom->BANK_ARRAY[0], 1, 256, bootromfile);
     if(err != 256)
     {
@@ -52,7 +53,7 @@ int main(int argc, char** argv)
     }
     fclose(bootromfile);
     // switch banks: this copies bytes 0-256 to bootrom.1 and copies the bootrom in bootrom.1 to the RAM
-     switch_banks(bootrom, 0);
+    switch_banks(bootrom, 0);
 
     // create coredump folder, if not already existent
     struct stat st = {0};
@@ -564,6 +565,8 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
     memcpy(MEM + banks->start_addr, banks->BANK_ARRAY[target_bank], banks->length);
 
     banks->active = target_bank;
+
+    return(EXIT_SUCCESS);
 
 }
 
