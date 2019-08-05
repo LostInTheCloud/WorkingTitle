@@ -264,7 +264,7 @@ void OP_JR_NZ_R8(void)
 // 0x21
 void OP_LD_HL_D16(void)
 {
-    HL = ((*((uint16_t*) (MEM + PC + 1))));
+    HL = (*((uint16_t*) (MEM + PC + 1)));
 }
 
 // 0x22
@@ -1787,7 +1787,7 @@ void OP_RST_18(void)
 // 0xE0 load A into FF00+n
 void OP_LDH_PA8_A(void)
 {
-    MEM[65280 + MEM[PC + 1]] = A;
+    MEM[0xFF00 + MEM[PC + 1]] = A;
 }
 
 // 0xE1
@@ -1801,7 +1801,7 @@ void OP_POP_HL(void)
 // 0xE2 load A into FF00+C (Offset)
 void OP_LD_OC_A(void)
 {
-    MEM[65280 + C] = A;
+    MEM[0xFF00 + C] = A;
 }
 
 // 0xE3
@@ -1863,7 +1863,7 @@ void OP_JP_PHL(void)
 // 0xEA
 void OP_LD_A16_A(void)
 {
-    *((uint16_t*) (MEM + PC + 1)) = A;
+    MEM[*((uint16_t*)(MEM+PC+1))] = A;
 }
 
 // 0xEB
@@ -1908,7 +1908,7 @@ void OP_RST_28(void)
 // 0xF0
 void OP_LDH_A_A8(void)
 {
-    A = MEM[65280 + MEM[PC + 1]];
+    A = MEM[0xFF00 + MEM[PC + 1]];
 }
 
 // 0xF1
@@ -1922,7 +1922,7 @@ void OP_POP_AF(void)
 // 0xF2
 void OP_LD_A_OC(void)
 {
-    A = MEM[65280 + C];
+    A = MEM[0xFF00 + C];
 }
 
 // 0xF3
@@ -1983,7 +1983,7 @@ void OP_LD_SP_HL(void)
 // 0xFA
 void OP_LD_A_A16(void)
 {
-    A = *((uint16_t*) (MEM + PC + 1));
+    A = MEM[*((uint16_t*)(MEM+PC+1))];
 }
 
 // 0xFB
