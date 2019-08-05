@@ -109,7 +109,7 @@ int main(int argc, char** argv)
     }
     else    // PPU's turn
     {
-        if((ppu_cycle % 456) < 80)
+        if(((ppu_cycle % 456) < 80) && LY<0x90)
         {
             // OAM search
 
@@ -135,6 +135,23 @@ int main(int argc, char** argv)
             current_line_cycles = 80;
             ppu_cycle += 80;
             SET_LCD_MODE_FLAG(3);
+            goto loop;
+        }
+
+        if(LY >= 0x90)
+        {
+            LX++;
+            ppu_cycle++;
+            current_line_cycles++;
+
+            if(LX == WIDTH)
+            {
+                LX = 0;
+                LY += 1;
+                ppu_cycle += (51 + 43 + 20) * 4 - current_line_cycles;
+                current_line_cycles = 0;
+            }
+
             goto loop;
         }
 
@@ -209,8 +226,6 @@ int main(int argc, char** argv)
             SET_LCD_MODE_FLAG(0);
             if(LY == HEIGHT)
             {
-                LY = 0x90;
-                ppu_cycle = NTH_CYCLE; // build check if this is correct
                 SET_LCD_MODE_FLAG(1);
             }
         }
