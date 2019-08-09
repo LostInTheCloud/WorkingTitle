@@ -24,6 +24,10 @@
 #define BG_DBG_WINDOW_WIDTH 128
 #define BG_DBG_WINDOW_HEIGHT 192
 
+int64_t cpu_cycle;
+int64_t ppu_cycle;
+int64_t current_line_cycles;
+
 void* reg_ptr[12];
 uint8_t opcode;             // todo: remove
 uint8_t extended_opcode;    // todo: remove

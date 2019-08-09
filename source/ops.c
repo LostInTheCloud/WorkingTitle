@@ -1609,7 +1609,14 @@ void OP_JP_Z_A16(void)
 void OP_CB(void)
 {
     exec_cb[MEM[PC + 1]]();
-    // todo: #33: add cycles
+    if(MEM[PC+1]%8==0x6)
+    {
+        cpu_cycle += 16;
+    }
+    else
+    {
+        cpu_cycle += 8;
+    }
 }
 
 // 0xCC

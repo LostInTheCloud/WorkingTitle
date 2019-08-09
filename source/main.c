@@ -72,9 +72,7 @@ int main(int argc, char** argv)
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
-    int64_t cpu_cycle = 0;
-    int64_t ppu_cycle = 0;
-    int64_t current_line_cycles = 0;
+    ppu_cycle = cpu_cycle = current_line_cycles = 0;
     uint32_t nanosecs;
     display_init(WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
