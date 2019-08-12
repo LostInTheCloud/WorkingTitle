@@ -15,6 +15,7 @@ extern "C"{
   void display_init(size_t width, size_t height, size_t scale);
   void display_set_window_title(const char*);
   void display_draw(const uint32_t* pixels);
+  uint8_t get_input(int output);
 #ifdef __cplusplus
 }
 #endif

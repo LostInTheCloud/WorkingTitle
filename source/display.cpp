@@ -40,4 +40,9 @@ void display_draw(const uint32_t* pixels)
   sdl_io_handler_wrapper.sdl_io_handler.display_draw(0, pixels);
 }
 
+uint8_t get_input(int output)
+{
+  return sdl_io_handler_wrapper.sdl_io_handler.get_input(output);
+}
+
 }

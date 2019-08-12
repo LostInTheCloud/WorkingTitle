@@ -193,7 +193,30 @@ void SDL_IO_Handler::handle_SDL_events_async()
           break;
         }
       }
+      
+      // Handle the keyboard state.
+      // Note: One should us SDL_PumpEvents() to update the state array.
+      //       See https://wiki.libsdl.org/SDL_GetKeyboardState
+      // Note: ... SDL_PollEvent() and SDL_WaitEvent() implicitly call SDL_PumpEvents().
+      //       See https://wiki.libsdl.org/SDL_PumpEvents
+      if (!stop_handle_SDL_events_async)
+      {
+        // Thread Safe Event handling
+        std::lock_guard<std::mutex> guard(this->event_mutex);
+        
+        const Uint8 *state = SDL_GetKeyboardState(NULL);
+        current_input.right = state[SDL_SCANCODE_D] ? 0x01 : 0x00;
+        current_input.left  = state[SDL_SCANCODE_A] ? 0x02 : 0x00;
+        current_input.up    = state[SDL_SCANCODE_W] ? 0x04 : 0x00;
+        current_input.down  = state[SDL_SCANCODE_S] ? 0x08 : 0x00;
+        
+        current_input.A      = state[SDL_SCANCODE_M] ? 0x01 : 0x00;
+        current_input.B      = state[SDL_SCANCODE_N] ? 0x02 : 0x00;
+        current_input.select = state[SDL_SCANCODE_J] ? 0x04 : 0x00;
+        current_input.start  = state[SDL_SCANCODE_K] ? 0x08 : 0x00;
+      }
 
+      // Sleep till next iteration
       std::this_thread::sleep_for (std::chrono::milliseconds(20));
     }
   });
@@ -211,18 +234,27 @@ void SDL_IO_Handler::handle_SDL_events_async_stop()
 }
 
 
-DMG_Input SDL_IO_Handler::get_dmg_input() const
+uint8_t SDL_IO_Handler::get_input(int output) const
 {
   std::lock_guard<std::mutex> guard(event_mutex);
-  DMG_Input ret{current_input};
+  uint8_t ret = 0;
+  
+  if (output == 0)
+  {
+    ret |= current_input.right;
+    ret |= current_input.left;
+    ret |= current_input.up;
+    ret |= current_input.down;
+  }
+  else
+  {
+    ret |= current_input.A;
+    ret |= current_input.B;
+    ret |= current_input.select;
+    ret |= current_input.start;
+  }
   
   return ret;
-}
-
-void SDL_IO_Handler::fill_dmg_input(DMG_Input* dmg_input) const
-{
-  std::lock_guard<std::mutex> guard(event_mutex);
-  *dmg_input = current_input;
 }
 
 

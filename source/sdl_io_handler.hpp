@@ -56,8 +56,7 @@ public:
   void display_draw(const size_t num, const uint32_t* pixels);
   void display_destroy(const size_t num);
   
-  DMG_Input get_dmg_input() const;
-  void fill_dmg_input(DMG_Input* dmg_input) const;
+  uint8_t get_input(int output) const;
   
 protected:
   std::vector<SDL_Display> displays;
