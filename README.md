@@ -29,7 +29,15 @@ Arch
 ```
 sudo pacman -S clang clang++ --noconfirm
 ```
-### To Compile and Run:
+### To Compile and Run (Debug):
+
+```bash
+cmake -DCMAKE_BUILD_TYPE=Debug .
+make
+./WorkingTitle
+```
+
+### To Compile and Run (Release):
 
 ```bash
 cmake .

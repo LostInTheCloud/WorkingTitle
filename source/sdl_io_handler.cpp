@@ -138,7 +138,6 @@ void SDL_IO_Handler::display_destroy(const size_t num)
 void SDL_IO_Handler::handle_SDL_events_async()
 {
   stop_handle_SDL_events_async = false;
-  std::cout << "Hallo" << std::endl;
   worker_thread = std::thread([&, this] {
     while (!stop_handle_SDL_events_async)
     {

@@ -44,6 +44,11 @@ int main(int argc, char** argv)
     }
     // copy from Bootromfile
     FILE* bootromfile = fopen("DMG_ROM.bin", "r");
+    if(!bootromfile)
+    {
+        ERROR("BOOT ROM NOT READABLE");
+        exit(EXIT_FAILURE);
+    }
     err = (int) fread(bootrom->BANK_ARRAY[0], 1, 256, bootromfile);
     if(err != 256)
     {
@@ -52,7 +57,7 @@ int main(int argc, char** argv)
     }
     fclose(bootromfile);
     // switch banks: this copies bytes 0-256 to bootrom.1 and copies the bootrom in bootrom.1 to the RAM
-     switch_banks(bootrom, 0);
+    switch_banks(bootrom, 0);
 
     // create coredump folder, if not already existent
     struct stat st = {0};
@@ -62,18 +67,16 @@ int main(int argc, char** argv)
     }
 
     // TEST
-//     FILE *coredump = fopen("Tetris.dump", "r");
-//     fread(MEM, 1, 65536, coredump);
-//     fclose(coredump);
-//     LY = 0;
+//    FILE *coredump = fopen("Tetris.dump", "r");
+//    fread(MEM, 1, 65536, coredump);
+//    fclose(coredump);
+//    LY = 0;
     // background_tiles();
     // /Test
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
-    int64_t cpu_cycle = 0;
-    int64_t ppu_cycle = 0;
-    int64_t current_line_cycles = 0;
+    ppu_cycle = cpu_cycle = current_line_cycles = 0;
     uint32_t nanosecs;
     handle_events_async();
     display_init(WIDTH, HEIGHT, 6);
@@ -83,23 +86,24 @@ int main(int argc, char** argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
-    
+    SDL_Event close_event;
+
     loop:
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
         // for now only test Bootrom
-//         if(MEM[0xFF50] == 1)
-//         {
-//             return 0;
-//         }
+        if(MEM[0xFF50] == 1)
+        {
+            goto end;
+        }
 
         // BOOTROM MAPPING
         switch_banks(bootrom, MEM[0xFF50]);
 
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
-//         opcode = 0x0;
+//        opcode = 0x0;
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];
@@ -108,7 +112,7 @@ int main(int argc, char** argv)
     }
     else    // PPU's turn
     {
-        if((ppu_cycle % 456) < 80)
+        if(((ppu_cycle % 456) < 80) && LY < 0x90)
         {
             // OAM search
 
@@ -137,10 +141,27 @@ int main(int argc, char** argv)
             goto loop;
         }
 
+        if(LY >= 0x90)
+        {
+            LX++;
+            ppu_cycle++;
+            current_line_cycles++;
+
+            if(LX == WIDTH)
+            {
+                LX = 0;
+                LY += 1;
+                ppu_cycle += (51 + 43 + 20) * 4 - current_line_cycles;
+                current_line_cycles = 0;
+            }
+
+            goto loop;
+        }
+
 
         if(!LX)
         {
-            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX)/ 8) + ((LY + SCY)/ 8) * 32]);
+            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX) / 8) + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
             // todo: #6
             t8p += 0x8000;
@@ -155,7 +176,7 @@ int main(int argc, char** argv)
         }
         if(!(LX % 8))
         {
-            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX)/ 8) + 1 + ((LY + SCY)/ 8) * 32]);
+            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX) / 8) + 1 + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
             // todo: #6
             t8p += 0x8000;
@@ -208,8 +229,6 @@ int main(int argc, char** argv)
             SET_LCD_MODE_FLAG(0);
             if(LY == HEIGHT)
             {
-                LY = 0x90;
-                ppu_cycle = NTH_CYCLE; // build check if this is correct
                 SET_LCD_MODE_FLAG(1);
             }
         }
@@ -559,6 +578,8 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
 
     banks->active = target_bank;
 
+    return (EXIT_SUCCESS);
+
 }
 
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
@@ -655,20 +676,22 @@ uint8_t OPCODE_LENGTH[0x100] =
 
 uint8_t CYCLE_LENGTH[0x100] =
         {
-                1, 3, 2, 2, 1, 1, 2, 1, 5, 2, 2, 2, 1, 1, 2, 1,
-                0, 3, 2, 2, 1, 1, 2, 1, 3, 2, 2, 2, 1, 1, 2, 1,
-                2, 3, 2, 2, 1, 1, 2, 1, 2, 2, 2, 2, 1, 1, 2, 1,
-                2, 3, 2, 2, 3, 3, 3, 1, 2, 2, 2, 2, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                2, 2, 2, 2, 2, 2, 1, 2, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                1, 1, 1, 1, 1, 1, 2, 1, 1, 1, 1, 1, 1, 1, 2, 1,
-                2, 3, 3, 4, 3, 4, 2, 4, 2, 4, 3, 0, 3, 6, 2, 4,
-                2, 3, 3, 0, 3, 4, 2, 4, 2, 4, 3, 0, 3, 0, 2, 4,
-                3, 3, 2, 0, 0, 4, 2, 4, 4, 1, 4, 0, 0, 0, 2, 4,
-                3, 3, 2, 1, 0, 4, 2, 4, 3, 2, 4, 1, 0, 0, 2, 4
+                0x04, 0x0c, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04, 0x14, 0x08, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04,
+                0x00, 0x0c, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04, 0x0c, 0x08, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04,
+                0x08, 0x0c, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04, 0x08, 0x08, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04,
+                0x08, 0x0c, 0x08, 0x08, 0x0c, 0x0c, 0x0c, 0x04, 0x08, 0x08, 0x08, 0x08, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x04, 0x08, 0x04,
+                0x08, 0x0c, 0x0c, 0x10, 0x0c, 0x10, 0x08, 0x10, 0x08, 0x10, 0x0c, 0x00, 0x0c, 0x18, 0x08, 0x10,
+                0x08, 0x0c, 0x0c, 0x00, 0x0c, 0x10, 0x08, 0x10, 0x08, 0x10, 0x0c, 0x00, 0x0c, 0x00, 0x08, 0x10,
+                0x0c, 0x0c, 0x08, 0x00, 0x00, 0x10, 0x08, 0x10, 0x10, 0x04, 0x10, 0x00, 0x00, 0x00, 0x08, 0x10,
+                0x0c, 0x0c, 0x08, 0x04, 0x00, 0x10, 0x08, 0x10, 0x0c, 0x08, 0x10, 0x04, 0x00, 0x00, 0x08, 0x10
+
+
         };
