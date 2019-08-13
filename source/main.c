@@ -66,14 +66,6 @@ int main(int argc, char** argv)
         mkdir("./coredumps", 0777);
     }
 
-    // TEST
-//    FILE *coredump = fopen("Tetris.dump", "r");
-//    fread(MEM, 1, 65536, coredump);
-//    fclose(coredump);
-//    LY = 0;
-    // background_tiles();
-    // /Test
-
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
     ppu_cycle = cpu_cycle = current_line_cycles = 0;
@@ -86,7 +78,6 @@ int main(int argc, char** argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(title);
     LOG_OUTPUT = fopen("log.log", "w");
-    SDL_Event close_event;
 
     loop:
 
@@ -103,7 +94,6 @@ int main(int argc, char** argv)
 
         // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
-//        opcode = 0x0;
 
         exec_opcode[opcode]();
         PC += OPCODE_LENGTH[opcode];

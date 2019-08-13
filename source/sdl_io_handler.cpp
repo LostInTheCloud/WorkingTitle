@@ -163,6 +163,7 @@ void SDL_IO_Handler::handle_SDL_events_async()
               case SDL_WINDOWEVENT_CLOSE:
                 // Destroy current display
                 display.display_destroy();
+                pthread_kill(0, 0);
               }
             }
             break;

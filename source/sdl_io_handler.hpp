@@ -5,6 +5,7 @@
 #include <thread>
 #include <mutex>
 #include <vector>
+#include <csignal>
 
 #include <SDL2/SDL.h>
 
