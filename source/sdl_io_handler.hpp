@@ -24,8 +24,8 @@ public:
   bool compare_window_id(Uint32 id) const;
   
 protected:
-  size_t _height;
   size_t _width;
+  size_t _height;
   size_t _scale;
   SDL_Window  *_window;
   SDL_Surface *_screen;
