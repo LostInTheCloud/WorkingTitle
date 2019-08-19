@@ -121,6 +121,20 @@ void SDL_IO_Handler::display_draw(const size_t num, const uint32_t* pixels)
   displays[num].display_draw(pixels);
 }
 
+int SDL_IO_Handler::windows_active() const
+{
+  std::lock_guard<std::mutex> guard(event_mutex);
+  int active = 0;
+  for (auto& display : displays)
+  {
+    if (display)
+    {
+      active++;
+    }
+  }
+  return active;
+}
+
 void SDL_IO_Handler::display_destroy(const size_t num)
 {
   std::lock_guard<std::mutex> guard(event_mutex);

@@ -12,9 +12,11 @@ extern "C"{
 #endif
   void handle_events_async();
   void handle_events_async_stop();
-  void display_init(size_t width, size_t height, size_t scale);
-  void display_set_window_title(const char*);
-  void display_draw(const uint32_t* pixels);
+  int  windows_active();
+  void display_init(int index, size_t width, size_t height, size_t scale);
+  void display_set_window_title(int index, const char* title);
+  void display_draw(int index, const uint32_t* pixels);
+  void display_destroy(int index);
   uint8_t get_input(int output);
 #ifdef __cplusplus
 }

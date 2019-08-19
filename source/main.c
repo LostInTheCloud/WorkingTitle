@@ -71,12 +71,12 @@ int main(int argc, char** argv)
     ppu_cycle = cpu_cycle = current_line_cycles = 0;
     uint32_t nanosecs;
     handle_events_async();
-    display_init(WIDTH, HEIGHT, 6);
+    display_init(0, WIDTH, HEIGHT, 6);
     // todo: fix invalid writes
     char* title = malloc(16 + strlen(GAME_NAME) + 1);
     strcpy(title, "Working Title - ");
     strcpy(title + 16, GAME_NAME);
-    display_set_window_title(title);
+    display_set_window_title(0, title);
     LOG_OUTPUT = fopen("log.log", "w");
 
     loop:
@@ -235,7 +235,7 @@ int main(int argc, char** argv)
             OUTPUT_ARRAY[i + 0] = DEFAULT_PALETTE[OUTPUT_ARRAY[i + 0]];
         }
 
-        display_draw(OUTPUT_ARRAY);
+        display_draw(0, OUTPUT_ARRAY);
         fprintf(stderr, ".");
         if(++x == 60)
         {
@@ -491,9 +491,9 @@ void background_tiles()
     }
     
     handle_events_async();
-    display_init(BG_DBG_WINDOW_WIDTH, BG_DBG_WINDOW_HEIGHT, 6);
-    display_set_window_title("Working Title - Tile Viewer");
-    display_draw(pixel);
+    display_init(0, BG_DBG_WINDOW_WIDTH, BG_DBG_WINDOW_HEIGHT, 6);
+    display_set_window_title(0, "Working Title - Tile Viewer");
+    display_draw(0, pixel);
     free(pixel);
 }
 

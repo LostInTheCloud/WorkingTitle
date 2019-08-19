@@ -23,6 +23,7 @@ public:
   void display_draw(const uint32_t* pixels);
   bool compare_window_id(Uint32 id) const;
   
+  
 protected:
   size_t _width;
   size_t _height;
@@ -55,6 +56,7 @@ public:
   void display_init(const size_t num, const size_t width, const size_t height, const size_t scale);
   void display_set_window_title(const size_t num, const char* title);
   void display_draw(const size_t num, const uint32_t* pixels);
+  int windows_active() const;
   void display_destroy(const size_t num);
   
   uint8_t get_input(int output) const;
