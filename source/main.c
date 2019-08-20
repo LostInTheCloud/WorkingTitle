@@ -2,9 +2,14 @@
 
 int main(int argc, char** argv)
 {
-    int x = 0;
+    if(argc != 2)
+    {
+        fprintf(stderr, "wrong number of arguments\n");
+        exit(EXIT_FAILURE);
+    }
 
     int err;
+    int booting = 1;
 
     PC = 0;
 
@@ -19,7 +24,7 @@ int main(int argc, char** argv)
     memset(MEM, 0, sizeof(uint8_t) * 65536);
 
     // ROM into Memory (Bank 0 and Bank 1)
-    err = readfff(MEM, "Tetris.gb");
+    err = readfff(MEM, argv[1]);
     if(err == EXIT_FAILURE){return EXIT_FAILURE;}
 
     read_header(MEM);
@@ -43,7 +48,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
     // copy from Bootromfile
-    FILE* bootromfile = fopen("DMG_ROM.bin", "r");
+    FILE* bootromfile = fopen("DMG_ROM_EDITED.bin", "r");
     if(!bootromfile)
     {
         ERROR("BOOT ROM NOT READABLE");
@@ -89,16 +94,14 @@ int main(int argc, char** argv)
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
-        // for now only test Bootrom
-        if(MEM[0xFF50] == 1)
+        // check if boot done
+        if(booting && MEM[0xFF50] == 1)
         {
-            goto end;
+            // BOOTROM MAPPING
+            switch_banks(bootrom, 1);
+            booting = 0;
         }
 
-        // BOOTROM MAPPING
-        switch_banks(bootrom, MEM[0xFF50]);
-
-        // todo: after opcodes are implemented, change this
         opcode = MEM[PC];
 
         exec_opcode[opcode]();
@@ -209,6 +212,8 @@ int main(int argc, char** argv)
                 }
             }
         }
+
+        OP_NOP();
         OUTPUT_ARRAY[WIDTH * (LY) + (LX)] = (0xC0000000 & fifo) >> 30u;
         LX++;
         fifo <<= 2u;
@@ -238,7 +243,10 @@ int main(int argc, char** argv)
 
         for(int i = 0; i < WIDTH * HEIGHT; ++i)
         {
-            OUTPUT_ARRAY[i + 0] = DEFAULT_PALETTE[OUTPUT_ARRAY[i + 0]];
+            t32[0] = OUTPUT_ARRAY[i];
+            t32[1] = DEFAULT_PALETTE[t32[0]];
+            OUTPUT_ARRAY[i] = t32[1];
+//          OUTPUT_ARRAY[i] = DEFAULT_PALETTE[OUTPUT_ARRAY[i]];
         }
 
         display_draw(0, OUTPUT_ARRAY);

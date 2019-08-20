@@ -247,4 +247,4 @@ int switch_banks(BANKS* banks, uint8_t target_bank);
 #define unlikely(expr) __builtin_expect(!!(expr), 0)
 #define likely(expr) __builtin_expect(!!(expr), 1)
 
-#define ERROR(expr) fprintf(stderr, "ERROR IN %s:%d:%s\n> %s\n", __FILE__, __LINE__,__func__, (expr));
+#define ERROR(expr) fprintf(stderr, "ERROR in function \"%s\" in %s:%d%s%s\nPC=%x\t\tOpcode=%x\n", __func__, __FILE__, __LINE__, (expr)?"\n> ":"", (expr)?(expr):"", PC, MEM[PC]);

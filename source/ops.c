@@ -317,7 +317,11 @@ void OP_DAA(void)
 // 0x28
 void OP_JR_Z_R8(void)
 {
-    if(FLAG_Z){PC = PC + (((int8_t*) MEM)[PC + 1]);cpu_cycle += 4;}
+    if(FLAG_Z)
+    {
+        PC = PC + (((int8_t*) MEM)[PC + 1]);
+        cpu_cycle += 4;
+    }
 }
 
 // 0x29
@@ -439,7 +443,11 @@ void OP_SCF(void)
 // 0x38
 void OP_JR_C_R8(void)
 {
-    if(FLAG_C){PC = PC + (((int8_t*) MEM)[PC + 1]);cpu_cycle += 4;}
+    if(FLAG_C)
+    {
+        PC = PC + (((int8_t*) MEM)[PC + 1]);
+        cpu_cycle += 4;
+    }
 }
 
 // 0x39
@@ -1525,7 +1533,7 @@ void OP_RET_NZ(void)
 {
     if(!FLAG_Z)
     {
-        PC = ((uint16_t*) MEM)[SP];
+        PC = *((uint16_t*) (MEM + SP));
         SP += 2;
         cpu_cycle += 12;
     }
@@ -1542,7 +1550,11 @@ void OP_POP_BC(void)
 // 0xC2
 void OP_JP_NZ_A16(void)
 {
-    if(!FLAG_Z){PC = *((uint16_t*) (MEM + PC + 1));cpu_cycle += 4;}
+    if(!FLAG_Z)
+    {
+        PC = *((uint16_t*) (MEM + PC + 1));
+        cpu_cycle += 4;
+    }
 }
 
 // 0xC3
@@ -1556,7 +1568,7 @@ void OP_CALL_NZ_A16(void)
 {
     if(!FLAG_Z)
     {
-        ((uint16_t*) MEM)[SP - 2] = PC + 3;
+        *((uint16_t*) (MEM + SP - 2)) = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
@@ -1584,7 +1596,7 @@ void OP_ADD_A_D8(void)
 // 0xC7
 void OP_RST_00(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x00;
 }
@@ -1594,7 +1606,7 @@ void OP_RET_Z(void)
 {
     if(FLAG_Z)
     {
-        PC = ((uint16_t*) MEM)[SP];
+        PC = *((uint16_t*) (MEM + SP));
         SP += 2;
         cpu_cycle += 12;
     }
@@ -1603,14 +1615,18 @@ void OP_RET_Z(void)
 // 0xC9
 void OP_RET(void)
 {
-    PC = ((uint16_t*) MEM)[SP];
+    PC = *((uint16_t*) (MEM + SP));
     SP += 2;
 }
 
 // 0xCA
 void OP_JP_Z_A16(void)
 {
-    if(FLAG_Z){PC = *((uint16_t*) (MEM + PC + 1));cpu_cycle += 4;}
+    if(FLAG_Z)
+    {
+        PC = *((uint16_t*) (MEM + PC + 1));
+        cpu_cycle += 4;
+    }
 }
 
 // 0xCB
@@ -1632,7 +1648,7 @@ void OP_CALL_Z_A16(void)
 {
     if(FLAG_Z)
     {
-        ((uint16_t*) MEM)[SP - 2] = PC + 3;
+        *((uint16_t*) (MEM + SP - 2)) = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
@@ -1642,7 +1658,7 @@ void OP_CALL_Z_A16(void)
 // 0xCD
 void OP_CALL_A16(void)
 {
-    ((uint16_t*) MEM)[SP - 2] = PC + 3;
+    *((uint16_t*) (MEM + SP - 2)) = PC + 3;
     SP = SP - 2;
     PC = *((uint16_t*) (MEM + PC + 1));
 }
@@ -1660,7 +1676,7 @@ void OP_ADC_A_D8(void)
 // 0xCF
 void OP_RST_08(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *(((uint16_t*) (MEM + SP - 2))) = PC;
     SP -= 2;
     PC = 0x08;
 }
@@ -1670,7 +1686,7 @@ void OP_RET_NC(void)
 {
     if(!FLAG_C)
     {
-        PC = ((uint16_t*) MEM)[SP];
+        PC = *((uint16_t*) (MEM + SP));
         SP += 2;
         cpu_cycle += 12;
     }
@@ -1687,7 +1703,11 @@ void OP_POP_DE(void)
 // 0xD2
 void OP_JP_NC_A16(void)
 {
-    if(!FLAG_C){PC = *((uint16_t*) (MEM + PC + 1));cpu_cycle += 4;}
+    if(!FLAG_C)
+    {
+        PC = *((uint16_t*) (MEM + PC + 1));
+        cpu_cycle += 4;
+    }
 }
 
 // 0xD3
@@ -1702,7 +1722,7 @@ void OP_CALL_NC_A16(void)
 {
     if(!FLAG_Z)
     {
-        ((uint16_t*) MEM)[SP - 2] = PC + 3;
+        *((uint16_t*) (MEM + SP - 2)) = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
@@ -1730,7 +1750,7 @@ void OP_SUB_A_D8(void)
 // 0xD7
 void OP_RST_10(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x10;
 }
@@ -1740,7 +1760,7 @@ void OP_RET_C(void)
 {
     if(FLAG_C)
     {
-        PC = ((uint16_t*) MEM)[SP];
+        PC = *((uint16_t*) (MEM + SP));
         SP += 2;
         cpu_cycle += 12;
     }
@@ -1749,7 +1769,7 @@ void OP_RET_C(void)
 // 0xD9
 void OP_RETI(void)
 {
-    PC = ((uint16_t*) MEM)[SP];
+    PC = *((uint16_t*) (MEM + SP));
     SP += 2;
     ENABLE_IME
 }
@@ -1757,7 +1777,11 @@ void OP_RETI(void)
 // 0xDA
 void OP_JP_C_A16(void)
 {
-    if(FLAG_C){PC = *((uint16_t*) (MEM + PC + 1));cpu_cycle += 4;}
+    if(FLAG_C)
+    {
+        PC = *((uint16_t*) (MEM + PC + 1));
+        cpu_cycle += 4;
+    }
 }
 
 // 0xDB
@@ -1772,7 +1796,7 @@ void OP_CALL_C_A16(void)
 {
     if(FLAG_C)
     {
-        ((uint16_t*) MEM)[SP - 2] = PC + 3;
+        *((uint16_t*) (MEM + SP - 2)) = PC + 3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
@@ -1799,7 +1823,7 @@ void OP_SBC_A_D8(void)
 // 0xDF
 void OP_RST_18(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x18;
 }
@@ -1859,7 +1883,7 @@ void OP_AND_D8(void)
 // 0xE7
 void OP_RST_20(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x20;
 }
@@ -1920,7 +1944,7 @@ void OP_XOR_D8(void)
 // 0xEF
 void OP_RST_28(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x28;
 }
@@ -1979,7 +2003,7 @@ void OP_OR_D8(void)
 // 0xF7
 void OP_RST_30(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x30;
 }
@@ -2038,7 +2062,7 @@ void OP_CP_D8(void)
 // 0xFF
 void OP_RST_38(void)
 {
-    *(((uint16_t*) MEM) + SP - 1) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC;
     SP -= 2;
     PC = 0x38;
 }
