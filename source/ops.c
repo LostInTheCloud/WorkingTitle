@@ -887,7 +887,7 @@ void OP_LD_A_A(void)
     A = A;
 }
 
-// 0x80 if first 4 bits add to more than 1111 then set H
+// 0x80 if 1st 4 bits add to more than 1111 then set H
 void OP_ADD_A_B(void)
 {
     if((A & 15) + (B & 15) > 15){SET_FLAG_H(1);} else{SET_FLAG_H(0);}
@@ -1537,6 +1537,8 @@ void OP_RET_NZ(void)
         SP += 2;
         cpu_cycle += 12;
     }
+    else
+        PC+=1;
 }
 
 // 0xC1
@@ -1555,6 +1557,8 @@ void OP_JP_NZ_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 4;
     }
+    else
+        PC+=3;
 }
 
 // 0xC3
@@ -1573,6 +1577,8 @@ void OP_CALL_NZ_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
     }
+    else
+        PC+=3;
 }
 
 // 0xC5
@@ -1596,7 +1602,7 @@ void OP_ADD_A_D8(void)
 // 0xC7
 void OP_RST_00(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC + 1;
     SP -= 2;
     PC = 0x00;
 }
@@ -1610,6 +1616,8 @@ void OP_RET_Z(void)
         SP += 2;
         cpu_cycle += 12;
     }
+    else
+        PC+=1;
 }
 
 // 0xC9
@@ -1627,6 +1635,8 @@ void OP_JP_Z_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 4;
     }
+    else
+        PC+=3;
 }
 
 // 0xCB
@@ -1648,11 +1658,13 @@ void OP_CALL_Z_A16(void)
 {
     if(FLAG_Z)
     {
-        *((uint16_t*) (MEM + SP - 2)) = PC + 3;
+        *((uint16_t*) (MEM + SP - 2)) = PC+3;
         SP = SP - 2;
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
     }
+    else
+        PC+=3;
 }
 
 // 0xCD
@@ -1676,7 +1688,7 @@ void OP_ADC_A_D8(void)
 // 0xCF
 void OP_RST_08(void)
 {
-    *(((uint16_t*) (MEM + SP - 2))) = PC;
+    *(((uint16_t*) (MEM + SP - 2))) = PC + 1;
     SP -= 2;
     PC = 0x08;
 }
@@ -1690,6 +1702,8 @@ void OP_RET_NC(void)
         SP += 2;
         cpu_cycle += 12;
     }
+    else
+        PC+=1;
 }
 
 // 0xD1
@@ -1708,6 +1722,8 @@ void OP_JP_NC_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 4;
     }
+    else
+        PC+=3;
 }
 
 // 0xD3
@@ -1727,6 +1743,8 @@ void OP_CALL_NC_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
     }
+    else
+        PC+=3;
 }
 
 // 0xD5
@@ -1750,7 +1768,7 @@ void OP_SUB_A_D8(void)
 // 0xD7
 void OP_RST_10(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x10;
 }
@@ -1764,11 +1782,15 @@ void OP_RET_C(void)
         SP += 2;
         cpu_cycle += 12;
     }
+    else
+        PC+=1;
 }
 
 // 0xD9
 void OP_RETI(void)
 {
+    // todo: pls explain this
+    ERROR("doublecheck this!")
     PC = *((uint16_t*) (MEM + SP));
     SP += 2;
     ENABLE_IME
@@ -1782,6 +1804,8 @@ void OP_JP_C_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 4;
     }
+    else
+        PC+=3;
 }
 
 // 0xDB
@@ -1801,6 +1825,8 @@ void OP_CALL_C_A16(void)
         PC = *((uint16_t*) (MEM + PC + 1));
         cpu_cycle += 12;
     }
+    else
+        PC+=3;
 }
 
 // 0xDD
@@ -1823,7 +1849,7 @@ void OP_SBC_A_D8(void)
 // 0xDF
 void OP_RST_18(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x18;
 }
@@ -1883,7 +1909,7 @@ void OP_AND_D8(void)
 // 0xE7
 void OP_RST_20(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x20;
 }
@@ -1944,7 +1970,7 @@ void OP_XOR_D8(void)
 // 0xEF
 void OP_RST_28(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x28;
 }
@@ -2003,7 +2029,7 @@ void OP_OR_D8(void)
 // 0xF7
 void OP_RST_30(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x30;
 }
@@ -2062,7 +2088,7 @@ void OP_CP_D8(void)
 // 0xFF
 void OP_RST_38(void)
 {
-    *((uint16_t*) (MEM + SP - 2)) = PC;
+    *((uint16_t*) (MEM + SP - 2)) = PC+1;
     SP -= 2;
     PC = 0x38;
 }
