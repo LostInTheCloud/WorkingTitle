@@ -92,6 +92,10 @@ int main(int argc, char** argv)
 
     loop:
 
+    // get input
+    JOYPAD &= 0xF0;
+    JOYPAD |= get_input((JOYPAD&=0x30)>>4);
+
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
         // check if boot done
@@ -251,6 +255,11 @@ int main(int argc, char** argv)
         display_draw(0, OUTPUT_ARRAY);
         background_tiles();
 
+        if(windows_active() < 2)
+        {
+            goto end;
+        }
+
         nanosecs = cycle_duration;
         nanosecs += t0.tv_nsec;
         if(unlikely(nanosecs > 999999999))
@@ -265,6 +274,9 @@ int main(int argc, char** argv)
     goto loop;
 
     end:
+    display_destroy(0);
+    display_destroy(1);
+    sleep(1);
     handle_events_async_stop();
     free(MEM);
     fclose(LOG_OUTPUT);
@@ -578,7 +590,7 @@ int switch_banks(BANKS* banks, uint8_t target_bank)
 }
 
 uint32_t DEFAULT_PALETTE[4] = {WHITE, LIGHT_GREY, DARK_GREY, BLACK};
-uint32_t colour[2][2] = {{WHITE, LIGHT_GREY},
+uint32_t colour[2][2] = {{WHITE,     LIGHT_GREY},
                          {DARK_GREY, BLACK}};
 
 void (* exec_opcode[0x100])(void) =

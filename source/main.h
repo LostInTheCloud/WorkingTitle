@@ -178,6 +178,10 @@ uint8_t interrupt_master_enable;
 
 #define SET_LCD_MODE_FLAG(X)                    MEM[0xFF41] &= 0xFC; MEM[0xFF41] |= X
 
+#define JOYPAD MEM[0xFF00]
+#define JOYPAD_BUTTONS (JOYPAD&0x20)
+#define JOYPAD_DIRECTIONS (JOYPAD&0x10)
+
 extern uint8_t CYCLE_LENGTH[0x100];
 extern uint8_t OPCODE_LENGTH[0x100];
 

@@ -830,7 +830,7 @@ void OP_LD_PHL_L(void)
 // 0x76
 void OP_HALT(void)
 {
-
+    ERROR("not implemented")
 }
 
 // 0x77
