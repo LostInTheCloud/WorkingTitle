@@ -2,6 +2,9 @@
 
 int main(int argc, char** argv)
 {
+    // #########
+    // # HAPPE #
+    // #########
     if(argc != 2)
     {
         fprintf(stderr, "wrong number of arguments\n");
@@ -12,6 +15,7 @@ int main(int argc, char** argv)
     int booting = 1;
 
     PC = 0;
+
 
     setvbuf(stdout, NULL, _IONBF, 0);
 
@@ -40,7 +44,7 @@ int main(int argc, char** argv)
     bootrom->number = 0x2;
     bootrom->start_addr = 0x0;
     bootrom->active = 1;
-    bootrom->BANK_ARRAY = malloc(sizeof(uint8_t*) * bootrom->number);
+    bootrom->BANK_ARRAY = malloc(sizeof(uint8_t * ) * bootrom->number);
     bootrom->BANK_ARRAY[0] = malloc(256);
     if(!bootrom->BANK_ARRAY[0])
     {
@@ -71,6 +75,10 @@ int main(int argc, char** argv)
         mkdir("./coredumps", 0777);
     }
 
+    // ########
+// # HEIN #
+// ########
+
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
     ppu_cycle = cpu_cycle = current_line_cycles = 0;
@@ -94,10 +102,13 @@ int main(int argc, char** argv)
 
     // get input
     JOYPAD &= 0xF0;
-    JOYPAD |= get_input((JOYPAD&=0x30)>>4);
+    JOYPAD |= get_input((JOYPAD &= 0x30) >> 4);
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
+        // ########
+// # HEIN #
+// ########
         // check if boot done
         if(booting && MEM[0xFF50] == 1)
         {
@@ -115,6 +126,9 @@ int main(int argc, char** argv)
     }
     else    // PPU's turn
     {
+        // #########
+        // # HAPPE #
+        // #########
         if(((ppu_cycle % 456) < 80) && LY < 0x90)
         {
             // OAM search
@@ -146,6 +160,9 @@ int main(int argc, char** argv)
 
         if(LY >= 0x90)
         {
+            // #########
+            // # HAPPE #
+            // #########
             LX++;
             ppu_cycle++;
             current_line_cycles++;
@@ -161,10 +178,12 @@ int main(int argc, char** argv)
             goto loop;
         }
 
-
+        // ########
+        // # HEIN #
+        // ########
         if(!LX)
         {
-            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX) / 8) + ((LY + SCY) / 8) * 32]);
+            t32[0] = (uint32_t)(16 * MEM[0x9800 + ((LX + SCX) / 8) + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
             // todo: #6
             t8p += 0x8000;
@@ -172,14 +191,14 @@ int main(int argc, char** argv)
             t8p += 2 * ((LY + SCY) % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t*) (&fifo))[1]) <<= 1u;
-                (((uint16_t*) (&fifo))[1]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t * )(&fifo))[1]) |= (uint16_t)(t8p[1] & mask);
+                (((uint16_t * )(&fifo))[1]) <<= 1u;
+                (((uint16_t * )(&fifo))[1]) |= (uint16_t)(t8p[0] & mask);
             }
         }
         if(!(LX % 8))
         {
-            t32[0] = (uint32_t) (16 * MEM[0x9800 + ((LX + SCX) / 8) + 1 + ((LY + SCY) / 8) * 32]);
+            t32[0] = (uint32_t)(16 * MEM[0x9800 + ((LX + SCX) / 8) + 1 + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
             // todo: #6
             t8p += 0x8000;
@@ -187,9 +206,9 @@ int main(int argc, char** argv)
             t8p += 2 * ((LY + SCY) % 8);
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
-                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
-                (((uint16_t*) (&fifo))[0]) <<= 1u;
-                (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                (((uint16_t * )(&fifo))[0]) |= (uint16_t)(t8p[1] & mask);
+                (((uint16_t * )(&fifo))[0]) <<= 1u;
+                (((uint16_t * )(&fifo))[0]) |= (uint16_t)(t8p[0] & mask);
             }
         }
 
@@ -210,9 +229,9 @@ int main(int argc, char** argv)
                 // here we just copy the sprite in there
                 for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
                 {
-                    (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[1] & mask);
-                    (((uint16_t*) (&fifo))[0]) <<= 1u;
-                    (((uint16_t*) (&fifo))[0]) |= (uint16_t) (t8p[0] & mask);
+                    (((uint16_t * )(&fifo))[0]) |= (uint16_t)(t8p[1] & mask);
+                    (((uint16_t * )(&fifo))[0]) <<= 1u;
+                    (((uint16_t * )(&fifo))[0]) |= (uint16_t)(t8p[0] & mask);
                 }
             }
         }
@@ -238,6 +257,9 @@ int main(int argc, char** argv)
         }
     }
 
+    // ########
+    // # HEIN #
+    // ########
     if(ppu_cycle >= NTH_CYCLE && cpu_cycle >= NTH_CYCLE)
     {
         LY = 0;
@@ -246,10 +268,7 @@ int main(int argc, char** argv)
 
         for(int i = 0; i < WIDTH * HEIGHT; ++i)
         {
-            t32[0] = OUTPUT_ARRAY[i];
-            t32[1] = DEFAULT_PALETTE[t32[0]];
-            OUTPUT_ARRAY[i] = t32[1];
-//          OUTPUT_ARRAY[i] = DEFAULT_PALETTE[OUTPUT_ARRAY[i]];
+            OUTPUT_ARRAY[i] = DEFAULT_PALETTE[OUTPUT_ARRAY[i]];
         }
 
         display_draw(0, OUTPUT_ARRAY);
@@ -258,6 +277,12 @@ int main(int argc, char** argv)
         if(windows_active() < 2)
         {
             goto end;
+        }
+
+        if(!booting)
+        {
+            fprintf(LOG_OUTPUT, "#########\n");
+            fflush(LOG_OUTPUT);
         }
 
         nanosecs = cycle_duration;
@@ -271,6 +296,9 @@ int main(int argc, char** argv)
         clock_nanosleep(CLOCK_MONOTONIC, TIMER_ABSTIME, &t0, NULL);
     }
 
+    // #########
+    // # HAPPE #
+    // #########
     goto loop;
 
     end:
@@ -286,6 +314,9 @@ int main(int argc, char** argv)
     return EXIT_SUCCESS;
 }
 
+// #########
+// # HAPPE #
+// #########
 void print_mem(uint16_t low, uint16_t high, char mode)
 {
     int n = high - low;
@@ -317,14 +348,14 @@ void print_mem(uint16_t low, uint16_t high, char mode)
         uint8_t* buf = malloc(sizeof(uint8_t) * 8);
         for(int i = 0; i < n; i++)
         {
-            buf[0] = (uint8_t) (MEM[low + i] & 1u ? 1u : 0u);
-            buf[1] = (uint8_t) (MEM[low + i] & 2u ? 1u : 0u);
-            buf[2] = (uint8_t) (MEM[low + i] & 4u ? 1u : 0u);
-            buf[3] = (uint8_t) (MEM[low + i] & 8u ? 1u : 0u);
-            buf[4] = (uint8_t) (MEM[low + i] & 16u ? 1u : 0u);
-            buf[5] = (uint8_t) (MEM[low + i] & 32u ? 1u : 0u);
-            buf[6] = (uint8_t) (MEM[low + i] & 64u ? 1u : 0u);
-            buf[7] = (uint8_t) (MEM[low + i] & 128u ? 1u : 0u);
+            buf[0] = (uint8_t)(MEM[low + i] & 1u ? 1u : 0u);
+            buf[1] = (uint8_t)(MEM[low + i] & 2u ? 1u : 0u);
+            buf[2] = (uint8_t)(MEM[low + i] & 4u ? 1u : 0u);
+            buf[3] = (uint8_t)(MEM[low + i] & 8u ? 1u : 0u);
+            buf[4] = (uint8_t)(MEM[low + i] & 16u ? 1u : 0u);
+            buf[5] = (uint8_t)(MEM[low + i] & 32u ? 1u : 0u);
+            buf[6] = (uint8_t)(MEM[low + i] & 64u ? 1u : 0u);
+            buf[7] = (uint8_t)(MEM[low + i] & 128u ? 1u : 0u);
             for(int j = 0; j < 8; j++)
             {
                 printf("%u ", buf[j]);
@@ -336,6 +367,9 @@ void print_mem(uint16_t low, uint16_t high, char mode)
     }
 }
 
+// #########
+// # HAPPE #
+// #########
 void read_header(const uint8_t* buf)
 {
     // read GAME_NAME
@@ -388,6 +422,10 @@ void read_header(const uint8_t* buf)
     printf("Name: %s\nCartridgetype: %s\nBanks:%i\nRAM Size:%i\n", GAME_NAME, cartridgetype, banks, ramsize);
 }
 
+
+// ########
+// # HEIN #
+// ########
 int readfff(uint8_t* buffer, const char* filename)
 {
     int err;
@@ -434,6 +472,9 @@ int readfff(uint8_t* buffer, const char* filename)
     return EXIT_SUCCESS;
 }
 
+// #########
+// # HAPPE #
+// #########
 void create_coredump(uint32_t length, uint16_t coredumpnum)
 {
     FILE* coredump;
@@ -449,6 +490,9 @@ void create_coredump(uint32_t length, uint16_t coredumpnum)
 }
 
 
+// #########
+// # HAPPE #
+// #########
 void reset_coredump(uint32_t length, uint16_t coredumpnum)
 {
     FILE* coredump;
@@ -463,6 +507,9 @@ void reset_coredump(uint32_t length, uint16_t coredumpnum)
     free(path);
 }
 
+// #########
+// # HAPPE #
+// #########
 void remove_all_coredumps(uint16_t coredumpnum)
 {
     for(uint16_t i = 0; i < coredumpnum + 1; i++)
@@ -474,6 +521,9 @@ void remove_all_coredumps(uint16_t coredumpnum)
     }
 }
 
+// ########
+// # HEIN #
+// ########
 void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr)
 {
     for(int i = 0; i < 8; i++)
@@ -483,6 +533,9 @@ void convert_tile(uint8_t* input_ptr, uint32_t* output_ptr)
 
 }
 
+// ########
+// # HEIN #
+// ########
 void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr)
 {
     for(int i = 0; i < 8; i++)
@@ -492,6 +545,9 @@ void convert_line(const uint8_t* input_ptr, uint32_t* output_ptr)
     }
 }
 
+// ########
+// # HEIN #
+// ########
 void background_tiles()
 {
     uint32_t* pixel = malloc(BG_DBG_WINDOW_HEIGHT * BG_DBG_WINDOW_WIDTH * sizeof(uint32_t));
@@ -514,6 +570,9 @@ void background_tiles()
     free(pixel);
 }
 
+// #########
+// # HAPPE #
+// #########
 void print_regs(void)
 {
 // 18 characters per line
@@ -528,6 +587,10 @@ void print_regs(void)
     printf("##################\n");
 }
 
+
+// ########
+// # HEIN #
+// ########
 int switch_banks(BANKS* banks, uint8_t target_bank)
 {
     // check for NULL

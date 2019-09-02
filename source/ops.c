@@ -1,5 +1,7 @@
 #include "main.h"
 
+// Lennart Hein ->
+
 // 0x00
 void OP_NOP(void)
 {
@@ -2095,6 +2097,8 @@ void OP_RST_38(void)
 
 
 // prefix CB
+
+// Maurice Happe ->
 
 // 0x00
 void OP_RLC_B(void)
