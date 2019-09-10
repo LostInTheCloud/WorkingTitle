@@ -11,7 +11,7 @@ SDL_Display::SDL_Display(const size_t width, const size_t height, const size_t s
         uint32_t flags = 0;
         _window = SDL_CreateWindow("DMG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    static_cast<int>(width * scale), static_cast<int>(height * scale),
-                                   flags | SDL_WINDOW_RESIZABLE);
+                                   flags );
 
         if(_window == nullptr){throw RuntimeError(SDL_GetError());}
 
@@ -44,7 +44,7 @@ void SDL_Display::display_init(const size_t width, const size_t height, const si
         uint32_t flags = 0;
         _window = SDL_CreateWindow("DMG", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED,
                                    static_cast<int>(width * scale), static_cast<int>(height * scale),
-                                   flags | SDL_WINDOW_RESIZABLE);
+                                   flags );
 
         if(_window == nullptr){throw RuntimeError(SDL_GetError());}
 
