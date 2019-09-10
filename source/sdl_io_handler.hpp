@@ -13,6 +13,8 @@ class SDL_Display
 {
 public:
   SDL_Display(const size_t width = 0, const size_t height = 0, const size_t scale = 0);
+  SDL_Display(SDL_Display&& other);
+  
   ~SDL_Display();
   
   operator bool() const;

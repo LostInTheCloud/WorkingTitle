@@ -21,6 +21,13 @@ SDL_Display::SDL_Display(const size_t width, const size_t height, const size_t s
     }
 }
 
+SDL_Display::SDL_Display(SDL_Display&& other) :
+        _width(other._width), _height(other._height), _scale(other._scale), _window(other._window), _screen(other._screen)
+{
+    other._window = nullptr;
+    other._screen = nullptr;
+}
+
 SDL_Display::~SDL_Display()
 {
     SDL_DestroyWindow(_window);
