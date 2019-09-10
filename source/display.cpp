@@ -50,9 +50,9 @@ void display_destroy(int index)
   sdl_io_handler_wrapper.sdl_io_handler.display_destroy(index);
 }
 
-uint8_t get_input(int output)
+uint8_t get_input()
 {
-  return sdl_io_handler_wrapper.sdl_io_handler.get_input(output);
+  return sdl_io_handler_wrapper.sdl_io_handler.get_input();
 }
 
 }

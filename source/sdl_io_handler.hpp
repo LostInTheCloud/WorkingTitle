@@ -61,7 +61,7 @@ public:
   int windows_active() const;
   void display_destroy(const size_t num);
   
-  uint8_t get_input(int output) const;
+  uint8_t get_input() const;
   
 protected:
   std::vector<SDL_Display> displays;

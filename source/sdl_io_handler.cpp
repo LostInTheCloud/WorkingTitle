@@ -238,10 +238,10 @@ void SDL_IO_Handler::handle_SDL_events_async()
                                             current_input.up = state[SDL_SCANCODE_W] ? 0x04 : 0x00;
                                             current_input.down = state[SDL_SCANCODE_S] ? 0x08 : 0x00;
 
-                                            current_input.A = state[SDL_SCANCODE_M] ? 0x01 : 0x00;
-                                            current_input.B = state[SDL_SCANCODE_N] ? 0x02 : 0x00;
-                                            current_input.select = state[SDL_SCANCODE_J] ? 0x04 : 0x00;
-                                            current_input.start = state[SDL_SCANCODE_K] ? 0x08 : 0x00;
+                                            current_input.A = state[SDL_SCANCODE_K] ? 0x10 : 0x00;
+                                            current_input.B = state[SDL_SCANCODE_J] ? 0x20 : 0x00;
+                                            current_input.select = state[SDL_SCANCODE_N] ? 0x40 : 0x00;
+                                            current_input.start = state[SDL_SCANCODE_M] ? 0x80 : 0x00;
                                         }
 
                                         // Sleep till next iteration
@@ -262,30 +262,20 @@ void SDL_IO_Handler::handle_SDL_events_async_stop()
 }
 
 
-uint8_t SDL_IO_Handler::get_input(int output) const
+uint8_t SDL_IO_Handler::get_input() const
 {
     std::lock_guard<std::mutex> guard(event_mutex);
     uint8_t ret = 0;
 
-    switch(output)
-    {
-        case 0:break;
-        case 1:ret |= current_input.right;
-            ret |= current_input.left;
-            ret |= current_input.up;
-            ret |= current_input.down;
-            break;
-        case 2:ret |= current_input.A;
-            ret |= current_input.B;
-            ret |= current_input.select;
-            ret |= current_input.start;
-            break;
-        case 3:fprintf(stderr, "BUTTONS AND DIRECTIONS REQUESTED AT THE SAME TIME\n(%s:%d)\n", __FILE__, __LINE__);
-            fflush(stderr);
-            break;
-        default:fprintf(stderr, "WHAT?!? (%s:%d)\n", __FILE__, __LINE__);
-            break;
-    }
+    ret |= current_input.right;
+    ret |= current_input.left;
+    ret |= current_input.up;
+    ret |= current_input.down;
+    ret |= current_input.B;
+    ret |= current_input.A;
+    ret |= current_input.select;
+    ret |= current_input.start;
+    
     return ret;
 }
 
