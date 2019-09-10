@@ -13,6 +13,7 @@ int main(int argc, char** argv)
 
     int err;
     int booting = 1;
+    uint8_t input;
 
     PC = 0;
 
@@ -76,8 +77,8 @@ int main(int argc, char** argv)
     }
 
     // ########
-// # HEIN #
-// ########
+    // # HEIN #
+    // ########
 
     struct timespec t0;
     clock_gettime(CLOCK_MONOTONIC, &t0);
@@ -101,14 +102,18 @@ int main(int argc, char** argv)
     loop:
 
     // get input
-    JOYPAD &= 0xF0;
-    JOYPAD |= get_input((JOYPAD &= 0x30) >> 4);
+    input = ~get_input();                   // API Funktion aufrufen
+    MEM[0xFF00] |= 0x0F;                    // Input Bits clear
+    if((MEM[0xFF00] &= 0x10) == 0)          // falls P14 aktiviert
+        MEM[0xFF00] &= input & 0x0F;        // update
+    if((MEM[0xFF00] &= 0x20) == 0)          // falls P15 aktiviert
+        MEM[0xFF00] &= input >> 4 & 0x0F;   // update
 
     if(ppu_cycle > cpu_cycle)     // CPU's turn
     {
         // ########
-// # HEIN #
-// ########
+        // # HEIN #
+        // ########
         // check if boot done
         if(booting && MEM[0xFF50] == 1)
         {
