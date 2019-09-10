@@ -57,8 +57,8 @@ make
 
 ### Try this out:
 
-```
+```bash
 cmake . 
 make
-./WorkingTitle /thirdparty/bgbtest.bin
+./WorkingTitle ./thirdparty/bgbtest.gb
 ```
