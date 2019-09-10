@@ -52,7 +52,7 @@ int main(int argc, char** argv)
         exit(EXIT_FAILURE);
     }
     // copy from Bootromfile
-    FILE* bootromfile = fopen("DMG_ROM_EDITED.bin", "r");
+    FILE* bootromfile = fopen("UNI_BONN_ROM.bin", "r");
     if(!bootromfile)
     {
         ERROR("BOOT ROM NOT READABLE");
