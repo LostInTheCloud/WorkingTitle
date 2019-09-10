@@ -77,3 +77,5 @@ source/exe
 cmake-build-default/
 
 cmake-build-debug/
+
+stats/

@@ -97,7 +97,7 @@ int main(int argc, char** argv)
     strcpy(title + 16, GAME_NAME);
     display_set_window_title(0, title);
 
-    LOG_OUTPUT = fopen("log.log", "w");
+    // LOG_OUTPUT = fopen("log.log", "w");
 
     loop:
 
@@ -157,13 +157,13 @@ int main(int argc, char** argv)
                 }
             }
 
-            current_line_cycles = 80;
+            current_line_cycles = 80;   // OAM takes 80 CPU cycles, so we skip
             ppu_cycle += 80;
-            SET_LCD_MODE_FLAG(3);
+            SET_LCD_MODE_FLAG(3);   // signal transfer mode
             goto loop;
         }
 
-        if(LY >= 0x90)
+        if(LY >= 0x90) // while in VBlank we idle
         {
             // #########
             // # HAPPE #
@@ -186,14 +186,16 @@ int main(int argc, char** argv)
         // ########
         // # HEIN #
         // ########
-        if(!LX)
+        if(!LX) // fill first 8 pixel into fifo
         {
+            // get character code
             t32[0] = (uint32_t)(16 * MEM[0x9800 + ((LX + SCX) / 8) + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
-            // todo: #6
             t8p += 0x8000;
             t8p += t32[0];
-            t8p += 2 * ((LY + SCY) % 8);
+            t8p += 2 * ((LY + SCY) % 8); // get line offset within sprite
+
+            // mix line into fifo
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
                 (((uint16_t * )(&fifo))[1]) |= (uint16_t)(t8p[1] & mask);
@@ -201,14 +203,16 @@ int main(int argc, char** argv)
                 (((uint16_t * )(&fifo))[1]) |= (uint16_t)(t8p[0] & mask);
             }
         }
-        if(!(LX % 8))
+        if(!(LX % 8)) // fill last 8 pixel into fifo
         {
+            // get character code
             t32[0] = (uint32_t)(16 * MEM[0x9800 + ((LX + SCX) / 8) + 1 + ((LY + SCY) / 8) * 32]);
             t8p = (void*) MEM;
-            // todo: #6
             t8p += 0x8000;
             t8p += t32[0];
-            t8p += 2 * ((LY + SCY) % 8);
+            t8p += 2 * ((LY + SCY) % 8); // get line offset within sprite
+
+            // mix line into fifo
             for(uint8_t mask = 0x80; mask != 0; mask >>= 1u)
             {
                 (((uint16_t * )(&fifo))[0]) |= (uint16_t)(t8p[1] & mask);
@@ -217,6 +221,7 @@ int main(int argc, char** argv)
             }
         }
 
+        // load sprites
         for(int i = 0; i < 10; i++)
         {
             if(SPRITE_X_COORDINATE(VISIBLE_SPRITE_ARRAY[i]) == LX + SCX + 8)
@@ -226,7 +231,6 @@ int main(int argc, char** argv)
                 t8[0] *= 0x10;
                 // load 2pixelBytes
                 t8p = (void*) MEM;
-                // todo: #6
                 t8p += 0x8800;
                 t8p += t8[0];
                 t8p += 2 * (8 + LY + SCY - SPRITE_Y_COORDINATE(VISIBLE_SPRITE_ARRAY[i]));
@@ -247,16 +251,17 @@ int main(int argc, char** argv)
         ppu_cycle++;
         current_line_cycles++;
 
-        if(LX == WIDTH)
+        if(LX == WIDTH) // if end of line reached
         {
             LX = 0;
             LY += 1;
             fifo = 0;
             ppu_cycle += (51 + 43 + 20) * 4 - current_line_cycles;
             current_line_cycles = 0;
-            SET_LCD_MODE_FLAG(0);
-            if(LY == HEIGHT)
+            SET_LCD_MODE_FLAG(0); // set hblank
+            if(LY == HEIGHT) // if last line reached
             {
+                // turn on vblank
                 SET_LCD_MODE_FLAG(1);
             }
         }
@@ -265,6 +270,8 @@ int main(int argc, char** argv)
     // ########
     // # HEIN #
     // ########
+
+    // end of frame routine
     if(ppu_cycle >= NTH_CYCLE && cpu_cycle >= NTH_CYCLE)
     {
         LY = 0;
@@ -273,6 +280,7 @@ int main(int argc, char** argv)
 
         for(int i = 0; i < WIDTH * HEIGHT; ++i)
         {
+            // convert the 2 bit data into SDL compatible colours
             OUTPUT_ARRAY[i] = DEFAULT_PALETTE[OUTPUT_ARRAY[i]];
         }
 
@@ -284,14 +292,10 @@ int main(int argc, char** argv)
             goto end;
         }
 
-        if(!booting)
-        {
-            fprintf(LOG_OUTPUT, "#########\n");
-            fflush(LOG_OUTPUT);
-        }
-
+        // wait to be in sync with next frame
         nanosecs = cycle_duration;
         nanosecs += t0.tv_nsec;
+        // overflow into seconds
         if(unlikely(nanosecs > 999999999))
         {
             nanosecs -= 1000000000;
